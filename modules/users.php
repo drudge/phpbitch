@@ -139,12 +139,22 @@ class Net_SmartIRC_module_users
         global $bot;
         $nick = $data->messageex[1];
         
-        $newdata->host = $irc->channels[$data->channel]->users[strtolower($nick)]->host;
-        $newdata->nick = strtolower($nick);
-        $newdata->ident = $irc->channels[strtolower($data->channel)]->users[strtolower($nick)]->ident;
-        $newdata->channel = strtolower($data->channel);
+        if (isset($irc->channel[$data->channel]->users[strtolower($nick)])) {
+            $victim = &$irc->channels[strtolower($data->channel)]->users[strtolower($nick)];
+        } else {
+            return;
+        }
+        
+        $newdata->host = $victim->host;
+        $newdata->nick = $victim->nick;
+        $newdata->ident = $victim->ident;
+        $newdata->channel = $victim->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$bot->get_level($newresult).'].');
+        $level=$bot->get_level($newresult);
+        if (!isset($level)) {
+            $level="NONE";
+        }
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
     }
 }
 ?>
