@@ -134,7 +134,7 @@ class Net_SmartIRC_module_botcmds
 
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
 
             $irc->message(SMARTIRC_TYPE_CHANNEL,$channel,trim($message));
         }
@@ -158,7 +158,7 @@ class Net_SmartIRC_module_botcmds
 
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
 
             $irc->message(SMARTIRC_TYPE_ACTION,$channel,trim($message));
         }
@@ -182,7 +182,7 @@ class Net_SmartIRC_module_botcmds
 
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
 
             $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
         }
