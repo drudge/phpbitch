@@ -295,6 +295,7 @@ $irc->loadModule('cvscheckout');
 $irc->loadModule('hex_ip');
 $irc->loadModule('log');
 $irc->loadModule('ident');
+$irc->loadModule('debug');
 $irc->loadModule('versions');
 
 $irc->registerActionhandler(SMARTIRC_TYPE_BANLIST, 'End of Channel Ban List', $bot, 'show_synctime');
