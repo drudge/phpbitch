@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_mastah
 {
     var $name = 'mastah';
+    var $version = '$Revision$';
     var $description = 'this module will return if the bot is the current mastah or not.';
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';

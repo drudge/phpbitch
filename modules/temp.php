@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_temp
 {
     var $name = 'temp';
+    var $version = '$Revision$';
     var $description = 'this module will search a word from dictionary.com.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

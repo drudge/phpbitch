@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_google
 {
     var $name = 'google';
+    var $version = '$Revision$';
     var $description = 'this module will search and return the first 4 links of a google search.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_hex_ip
 {
     var $name = 'temp';
+    var $version = '$Revision$';
     var $description = 'This module will convert ip2hex and hex2ip.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_botcmds
 {
     var $name = 'botcmds';
+    var $version = '$Revision$';
     var $description = 'this module has some bot commands.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

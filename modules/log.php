@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_log
 {
     var $name = 'log';
+    var $version = '$Revision$';
     var $description = 'this module shows the bot log, for debugging reasons.';
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';

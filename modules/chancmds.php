@@ -28,6 +28,7 @@
 class Net_SmartIRC_module_chancmds
 {
     var $name = 'chancmds';
+    var $version = '$Revision$';
     var $description = 'this module adds basically all darkbot channel commands.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>, Mirco \'meebey\' Bauer <mail@meebey.net>';
     var $license = 'GPL';

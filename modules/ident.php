@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_ident
 {
     var $name = 'ident';
+    var $version = '$Revision$';
     var $description = 'Gain access to the bots from different host than what is registered.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

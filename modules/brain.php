@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_brain
 {
     var $name = 'brain';
+    var $version = '$Revision$';
     var $description = 'this module allows for adding, deleting, and searching from bots "brain".';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';

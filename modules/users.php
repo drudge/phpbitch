@@ -28,6 +28,7 @@
 class Net_SmartIRC_module_users
 {
     var $name = 'users';
+    var $version = '$Revision$';
     var $description = 'this module has commands to add/remove/search bots user database.';
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>, Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';

@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_cvscheckout
 {
     var $name = 'cvscheckout';
+    var $version = '$Revision$';
     var $description = 'this module allows to do a realtime CVS rebuilt of the bot with restarting the bot.';
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
