@@ -122,7 +122,7 @@ class Net_SmartIRC_module_botcmds
         global $bot;
         $crap = explode(' ',$data->message);
         // don't verify ourself
-        $channel = $crap[1];
+        $channel = strtolower($crap[1]);
         $message = '';
         for ($i=2; $i<count($crap); $i++) {
             $message.=' '.$crap[$i];
@@ -146,7 +146,7 @@ class Net_SmartIRC_module_botcmds
         global $bot;
         $crap = explode(' ',$data->message);
         // don't verify ourself
-        $channel = $crap[1];
+        $channel = strtolower($crap[1]);
         $message = '';
         for ($i=2; $i<count($crap); $i++) {
             $message.=' '.$crap[$i];
@@ -170,7 +170,7 @@ class Net_SmartIRC_module_botcmds
         global $bot;
         $crap = explode(' ',$data->message);
         // don't verify ourself
-        $channel = $crap[1];
+        $channel = strtolower($crap[1]);
         $message = '';
         for ($i=2; $i<count($crap); $i++) {
             $message.=' '.$crap[$i];
