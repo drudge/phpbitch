@@ -109,7 +109,7 @@ class Net_SmartIRC_module_brain
 
             if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
                 $query = "DELETE FROM brain WHERE query='".$usersquery."'";
-                $res = dbquery($query);
+                $res = $bot->dbquery($query);
 
                 if ($res) {
                     $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
