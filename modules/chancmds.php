@@ -387,7 +387,7 @@ class Net_SmartIRC_module_chancmds
         $irc->setSenddelay(750);
         
         // $line="Fuck off, i ain't helping you, lam0r!";
-        foreach($lines as $linenums => $line) {
+        foreach($lines as $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
         }
         
