@@ -704,7 +704,7 @@ class PHPBitch
 $bot = &new PHPBitch();
 $irc = &new Net_SmartIRC();
 $irc->setLogdestination(SMARTIRC_FILE);
-$irc->setLogfile('./gtkbitch.log');
+$irc->setLogfile('./phpbitch.log');
 $irc->setChannelSynching(true);
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(true);
