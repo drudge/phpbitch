@@ -268,7 +268,23 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
+        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)])) {
+            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)];
+        } else {
+            return;
+        }
+        
+        $newdata->host = $victim->host;
+        $newdata->nick = $victim->nick;
+        $newdata->ident = $victim->ident;
+        $newdata->channel = $data->channel;
+        $newresult = $bot->reverseverify($irc, $newdata);
+        
+        if (($result !== false) &&
+            ($bot->get_level($result) >= USER_LEVEL_OPERATOR) &&
+            ($bot->get_level($newresult) < USER_LEVEL_MASTER) &&
+            ($irc->isOpped($data->channel, $tobedeopped))) {
+            
             $irc->deop($data->channel, $tobedeopped);
         }
     }
@@ -311,13 +327,22 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        $newdata->host = $irc->channels[$data->channel]->users[strtolower($tobekicked)]->host;
-        $newdata->nick = strtolower($tobebanned);
-        $newdata->ident = $irc->channels[strtolower($data->channel)]->users[strtolower($tobebkicked)]->ident;
-        $newdata->channel = strtolower($data->channel);
+        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobekicked)])) {
+            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobekicked)];
+        } else {
+            return;
+        }
+        
+        $newdata->host = $victim->host;
+        $newdata->nick = $victim->nick;
+        $newdata->ident = $victim->ident;
+        $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE && $bot->get_level($newresult) < USER_LEVEL_MASTER)) {
+        if (($result !== false) &&
+            ($bot->get_level($result) >= USER_LEVEL_VOICE) &&
+            ($bot->get_level($newresult) < USER_LEVEL_MASTER)) {
+            
             $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
         }
     }
@@ -339,7 +364,6 @@ class Net_SmartIRC_module_chancmds
         if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
             $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobebanned)];
         } else {
-            // nobody to ban...
             return;
         }
         
