@@ -266,7 +266,16 @@ class PHPBitch
         }
         
         $channel = &$irc->getChannel($data->channel);
+        echo 'synctime: ';
         var_dump($channel->synctime);
+        echo 'synctime_start: ';
+        var_dump($channel->synctime_start);
+        echo 'milli: ';
+        $milli = $channel->synctime/1000;
+        var_dump($milli);
+        echo 'calculated: ';
+        $cal = ($channel->synctime/1000)-$channel->synctime_start;
+        var_dump($milli);
         $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'finished syncing to '.$data->channel.' in '.number_format(($channel->synctime)/1000, 2).' secs');
     }
 }
