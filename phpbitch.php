@@ -236,7 +236,7 @@ class PHPBitch
                 $user = &$irc->channel[strtolower($data->channel)]->users[strtolower($bot)];
                 
                 if ($this->isAuthorized($irc, $user->nick, $data->channel, USER_LEVEL_BOT) &&
-                    $this->isOpped($user->nick, $data->channel)) {
+                    $irc->isOpped($user->nick, $data->channel)) {
                     $candidates[] = $user->nick;
                 }
             }
