@@ -36,14 +36,14 @@ class Net_SmartIRC_module_users
     
     function module_init(&$irc)
     {
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who_all ', $this, 'who');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who ', $this, 'who');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!adduser ', $this, 'adduser');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!addlevel ', $this, 'addlevel');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deluser ', $this, 'deluser');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!dellevel ', $this, 'dellevel');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!level_all ', $this, 'level');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!level ', $this, 'level');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!who_all ', $this, 'who');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!who ', $this, 'who');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!adduser ', $this, 'adduser');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!addlevel ', $this, 'addlevel');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!deluser ', $this, 'deluser');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!dellevel ', $this, 'dellevel');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!level_all ', $this, 'level');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!level ', $this, 'level');
     }
     
     function module_exit(&$irc)
@@ -71,7 +71,7 @@ class Net_SmartIRC_module_users
             $host = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->host;
             $ident = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->ident;
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
+            $irc->message($data->type, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
         }
         
@@ -82,9 +82,9 @@ class Net_SmartIRC_module_users
         $result = $bot->reverseverify($irc, $newdata);
         
         if ($result !== false) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is '.$result.'['.gethostbyname($host).']');
+            $irc->message($data->type, $data->channel, $requester.': '.$lookupfor.' is '.$result.'['.gethostbyname($host).']');
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $lookupfor.' is not a registered user of '.$data->channel.'.');
+            $irc->message($data->type, $data->channel, $lookupfor.' is not a registered user of '.$data->channel.'.');
         }
     }
         
@@ -103,9 +103,9 @@ class Net_SmartIRC_module_users
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.$error);
+                $irc->message($data->type, $data->channel, 'Error adding: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added user '.$nick.' ident: '.$ident.' host: '.$host);
+                $irc->message($data->type, $data->channel, 'Added user '.$nick.' ident: '.$ident.' host: '.$host);
             }
         }
     }
@@ -123,9 +123,9 @@ class Net_SmartIRC_module_users
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.$error);
+                $irc->message($data->type, $data->channel, 'Error adding: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added level for '.$nick.' channel: '.$channel.' level: '.$level);
+                $irc->message($data->type, $data->channel, 'Added level for '.$nick.' channel: '.$channel.' level: '.$level);
             }
         }
     }
@@ -142,18 +142,18 @@ class Net_SmartIRC_module_users
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.$error);
+                $irc->message($data->type, $data->channel, 'Error removing: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted user '.$nick.' from registered users database.');
+                $irc->message($data->type, $data->channel, 'Deleted user '.$nick.' from registered users database.');
             }
             
             $query = "DELETE FROM users_levels WHERE user='".$nick."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.$error);
+                $irc->message($data->type, $data->channel, 'Error removing: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted levels for '.$nick.' from levels database.');
+                $irc->message($data->type, $data->channel, 'Deleted levels for '.$nick.' from levels database.');
             }
         }
     }
@@ -170,9 +170,9 @@ class Net_SmartIRC_module_users
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.$error);
+                $irc->message($data->type, $data->channel, 'Error removing: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted level for '.$nick.' channel: '.$channel.' from levels database.');
+                $irc->message($data->type, $data->channel, 'Deleted level for '.$nick.' channel: '.$channel.' from levels database.');
             }
         }
     }
@@ -191,7 +191,7 @@ class Net_SmartIRC_module_users
         if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($nick)])) {
             $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($nick)];
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
+            $irc->message($data->type, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;
         }
         
@@ -203,9 +203,9 @@ class Net_SmartIRC_module_users
         
         $level = $bot->getLevel($newresult, $data->channel);
         if ($newresult !== false) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
+            $irc->message($data->type, $data->channel, $nick.' has a level of ['.$level.'].');
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has no level!');
+            $irc->message($data->type, $data->channel, $nick.' has no level!');
         }
     }
 }
