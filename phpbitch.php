@@ -34,6 +34,7 @@ define('USER_LEVEL_FRIEND',    1);
 define('USER_LEVEL_VOICE',     2);
 define('USER_LEVEL_OPERATOR',  3);
 define('USER_LEVEL_MASTER',    4);
+define('USER_LEVEL_BOT',       5);
 
 // Include dependent files
 include_once('config.php');
@@ -142,7 +143,25 @@ class PHPBitch
             return false;
         }
     }
-    //===============================================================================================       
+    //===============================================================================================
+    
+    function isMastah(&$irc, &$data)
+    {
+        global $config;
+        
+        while ($bot = array_shift($config['friend_bots'])) {
+            if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
+                $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
+                $result = $this->reverseverify($irc, $user->host, $user->nick);
+                
+                if ($this->get_level($user->nick) == USER_LEVEL_BOT &&
+                    $user->nick == $irc->_nick) {
+                    // ok, it's showtime! we are the mastah!!!
+                    return true;
+                }
+            }
+        }
+    }
 }
 
 $bot = &new PHPBitch();
