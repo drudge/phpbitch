@@ -31,40 +31,24 @@ class Net_SmartIRC_module_brain
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionid1;
-    var $actionid2;
-    var $actionid3;
-    var $actionid4;
-    var $actionid5;
-
-
+    var $actionids = array();
     
     function module_init(&$irc)
     {
-        global $config;
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!search', $this, 'search_db');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!tell', $this, 'tell');
         
-        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!search', $this, 'search_db');
-        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
-        $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
-        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!tell', $this, 'tell');
-    
         if ($config['answer_questions']) {
-                $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*\?$', $this, 'answerQuestion');
-            }
-
+            $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*\?$', $this, 'answerQuestion');
+        }
     }
     
     function module_exit(&$irc)
     {
-        global $config;
-        
-        $irc->unregisterActionid($this->actionid1);
-        $irc->unregisterActionid($this->actionid2);
-        $irc->unregisterActionid($this->actionid3);
-        $irc->unregisterActionid($this->actionid4);
-    
-        if ($config['answer_questions']) {
-            $irc->unregisterActionid($this->actionid5);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
         }
     }
     
@@ -72,11 +56,10 @@ class Net_SmartIRC_module_brain
     function search_db(&$irc, &$data)
     {
         global $bot;
-        if(!$bot->isMastah($irc, $data)) {
+        if (!$bot->isMastah($irc, $data)) {
             return;
         }
         
-        global $config;
         $requester = $data->nick;
         $search = $data->messageex[1];
         $lowersearch = strtolower($data->messageex[1]);
@@ -100,10 +83,8 @@ class Net_SmartIRC_module_brain
     //===============================================================================================
     function learn(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $usersquery = $data->messageex[1];
-        //$response = $data->messageex[2];
         
         // Get the response
         $temp=explode(' ',$data->message);
@@ -119,18 +100,16 @@ class Net_SmartIRC_module_brain
             return;
         }
         
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data);
+        $result = $bot->reverseverify($irc, $data);
+        
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
+            $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
+            $res = $bot->dbquery($query);
             
-            if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-                $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
-                $res = $bot->dbquery($query);
-                
-                if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$usersquery.' as '.$response);
-                } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
-                }
+            if ($res) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$usersquery.' as '.$response);
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
             }
         }
     }
@@ -147,7 +126,7 @@ class Net_SmartIRC_module_brain
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ( $result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM brain WHERE query='".$usersquery."'";
             $res = $bot->dbquery($query);
             
@@ -193,12 +172,9 @@ class Net_SmartIRC_module_brain
             return;
         }
         
-        global $config;
-        
         $requester = $data->nick;
-        $crap=explode(' ',$data->message);
-        $word=$crap[count($crap)-1];
-        $search=substr($word,0,strlen($word)-1);
+        $word = $data->messageex[count($data->messageex)-1];
+        $search = substr($word,0,strlen($word)-1);
         $lowersearch = strtolower($search);
         
         if (!empty($search)) {
