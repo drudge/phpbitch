@@ -18,7 +18,7 @@ $config['db_dsn'] = "$db_type://$db_username:$db_password@$db_server/$db_db";
 
 /* general settings */
 $config['real_name'] = 'IRC service bot';
-$config['channels'] = array('#php-gtk', '#linux-help', '#kde', '#php++');
+$config['channels'] = array('#phpbitch', '#linux-help', '#php-gtk', '#kde', '#php++', '#mekkablue', '#rush', '#gnome', '#phpbb');
 $config['nick'] = 'phpbitch';
 $config['ident'] = 'phpbitch';
 $config['alt_nick'] = 'phpb1tch';
@@ -35,5 +35,9 @@ $config['irc_port']="5555";
 $config['send_delay'] = 500;
 
 // friends go here, the order is the priority for mastermode
-$config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch', 'bthbitch');
+$config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch', 'helpbitch');
+
+$config['emergency_users']= array('drudge'=>'6f1ed002ab5595859014ebf0951522d9',
+                                  'meebey'=>'6f1ed002ab5595859014ebf0951522d9',
+                                  'pluesch0r'=>'112f1ee2ccb7ab98dedcf583ef3e41b6');
 ?>
