@@ -287,6 +287,7 @@ $irc->loadModule('cvscheckout');
 $irc->loadModule('hex_ip');
 $irc->loadModule('log');
 $irc->loadModule('ident');
+$irc->loadModule('versions');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
