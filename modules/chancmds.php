@@ -359,6 +359,7 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================       
     function help(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -412,6 +413,7 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function saytime(&$irc,&$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -422,6 +424,7 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function ping(&$irc,&$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -431,6 +434,7 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function dns(&$irc,&$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }

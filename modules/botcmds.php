@@ -72,11 +72,11 @@ class Net_SmartIRC_module_botcmds
     //===============================================================================================
     function wave(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
         
-        global $bot;
         $crap = $data->messageex[1];
         $nick = $data->messageex[2];
         

@@ -44,12 +44,12 @@ class Net_SmartIRC_module_brain
     //===============================================================================================
     function search_db(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
         
         global $config;
-        global $bot;
         $requester = $data->nick;
         $search = $data->messageex[1];
         $lowersearch = strtolower($data->messageex[1]);
@@ -134,11 +134,11 @@ class Net_SmartIRC_module_brain
     //===============================================================================================
     function tell(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
         
-        global $bot;
         $requester = $data->nick;
         $n00b = $data->messageex[1];
         $search = $data->messageex[3];
@@ -161,12 +161,12 @@ class Net_SmartIRC_module_brain
     //===============================================================================================
     function answerQuestion(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
         
         global $config;
-        global $bot;
         
         $requester = $data->nick;
         $crap=explode(' ',$data->message);

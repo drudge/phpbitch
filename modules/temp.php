@@ -28,12 +28,12 @@ class Net_SmartIRC_module_temp
     //===============================================================================================
     function temp(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
         
         global $config;
-        global $bot;
         $requester = $data->nick;
         $type = $data->messageex[1];
         $convert = $data->messageex[2];

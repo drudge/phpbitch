@@ -28,6 +28,7 @@ class Net_SmartIRC_module_google
     //===============================================================================================
     function google(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
