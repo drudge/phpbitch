@@ -139,11 +139,11 @@ class Net_SmartIRC_module_users
         global $bot;
         $nick = $data->messageex[1];
         
-        if (isset($irc->channel[$data->channel]->users[strtolower($nick)])) {
-            $victim = $irc->channels[$data->channel]->users[strtolower($nick)];
-        } else {
+         if (!isset($irc->channel[$data->channel]->users[strtolower($nick)])) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;
+        }else {
+            $victim = &$irc->channels[$data->channel]->users[strtolower($nick)];
         }
 
         $newdata->host = $victim->host;
@@ -157,9 +157,11 @@ class Net_SmartIRC_module_users
         $newresult = $bot->reverseverify($irc, $newdata);
 
         $level=$bot->get_level($newresult);
-        if($newresult !== false) $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel,$level);
-        else $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'he has no level!');
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
+        if ($newresult !== false) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel,$nick.' has a level of ['.$level.'].');
+        } else {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has no level!');
+        }
     }
 }
 ?>
