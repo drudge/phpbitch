@@ -137,11 +137,13 @@ class Net_SmartIRC_module_chancmds
     function onjoin(&$irc, &$data)
     {
         global $bot;
-        if(!$bot->isMastah($irc, $data)) {
+        global $config;
+        if(!$bot->isMastah($irc, $data) &&
+           $irc->isOpped($data->channel, $config['friend_bots'][0])) {
             return;
         }
         
-        // don't verify ourself
+        // don't try to op ourself when we join
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
@@ -186,12 +188,6 @@ class Net_SmartIRC_module_chancmds
         $requester = $data->nick;
         $tobedeopped = $data->messageex[1];
         
-        // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false) {
-            return;
-        }
-        
-        $result = $bot->reverseverify($irc, $data);
         
         if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)])) {
             $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)];
@@ -205,6 +201,7 @@ class Net_SmartIRC_module_chancmds
         $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
         
+        $result = $bot->reverseverify($irc, $data);
         if (($result !== false) &&
             ($bot->getLevel($result, $data->channel) >= USER_LEVEL_OPERATOR) &&
             ($bot->getLevel($newresult, $data->channel) < USER_LEVEL_MASTER) &&
