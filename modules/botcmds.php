@@ -33,9 +33,11 @@ class Net_SmartIRC_module_botcmds
     var $license = 'GPL';
     
     var $actionids = array();
+    var $start_time;
     
     function module_init(&$irc)
     {
+        $this->start_time  = time();
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!nick', $this, 'setNick');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
@@ -54,30 +56,50 @@ class Net_SmartIRC_module_botcmds
     //===============================================================================================       
     function uptime(&$irc, &$data)
     {
-        global $start;
-        $time = time() - $start;
+        $time = time() - $this->start_time;
 
-        $weeks   = $time/604800;
-        $days    = ($time%604800)/86400;
-        $hours   = (($time%604800)%86400)/3600;
-        $minutes = ((($time%604800)%86400)%3600)/60;
-        $seconds = (((($time%604800)%86400)%3600)%60);
+        // Convert the interger to an array of segments
+        $seconds = (int)$time;
+        
+        // Define our periods
+        $periods = array (
+                    'weeks'    => 604800,
+                    'days'     => 86400,
+                    'hours'    => 3600,
+                    'minutes'  => 60,
+                    'seconds'  => 1
+                    );
 
-        $timestring = '';
-        if ((int)$days) {
-            $timestring .= ((int)$days) .' day(s) ';
+        // Loop through
+        foreach ($periods as $period => $value) {
+            $count = floor($seconds / $value);
+
+            if ($count == 0) {
+                continue;
+            }
+            $values[$period] = $count;
+            $seconds = $seconds % $value;
         }
-        if ((int)$hours) {
-            $timestring .= ((int)$hours).' hour(s) ';
+
+        // Loop through the interval array
+        foreach ($duration as $key => $value) {
+            // Chop the end of the duration key
+            $segment_name = substr($key, 0, -1);
+
+            // Create our segment in the format of eg. '4 day'
+            $segment = $value.' '.$segment_name;
+
+            // If the duration segment is anything other than 1, we need an 's'
+            if ($value != 1) {
+                $segment .= 's';
+            }
+            
+            // Plop it into the array
+            $array[] = $segment;
         }
-        if ((int)$minutes) {
-            $timestring .= ((int)$minutes).' minute(s)';
-        }
-        if (!((int)$minutes) &&
-            !((int)$hours) &&
-            !((int)$days)) {
-            $timestring .= ((int)$seconds).' second(s)';
-        }
+
+        // Implode the array as a string, this way we get commas between each segment
+        $timestring = implode(', ', $array);
 
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
     }

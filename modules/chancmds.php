@@ -187,13 +187,24 @@ class Net_SmartIRC_module_chancmds
     function op(&$irc, &$data)
     {
         global $bot;
+        if (!$irc->isOpped($data->channel)) {
+            return;
+        }
+                
         $requester = $data->nick;
-        $tobeopped = $data->messageex[1];
-        
-        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_OPERATOR) &&
-            !$irc->isOpped($data->channel, $tobeopped)) {
-            
-            $irc->op($data->channel, $tobeopped);
+        if ($bot->isAuthorized($irc, $requester, $data->channel, USER_LEVEL_OPERATOR)) {
+            $candidate_count = count($data->messageex);
+            if ($candidate_count > 1) {
+                for ($i = 1; $i < $messageex_count; $i++) {
+                    $toop = $data->messageex[$i];
+                    if (($irc->isJoined($data->channel, $toop)) &&
+                        (!$irc->isOpped($data->channel, $toop))) {
+                        $irc->op($data->channel, $toop);
+                    }
+                }
+            } else {
+                $irc->op($data->channel, $requester);
+            }
         }
     }
     //===============================================================================================
