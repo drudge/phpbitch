@@ -139,6 +139,9 @@ class Net_SmartIRC_module_users
         global $bot;
         $nick = $data->messageex[1];
         
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
          if (!isset($irc->channel[strtolower($data->channel)]->users[strtolower($nick)])) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;
