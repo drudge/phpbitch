@@ -105,8 +105,10 @@ class Net_SmartIRC_module_chancmds
     {
         global $config;
         global $bot;
-        $chan=$data->messageex[1];
-        $key=$data->messageex[2];
+        $chan = $data->messageex[1];
+        if (isset($data->messageex[2])) {
+            $key = $data->messageex[2];
+        }
         
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
@@ -117,7 +119,12 @@ class Net_SmartIRC_module_chancmds
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
-            $irc->join($chan,$key);
+            
+            if (isset($key)) {
+                $irc->join($chan,$key);
+            } else {
+                $irc->join($chan,$key);
+            }
         }
     }
     //===============================================================================================
