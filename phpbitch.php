@@ -149,17 +149,24 @@ class PHPBitch
     {
         global $config;
         
+        $candidates = array();
         while ($bot = array_shift($config['friend_bots'])) {
             if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
                 $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
                 $result = $this->reverseverify($irc, $user->host, $user->nick);
                 
-                if ($this->get_level($user->nick) == USER_LEVEL_BOT &&
-                    $user->nick == $irc->_nick) {
-                    // ok, it's showtime! we are the mastah!!!
-                    return true;
+                if ($result !== false &&
+                    $this->get_level($user->nick) == USER_LEVEL_BOT) {
+                    $candidates[] = $user->nick;
                 }
             }
+        }
+        
+        if (isset($candidates[0]) && $candidates[0] == $irc->_nick) {
+            // ok, it's showtime! we are the mastah!!!
+            return true;
+        } else {
+            return false;
         }
     }
 }
