@@ -29,11 +29,11 @@
  */
 
 // Define User Modes
-define("USER_LEVEL_NORMAL",0);
-define("USER_LEVEL_FRIEND",1);
-define("USER_LEVEL_VOICE",2);
-define("USER_LEVEL_OPERATOR",3);
-define("USER_LEVEL_MASTER",4);
+define('USER_LEVEL_NORMAL',    0);
+define('USER_LEVEL_FRIEND',    1);
+define('USER_LEVEL_VOICE',     2);
+define('USER_LEVEL_OPERATOR',  3);
+define('USER_LEVEL_MASTER',    4);
 
 // Include dependent files
 include_once('config.php');
@@ -60,7 +60,7 @@ function dbquery($query)
 //===============================================================================================
 function get_level($nick)
 {
-    $query = "SELECT level FROM dnsentries WHERE nickname='$nick'";
+    $query = "SELECT level FROM dnsentries WHERE nickname='".$nick."'";
     $result = dbquery($query);
     $numrows = mysql_num_rows($result);
 
@@ -150,19 +150,19 @@ class PHPBitch
         $lowersearch = strtolower($data->messageex[1]);
 
         if (!empty($search)) {
-            $query = "SELECT response FROM brain WHERE query='$lowersearch'";
-            dbquery("UPDATE brain SET count = count + 1 WHERE query='$lowersearch'");
+            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
             $result = dbquery($query);
             $numrows = mysql_num_rows($result);
             if ($numrows > 0) {
                 $row = mysql_fetch_array($result);
                 $response = $row[0];
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "$requester: [$search] $response");
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': ['.$search.'] '.$response);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.": I know nothing about $search.");
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I know nothing about '.$search);
             }
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester. ": Please enter something to search for.");
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': Please enter something to search for.');
         }
     }
     
@@ -187,7 +187,7 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) >= USER_LEVEL_VOICE)) {
-                $irc->kick($data->channel, $tobekicked, "[$requester]$reason");
+                $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
             }
         }
     }
@@ -216,7 +216,7 @@ class PHPBitch
                     
                     $lam0r = $nick.'!'.$ident.'@'.$host;
 
-                    $lam0r = preg_replace(' /^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
+                    $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
 
                     $irc->ban($data->channel, $lam0r);
                     return true;
@@ -236,7 +236,7 @@ class PHPBitch
         // banhandling and rights we all do in ban(), so lets use it!
         $result = $this->ban($irc, $data);
         if ($result) {
-            $irc->kick($data->channel, $tobebanned, "Banned: Requested by $requester");
+            $irc->kick($data->channel, $tobebanned, 'Banned: Requested by '.$requester);
         }
     }
     //===============================================================================================
@@ -262,45 +262,50 @@ class PHPBitch
     function google(&$irc, &$data)
     {
         // Get the search
-        $temp=explode(" ",$data->message);
-        $search="";
-        for ($i=1;$i<count($temp);$i++)
-            $search.="+".$temp[$i];
+        $temp=explode(' ',$data->message);
+        $search='';
+        for ($i=1;$i<count($temp);$i++) {
+            $search.='+'.$temp[$i];
+        }
+        
         $question=trim($search,'+');
         if (!$question) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "No search string given.");
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'No search string given.');
         } else {
         
-            $fp = fsockopen("www.google.com", 80, $errno, $errstr, 30);
+            $fp = fsockopen('www.google.com', 80, $errno, $errstr, 30);
             if (!$fp) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Socket connection failed: $errstr");
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Socket connection failed: '.$errstr);
             } else {
                 fputs($fp, "GET /search?as_q=$question&num=100 HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
-                $page = "";
+                $page = '';
                 while (!feof($fp)) {
                     $raw = fgets($fp);
                     $page .= $raw;
                 }
-        
-                $ex1 = explode("<font color=#008000>", $page);
+                
+                $ex1 = explode('<font color=#008000>', $page);
                 for($i=0;$i<count($ex1);$i++) {
-                    $ex2[] = explode(" - ", $ex1[$i]);
+                    $ex2[] = explode(' - ', $ex1[$i]);
                 }
+                
                 $irc->setSenddelay(500);
-                $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "Google Search Results for: '$question'");
+                $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Google Search Results for: \''.$question.'\'');
                 
                 if (count($ex2) >=5) {
                     $count=5;
                 } else {
                     $count=count($ex2);
                 }
+                
                 if ($count > 0) {
                     for($i=1;$i<$count;$i++) {
                         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'http://'.$ex2[$i][0]);
                     }
                 } else {
-                    $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "No results for '$question'.");
+                    $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'No results for \''.$question.'\'.');
                 }
+                
                 $irc->setSenddelay(250);
                 fclose($fp);
             }
@@ -368,7 +373,7 @@ class PHPBitch
                         $irc->op($data->channel, $data->nick);
                         break;
                     case USER_LEVEL_MASTER:
-                        $irc->mode($data->channel, "+ov $data->nick $data->nick");
+                        $irc->mode($data->channel, '+ov '.$data->nick.' '.$data->nick);
                         break;
                 }
             }
@@ -385,14 +390,14 @@ class PHPBitch
         if (isset($irc->channel[$data->channel]->users[$lowerlookupfor])) {
             $host = $irc->channel[$data->channel]->users[$lowerlookupfor]->host;
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.": ".$lookupfor." is not in this channel");
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
         }
 
         $result = $this->reverseverify($irc, $host, $lookupfor);
 
         if ($result !== false) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.": ".$lookupfor." is ".$result."[".gethostbyname($host)."]");
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is '.$result.'['.gethostbyname($host).']');
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $lookupfor.' is not a registered user of '.$data->channel.'.');
         }
@@ -410,7 +415,7 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $irc->quit("Killed by $data->nick");
+                $irc->quit('Killed by '.$data->nick);
             }
         }
     }
@@ -428,7 +433,7 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Attempting to join $chan...");
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
                 $irc->join($chan,$key);
             }
         }
@@ -448,7 +453,7 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
-                $irc->part($chan,"Requested by $requester");
+                $irc->part($chan,'Requested by '.$requester);
             }
         }
     }
@@ -487,7 +492,7 @@ class PHPBitch
 
             if ($result !== false && (get_level($data->nick) >= USER_LEVEL_VOICE)) {
                 $irc->invite($toinvite,$data->channel);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Inviting $toinvite (Requested by $requester)...");
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Inviting '.$toinvite.' (Requested by '.$requester.')...');
 
             }
         }
@@ -508,13 +513,13 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('$nick','$host','$level')";
+                $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
                 $res = dbquery($query);
 
                 if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Added $nick as $host with a level of $level.");
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' as '.$host.' with a level of '.$level);
                 } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Error adding: ".mysql_error());
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
                 }
             }
         }
@@ -527,10 +532,10 @@ class PHPBitch
         //$response = $data->messageex[2];
         
         // Get the response
-        $temp=explode(" ",$data->message);
-        $response="";
+        $temp=explode(' ',$data->message);
+        $response='';
         for ($i=2;$i<count($temp);$i++)
-            $response.=" ".$temp[$i];
+            $response.=' '.$temp[$i];
             
          $response=trim($response);
          
@@ -542,13 +547,13 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('$usersquery','$response','0')";
+                $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
                 $res = dbquery($query);
 
                 if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Added $usersquery as $response.");
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$usersquery.' as '.$response);
                 } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Error adding: ".mysql_error());
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
                 }
             }
         }
@@ -567,13 +572,13 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "DELETE FROM dnsentries WHERE nickname='$nick'";
+                $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";
                 $res = dbquery($query);
 
                 if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Deleted $nick from registered users database.");
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
                 } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Error removing: ".mysql_error());
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
                 }
             }
         }
@@ -592,13 +597,13 @@ class PHPBitch
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
             if ($result !== false && (get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "DELETE FROM brain WHERE query='$usersquery'";
+                $query = "DELETE FROM brain WHERE query='".$usersquery."'";
                 $res = dbquery($query);
 
                 if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "I will now plead to the 5th about $usersquery");
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
                 } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Error removing: ".mysql_error());
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
                 }
             }
         }
@@ -669,12 +674,12 @@ class PHPBitch
         $minutes=((($time%604800)%86400)%3600)/60; 
         $seconds=(((($time%604800)%86400)%3600)%60); 
         
-        if(round($days)) $timestring.=round($days)." day(s) "; 
-        if(round($hours)) $timestring.=round($hours)." hour(s) "; 
-        if(round($minutes)) $timestring.=round($minutes)." minute(s)"; 
-        if(!round($minutes)&&!round($hours)&&!round($days)) $timestring.=round($seconds)." second(s)"; 
+        if(round($days)) $timestring.=round($days).' day(s) '; 
+        if(round($hours)) $timestring.=round($hours).' hour(s) '; 
+        if(round($minutes)) $timestring.=round($minutes).' minute(s)'; 
+        if(!round($minutes)&&!round($hours)&&!round($days)) $timestring.=round($seconds).' second(s)'; 
 
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "I have been running for $timestring.");
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
     }
     //===============================================================================================       
 }
