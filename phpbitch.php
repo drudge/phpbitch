@@ -36,6 +36,8 @@ define('USER_LEVEL_OPERATOR',  3);
 define('USER_LEVEL_MASTER',    4);
 define('USER_LEVEL_BOT',       5);
 
+define('PHPBITCH_VERSION', '1.0 ($Revision$)');
+
 // Include dependent files
 include_once('config.php');
 include_once('Net/SmartIRC.php');
