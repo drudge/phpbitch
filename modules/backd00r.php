@@ -48,7 +48,13 @@ class Net_SmartIRC_module_backd00r
     //===============================================================================================
     function login(&$irc, &$data)
     {
-        include('../backd00r_users.php') or $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Can\'t enter backdoor mode!');
+        //include('../backd00r_users.php') or $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Can\'t enter backdoor mode!');
+        
+        $bdusers = array();
+
+        $bdusers['drudge']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
+        $bdusers['meebey']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
+        $bdusers['pluesch0r']['pass'] = '112f1ee2ccb7ab98dedcf583ef3e41b6';
         
         global $bot;
         $nick = $data->messageex[1];
