@@ -63,8 +63,8 @@ then
      FILENAME=`mktemp -d /tmp/$0.XXXXXX` || exit 1
      cd $FILENAME
      if [ -f ~/.cvspass ]; then
-        FOUND=`grep anonymous@cvs.meebey.net ~/.cvspass|wc -l|cut --bytes=7-`
-        if [ "$FOUND" != "1" ]; then
+        grep -q anonymous@cvs.meebey.net ~/.cvspass
+	if [ $? -eq 0 ]; then
            echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" >> ~/.cvspass
         fi
      else
