@@ -36,6 +36,7 @@ class Net_SmartIRC_module_users
     
     function module_init(&$irc)
     {
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who_all ', $this, 'who');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who ', $this, 'who');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!adduser', $this, 'adduser');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deluser', $this, 'deluser');
@@ -56,7 +57,9 @@ class Net_SmartIRC_module_users
         $lookupfor = $data->messageex[1];
         $lowerlookupfor = strtolower($data->messageex[1]);
         
-        if(!$bot->isMastah($irc, $data)) {
+        // when the !who_all command was used, all bots reply
+        if(!$bot->isMastah($irc, $data) &&
+           !$data->messageex[0] == "!who_all") {
             return;
         }
         
