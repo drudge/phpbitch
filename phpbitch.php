@@ -77,7 +77,7 @@ class PHPBitch
     //===============================================================================================
     function reverseverify(&$irc, $host, $nick, $ident)
     {
-        $query = "SELECT nickname,dnsalias FROM dnsentries";
+        $query = "SELECT nickname,ident,dnsalias FROM dnsentries";
         $result = $this->dbquery($query);
 
         $list = array();
@@ -86,8 +86,9 @@ class PHPBitch
         while ($row = mysql_fetch_array($result)) {
             $dbip = gethostbyname($row['dnsalias']);
             $dbnickname = $row['nickname'];
-
-            if ($userip == $dbip) {
+            $dbident = $row['ident'];
+            
+            if ($userip == $dbip && $ident == $dbident) {
                 if ($dbnickname != $nick) {
                     $foundnick = $dbnickname;
                 }
