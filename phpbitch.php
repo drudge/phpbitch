@@ -252,6 +252,12 @@ class PHPBitch
             return false;
         }
     }
+    
+    function show_synctime(&$irc, &$data)
+    {
+        $channel = &$irc->getChannel($data->channel);
+        $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'synced this channel in '.($channel->synctime/1000).' secs');
+    }
 }
 
 $bot = &new PHPBitch();
@@ -290,6 +296,8 @@ $irc->loadModule('hex_ip');
 $irc->loadModule('log');
 $irc->loadModule('ident');
 $irc->loadModule('versions');
+
+$irc->registerActionhandler(SMARTIRC_TYPE_BANLIST, 'End of Channel Ban List', $bot, 'show_synctime');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
