@@ -37,7 +37,7 @@ class Net_SmartIRC_module_versions
     {
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!phpversion', $this, 'showphpversion');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!smartircversion', $this, 'showsmartircversion');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!phpbitchversion', $this, 'phpbitchversion');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!phpbitchversion', $this, 'showphpbitchversion');
     }
     
     function module_exit(&$irc)
