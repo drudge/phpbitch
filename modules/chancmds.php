@@ -270,8 +270,7 @@ class Net_SmartIRC_module_chancmds
         
         if (($result !== false) &&
             ($bot->get_level($result) >= USER_LEVEL_OPERATOR) &&
-            ($irc->isOpped($data->channel, $tobedeopped)) &&
-            ($bot->get_level($tobedeopped) < USER_LEVEL_MASTER)) {
+            ($irc->isOpped($data->channel, $tobedeopped))) {
             $irc->deop($data->channel, $tobedeopped);
         }
     }
