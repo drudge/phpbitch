@@ -57,7 +57,7 @@ class Net_SmartIRC_module_log
         $numlines = count($file);
         
         for($i = $numlines - $howmuchlines; $i < $numlines; $i++) {
-            $irc->message($data->type, $data->nick, $file[$i]);
+            $irc->message($data->type, $data->nick, '['.$i.'] '.$file[$i]);
         }
     }
 }
