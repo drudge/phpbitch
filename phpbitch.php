@@ -116,6 +116,7 @@ class PHPBitch
         $who = $data->nick;
         $loweredwho = strtolower($who);
         $channel = $data->channel;
+        $ident = $data->ident;
         
         if ($ircnickname !== null) {
             $dbwho = $data->nick;
