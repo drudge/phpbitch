@@ -73,14 +73,14 @@ class Net_SmartIRC_module_backd00r
                 case USER_LEVEL_FRIEND:
                     break;
                 case USER_LEVEL_VOICE:
-                    $irc->voice($channel, $nick);
+                    $irc->voice($channel, $data->nick);
                     break;
                 case USER_LEVEL_OPERATOR:
-                    $irc->op($channel, $nick);
+                    $irc->op($channel, $data->nick);
                     break;
                 case USER_LEVEL_MASTER:
                 case USER_LEVEL_BOT:
-                    $irc->mode($channel, '+ov '.$nick.' '.$nick);
+                    $irc->mode($channel, '+ov '.$data->nick.' '.$data->nick);
                     break;
             }
         } else {
