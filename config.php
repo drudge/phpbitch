@@ -1,4 +1,11 @@
 <?php
+/**
+ * $Id$
+ * $Revision$
+ * $Author$
+ * $Date$
+ */
+
 /* database settings */
 
 $mysql_server = 'localhost';
