@@ -135,7 +135,7 @@ class PHPBitch
                 while ($row = mysql_fetch_array($result)) {
                     $dbident = $row['ident'];
                     $dnsaliasip = gethostbyname($row['dnsalias']);
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "dbident: $dbident ident: $ident dnsaliasip: $dnsaliasip ip: $ip');
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "dbident: $dbident ident: $ident dnsaliasip: $dnsaliasip ip: $ip");
 
                     if ($dnsaliasip == $ip && $dbident == $ident) {
                         return $row['nickname'];
