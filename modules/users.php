@@ -139,13 +139,14 @@ class Net_SmartIRC_module_users
         global $bot;
         $nick = $data->messageex[1];
         
-         if (!isset($irc->channel[$data->channel]->users[strtolower($nick)])) {
+         if (!isset($irc->channel[strtolower($data->channel)]->users[strtolower($nick)])) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;
         }else {
-            $victim = $irc->channels[$data->channel]->users[strtolower($nick)];
+            $victim = $irc->channels[strtolower($data->channel)]->users[strtolower($nick)];
+            
         }
-
+$irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel,'AAAA: '.$irc->channel[strtolower($data->channel)]->users[strtolower($nick)]->nick);
         $newdata->host = $victim->host;
         $newdata->nick = $victim->nick;
         $newdata->ident = $victim->ident;
