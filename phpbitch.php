@@ -93,6 +93,7 @@ class PHPBitch
         $data->nick = $ircnick;
         $data->host = $user->host;
         $data->ident = $user->ident;
+        var_dump($data);
         $result = $this->reverseverify($irc, $data);
         
         if ($result !== false) {
