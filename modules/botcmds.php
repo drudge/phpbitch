@@ -130,6 +130,7 @@ class Net_SmartIRC_module_botcmds
             return;
         }
         
+        $data->channel = $channel;
         $result = $bot->reverseverify($irc, $data);
         if($result !== false) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "result: ".$result." level: ".$bot->get_level($result));
