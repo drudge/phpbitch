@@ -34,6 +34,7 @@ class Net_SmartIRC_module_brain
     function search_db(&$irc, &$data)
     {
         global $config;
+        global $bot;
         $requester = $data->nick;
         $search = $data->messageex[1];
         $lowersearch = strtolower($data->messageex[1]);
@@ -58,7 +59,7 @@ class Net_SmartIRC_module_brain
     function learn(&$irc, &$data)
     {
         global $config;
-         global $bot;
+        global $bot;
         $usersquery = $data->messageex[1];
         //$response = $data->messageex[2];
         
