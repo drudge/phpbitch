@@ -194,6 +194,7 @@ $irc->loadModule('users');
 $irc->loadModule('brain');
 $irc->loadModule('temp');
 $irc->loadModule('dictionary');
+$irc->loadModule('mastah');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
