@@ -174,15 +174,17 @@ class PHPBitch
         $tobekicked = $data->messageex[1];
         
         // Get the reason
-        $temp=explode(" ",$data->message);
-        $reason="";
-        for($i=2;$i<count($temp);$i++)
-            $reason.=" ".$temp[$i]; 
+        $temp=explode(' ',$data->message);
+        $reason='';
+        for($i=2;$i<count($temp);$i++) {
+            $reason.=' '.$temp[$i];
+        }
         
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
-
+        }
+        
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
 
@@ -199,8 +201,9 @@ class PHPBitch
         $tobebanned = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -247,8 +250,9 @@ class PHPBitch
         $tobebanned = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -272,7 +276,6 @@ class PHPBitch
         if (!$question) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'No search string given.');
         } else {
-        
             $fp = fsockopen('www.google.com', 80, $errno, $errstr, 30);
             if (!$fp) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Socket connection failed: '.$errstr);
@@ -319,8 +322,9 @@ class PHPBitch
         $tobeopped = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -338,8 +342,9 @@ class PHPBitch
         $tobedeopped = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -355,8 +360,9 @@ class PHPBitch
        global $config;
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -408,8 +414,9 @@ class PHPBitch
         global $config;
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -425,9 +432,11 @@ class PHPBitch
         global $config;
         $chan=$data->messageex[1];
         $key=$data->messageex[2];
+
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -446,8 +455,9 @@ class PHPBitch
         $chan=$data->messageex[1];
         
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -464,8 +474,9 @@ class PHPBitch
         $topic=$data->message;
         // don't verify ourself
         
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -484,8 +495,9 @@ class PHPBitch
         $toinvite = $data->messageex[1];
         
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -506,8 +518,9 @@ class PHPBitch
         $level = $data->messageex[3];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -540,8 +553,9 @@ class PHPBitch
          $response=trim($response);
          
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -565,8 +579,9 @@ class PHPBitch
         $nick = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -590,8 +605,9 @@ class PHPBitch
         $usersquery = $data->messageex[1];
 
         // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false)
+        if (strpos($data->nick, $irc->_nick) !== false) {
             return;
+        }
 
         if ($data->channel == $data->channel) {
             $result = $this->reverseverify($irc, $data->host, $data->nick);
@@ -617,7 +633,8 @@ class PHPBitch
     //===============================================================================================       
     function getnews(&$irc, &$data)
     {
-        /*$file = "http://gtk.php.net";
+        /*
+        $file = "http://gtk.php.net";
         $open = fopen($file, "r");
         $search = fread($open, 20000);
         fclose($open);
@@ -640,8 +657,6 @@ class PHPBitch
                  $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
         }
         //echo $news . "\n";
-
-
         
         foreach($items as $item)
         {
@@ -656,9 +671,11 @@ class PHPBitch
     {
         $lines=file('help.txt');
         $irc->setSenddelay(500);
+
         foreach($lines as $linenums => $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
         }
+
         $irc->setSenddelay(250);
     }
     //===============================================================================================       
