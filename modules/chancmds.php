@@ -350,6 +350,9 @@ class Net_SmartIRC_module_chancmds
             $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*.\2', $lam0r);
             
             $irc->ban($data->channel, $lam0r);
+            
+            // return true needed, kickban() wants to know if the ban() was allowed/succeful
+            return true;
         }
     }
     //===============================================================================================
@@ -367,9 +370,12 @@ class Net_SmartIRC_module_chancmds
         for($i=2;$i<count($data->messageex);$i++) {
             $reason.=' '.$data->messageex[$i];
         }
+
         // banhandling and rights we all do in ban(), so lets use it!
-        $this->ban($irc, $data);
-        $irc->kick($data->channel, $tobebanned, 'Banned: ['.$requester.']'.$reason);
+        $result = $this->ban($irc, $data);
+        if ($result) {
+            $irc->kick($data->channel, $tobebanned, 'Banned: ['.$requester.']'.$reason);
+        }
     }
     //===============================================================================================
     function unban(&$irc, &$data)
