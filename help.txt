@@ -15,9 +15,9 @@ Levels:
 4=Bot Master
 
 Commands:
-!help-Displays this help.
-!time-Displats current time on my server.
-!uptime-Displays how long bot has been running.
+!help - Displays this help.
+!time - Displats current time on my server.
+!uptime - Displays how long bot has been running.
 !search $keyword - Querys bot's brain for $keyword.
 !up/!opme - Ops/voices you depending on level.
 !down - removes your op/voice depending on level.
