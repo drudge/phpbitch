@@ -41,7 +41,6 @@ class Net_SmartIRC_module_botcmds
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!say', $this, 'say');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!act', $this, 'act');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!notice', $this, 'notice');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!phpversion', $this, 'php_version');
     }
     
     function module_exit(&$irc)
@@ -87,11 +86,6 @@ class Net_SmartIRC_module_botcmds
         global $bot;
         $newnick = $data->messageex[1];
         
-        // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false) {
-            return;
-        }
-        
         // need a valid channel for verify()
         $data->channel = $channel;
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
@@ -126,11 +120,6 @@ class Net_SmartIRC_module_botcmds
             $message .= ' '.$data->messageex[$i];
         }
         
-        // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false) {
-            return;
-        }
-        
         // need a valid channel for verify()
         $data->channel = $channel;
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
@@ -145,11 +134,6 @@ class Net_SmartIRC_module_botcmds
         $message = '';
         for ($i = 2; $i < count($data->messageex); $i++) {
             $message .= ' '.$data->messageex[$i];
-        }
-        
-        // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false) {
-            return;
         }
         
         // need a valid channel for verify()
@@ -168,21 +152,11 @@ class Net_SmartIRC_module_botcmds
             $message .= ' '.$data->messageex[$i];
         }
         
-        // don't verify ourself
-        if (strpos($data->nick, $irc->_nick) !== false) {
-            return;
-        }
-        
         // need a valid channel for verify()
         $data->channel = $channel;
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
         }
-    }
-    //===============================================================================================
-    function php_version(&$irc, &$data)
-    {
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, phpversion());
     }
 }
 ?>
