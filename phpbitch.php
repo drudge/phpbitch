@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+#!/usr/bin/php
 <?php
 /**
  * $Id$
@@ -63,7 +63,7 @@ class PHPBitch
     {
         global $mdb;
         
-        $query = "SELECT level FROM users WHERE nickname='".$mdb->quote($nick)."'";
+        $query = "SELECT level FROM users WHERE nickname='".$mdb->getTextValue($nick)."'";
         $result = $mdb->query($query);
         if (MDB::isError($result)) {
             mdbError($result);
@@ -84,7 +84,7 @@ class PHPBitch
     {
         global $mdb;
         
-        $query = "SELECT level FROM users_levels WHERE user = '".$mdb->quote($nick)."' AND (channel = '".$mdb->quote($channel)."' OR channel = '*') ORDER BY channel ASC";
+        $query = "SELECT level FROM users_levels WHERE user = '".$mdb->getTextValue($nick)."' AND (channel = '".$mdb->getTextValue($channel)."' OR channel = '*') ORDER BY channel ASC";
         $result = $mdb->query($query);
         if (MDB::isError($result)) {
             mdbError($result);
@@ -118,7 +118,7 @@ class PHPBitch
         
         if ($result !== false) {
             $dbnick = $result;
-            $query = "SELECT level FROM users_levels WHERE user = '".$mdb->quote($dbnick)."' AND (channel = '".$mdb->quote($channel)."' OR channel = '*') ORDER BY channel ASC";
+            $query = "SELECT level FROM users_levels WHERE user = '".$mdb->getTextValue($dbnick)."' AND (channel = '".$mdb->getTextValue($channel)."' OR channel = '*') ORDER BY channel ASC";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
@@ -144,7 +144,7 @@ class PHPBitch
     {
         global $mdb;
         
-        $query = "SELECT nickname, host FROM users WHERE ident = '".$mdb->quote($data->ident)."'";
+        $query = "SELECT nickname, host FROM users WHERE ident = '".$mdb->getTextValue($data->ident)."'";
         $result = $mdb->query($query);
         if (MDB::isError($result)) {
             mdbError($result);
@@ -193,7 +193,7 @@ class PHPBitch
         }
         
         if (isset($irc->channel[$loweredchannel]->users[$loweredwho])) {
-            $query = "SELECT nickname,ident,host FROM users WHERE nickname='".$mdb->quote($dbwho)."'";
+            $query = "SELECT nickname,ident,host FROM users WHERE nickname='".$mdb->getTextValue($dbwho)."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
