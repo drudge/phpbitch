@@ -37,6 +37,7 @@ cd $DAEMON_PATH
 case "$1" in
   start)
 	echo -n "Starting $DESC: $NAME"
+	echo > $DAEMON_PATH/phpbitch_php.log
 	start-stop-daemon --start $QUIET -m --pidfile $DAEMON_PATH/$NAME.pid \
 		--exec $DAEMON &
 	echo "."
