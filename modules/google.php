@@ -5,6 +5,7 @@
  * $Author$
  * $Date$
  */
+ 
 class Net_SmartIRC_module_google
 {
     var $name = 'google';
