@@ -72,7 +72,7 @@ class Net_SmartIRC_module_cvscheckout
             $irc->message($data->type, $data->nick, 'CVS checkout done.', SMARTIRC_CRITICAL);
             $irc->message($data->type, $data->nick, 'restarting...', SMARTIRC_CRITICAL);
             $irc->quit('CVS rebuilt, restarting...', SMARTIRC_CRITICAL);
-            sleep(3);
+            sleep(5);
             exit; // phpbitch_wrapper will respawn us
         } else {
             $irc->message($data->type, $data->nick, 'you are not authorized to do this!');
