@@ -16,12 +16,14 @@ class Net_SmartIRC_module_brain
     var $actionid1;
     var $actionid2;
     var $actionid3;
+    var $actionid4;
     
     function module_init(&$irc)
     {
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!search', $this, 'search_db');
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
+        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!tell', $this, 'tell');
     }
     
     function module_exit(&$irc)
@@ -116,6 +118,30 @@ class Net_SmartIRC_module_brain
                 } else {
                     $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
                 }
+            }
+        }
+    }
+    //===============================================================================================
+    function tell(&$irc, &$data)
+    {
+        global $config;
+        global $bot;
+        $requester = $data->nick;
+        $n00b = $data->messageex[1];
+        $search = $data->messageex[3];
+        $lowersearch = strtolower($data->messageex[3]);
+
+        if (!empty($search)) {
+            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            $bot->dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            $result = $bot->dbquery($query);
+            $numrows = mysql_num_rows($result);
+            if ($numrows > 0) {
+                $row = mysql_fetch_array($result);
+                $response = $row[0];
+                $irc->message(SMARTIRC_TYPE_QUERY, $n00b, '['.$search.'] '.$response);
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I know nothing about '.$search.', therefore '.$n00b.' won\'t either.');
             }
         }
     }
