@@ -55,30 +55,30 @@ class Net_SmartIRC_module_botcmds
     function uptime(&$irc, &$data)
     {
         global $start;
-        $time=time()-$start;
-        
-        $weeks=$time/604800; 
-        $days=($time%604800)/86400; 
-        $hours=(($time%604800)%86400)/3600; 
-        $minutes=((($time%604800)%86400)%3600)/60; 
-        $seconds=(((($time%604800)%86400)%3600)%60); 
-        
+        $time = time() - $start;
+
+        $weeks   = $time/604800;
+        $days    = ($time%604800)/86400;
+        $hours   = (($time%604800)%86400)/3600;
+        $minutes = ((($time%604800)%86400)%3600)/60;
+        $seconds = (((($time%604800)%86400)%3600)%60);
+
         $timestring = '';
-        if (round($days)) {
-            $timestring .= round($days).' day(s) ';
+        if ((int)$days) {
+            $timestring .= ((int)$days) .' day(s) ';
         }
-        if (round($hours)) {
-            $timestring .= round($hours).' hour(s) ';
+        if ((int)$hours) {
+            $timestring .= ((int)$hours).' hour(s) ';
         }
-        if (round($minutes)) {
-            $timestring .= round($minutes).' minute(s)';
+        if ((int)$minutes) {
+            $timestring .= ((int)$minutes).' minute(s)';
         }
-        if (!round($minutes) &&
-            !round($hours) &&
-            !round($days)) {
-            $timestring .= round($seconds).' second(s)';
+        if (!((int)$minutes) &&
+            !((int)$hours) &&
+            !((int)$days)) {
+            $timestring .= ((int)$seconds).' second(s)';
         }
-        
+
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
     }
     //===============================================================================================
