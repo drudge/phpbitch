@@ -17,21 +17,34 @@ class Net_SmartIRC_module_brain
     var $actionid2;
     var $actionid3;
     var $actionid4;
+    var $actionid5;
     
     function module_init(&$irc)
     {
+        global $config;
+        
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!search', $this, 'search_db');
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
         $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!tell', $this, 'tell');
+        
+        if ($config['answer_questions']) {
+            $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*\?$', $this, 'answerQuestion');
+        }
     }
     
     function module_exit(&$irc)
     {
+        global $config;
+        
         $irc->unregisterActionid($this->actionid1);
         $irc->unregisterActionid($this->actionid2);
         $irc->unregisterActionid($this->actionid3);
         $irc->unregisterActionid($this->actionid4);
+        
+        if ($config['answer_questions']) {
+            $irc->unregisterActionid($this->actionid5);
+        }
     }
     
     //===============================================================================================
@@ -141,6 +154,29 @@ class Net_SmartIRC_module_brain
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I know nothing about '.$search.', therefore '.$n00b.' won\'t either.');
             }
         }
+    }
+    //===============================================================================================
+    function answerQuestion(&$irc, &$data)
+    {
+    global $config;
+        global $bot;
+        $requester = $data->nick;
+        $crap=explode(' ',$data->message);
+        $word=$crap[count($crap)-1];
+        $search=substr($word,0,strlen($word)-1);
+        $lowersearch = strtolower($search);
+
+        if (!empty($search)) {
+            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            $bot->dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            $result = $bot->dbquery($query);
+            $numrows = mysql_num_rows($result);
+            if ($numrows > 0) {
+                $row = mysql_fetch_array($result);
+                $response = $row[0];
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': ['.$search.'] '.$response);
+            } 
+        } 
     }
 }
 ?>
