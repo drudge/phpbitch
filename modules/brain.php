@@ -31,6 +31,7 @@ class Net_SmartIRC_module_brain
         $irc->unregisterActionid($this->actionid3);
     }
     
+    //===============================================================================================
     function search_db(&$irc, &$data)
     {
         global $config;
@@ -55,7 +56,7 @@ class Net_SmartIRC_module_brain
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': Please enter something to search for.');
         }
     }
-    //==========================
+    //===============================================================================================
     function learn(&$irc, &$data)
     {
         global $config;
