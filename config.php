@@ -22,9 +22,13 @@ $config['channels'] = array('#php-cafe','#php-gtk');
 $config['nick'] = 'phpbitch';
 $config['ident'] = 'phpbitch';
 $config['alt_nick'] = 'phpb1tch';
+
+/* bot specific */
 $config['version'] = 'phpbitch 1.0 | portions by TiX';
 $config['modules_path'] = '/home/drudge/phpbitch/repository/phpbitch/modules';
+$config['answer_questions'] = true;
 
+/* irc server info */
 $config['irc_server']="irc.stealth.net";
 $config['irc_port']="5555";
 ?>
