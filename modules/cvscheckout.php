@@ -47,7 +47,7 @@ class Net_SmartIRC_module_cvscheckout
     function cvscheckout(&$irc, &$data)
     {
         global $bot;
-        $result = $this->reverseverify($irc, $data);
+        $result = $bot->reverseverify($irc, $data);
         if ($result !== false && $bot->get_level($result) == USER_LEVEL_MASTER) {
             $irc->message($data->type, $data->nick, 'CVS checkout starting...', SMARTIRC_CRITICAL);
             exec('cd ~; cvs -d :pserver:meebey@cvs.meebey.net:/cvs checkout phpbitch');
