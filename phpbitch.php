@@ -211,6 +211,7 @@ $irc->loadModule('temp');
 //$irc->loadModule('dictionary');
 $irc->loadModule('mastah');
 $irc->loadModule('cvscheckout');
+$irc->loadModule('hex_ip');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
