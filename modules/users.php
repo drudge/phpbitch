@@ -58,7 +58,6 @@ class Net_SmartIRC_module_users
     //===============================================================================================
     function adduser(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $nick = $data->messageex[1];
         $host = $data->messageex[2];
@@ -69,25 +68,22 @@ class Net_SmartIRC_module_users
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
-                $res = $bot->dbquery($query);
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
+            $res = $bot->dbquery($query);
 
-                if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' as '.$host.' with a level of '.$level);
-                } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
-                }
+            if ($res) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' as '.$host.' with a level of '.$level);
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
             }
         }
     }
     //===============================================================================================
     function deluser(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $nick = $data->messageex[1];
 
@@ -96,18 +92,16 @@ class Net_SmartIRC_module_users
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";
-                $res = $bot->dbquery($query);
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";
+            $res = $bot->dbquery($query);
 
-                if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
-                } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
-                }
+            if ($res) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
             }
         }
     }

@@ -34,12 +34,16 @@ class Net_SmartIRC_module_temp
         $type = $data->messageex[1];
         $convert = $data->messageex[2];
 
-        if ( $type == 'c' ) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$convert.'°C is '.round(((9/5)*$convert)+32,2).'°F.');
-        } else if ( $type == 'f' ) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$convert.'°F is '.round((5/9)*($convert-32),2).'°C.');
+        if(is_numeric($convert)) {
+            if ( $type == 'c' ) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$convert.'°C is '.round(((9/5)*$convert)+32,2).'°F.');
+            } else if ( $type == 'f' ) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$convert.'°F is '.round((5/9)*($convert-32),2).'°C.');
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno how to handle '.$type.'.');
+            }
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno how to handle '.$type.'.');
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno how to handle '.$convert.'.');
         }
     }
 }

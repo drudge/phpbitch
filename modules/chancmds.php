@@ -95,13 +95,11 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
-                $irc->join($chan,$key);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
+            $irc->join($chan,$key);
         }
     }
     //===============================================================================================
@@ -117,12 +115,10 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
-                $irc->part($chan,'Requested by '.$requester);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
+            $irc->part($chan,'Requested by '.$requester);
         }
     }
     //===============================================================================================
@@ -137,13 +133,11 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
-                
-                $irc->setTopic($data->channel,substr($topic,7,strlen($topic)-7));
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
+            
+            $irc->setTopic($data->channel,substr($topic,7,strlen($topic)-7));
         }
     }
     //===============================================================================================
@@ -159,14 +153,12 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
-                $irc->invite($toinvite,$data->channel);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Inviting '.$toinvite.' (Requested by '.$requester.')...');
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
+            $irc->invite($toinvite,$data->channel);
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Inviting '.$toinvite.' (Requested by '.$requester.')...');
 
-            }
         }
     }
     //===============================================================================================
@@ -180,12 +172,10 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $irc->quit('Killed by '.$data->nick);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            $irc->quit('Killed by '.$data->nick);
         }
     }
     //===============================================================================================
@@ -199,24 +189,22 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
-            if ($result !== false && !$irc->isOpped($data->channel, $data->nick)) {
-                $level = $bot->get_level($data->nick);
-                switch ($level) {
-                    case USER_LEVEL_NORMAL:
-                    case USER_LEVEL_FRIEND:
-                        break;
-                    case USER_LEVEL_VOICE:
-                        $irc->voice($data->channel, $data->nick);
-                        break;
-                    case USER_LEVEL_OPERATOR:
-                        $irc->op($data->channel, $data->nick);
-                        break;
-                    case USER_LEVEL_MASTER:
-                        $irc->mode($data->channel, '+ov '.$data->nick.' '.$data->nick);
-                        break;
-                }
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        if ($result !== false && !$irc->isOpped($data->channel, $data->nick)) {
+            $level = $bot->get_level($data->nick);
+            switch ($level) {
+                case USER_LEVEL_NORMAL:
+                case USER_LEVEL_FRIEND:
+                    break;
+                case USER_LEVEL_VOICE:
+                    $irc->voice($data->channel, $data->nick);
+                    break;
+                case USER_LEVEL_OPERATOR:
+                    $irc->op($data->channel, $data->nick);
+                    break;
+                case USER_LEVEL_MASTER:
+                    $irc->mode($data->channel, '+ov '.$data->nick.' '.$data->nick);
+                    break;
             }
         }
     }
@@ -233,12 +221,10 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && !$irc->isOpped($data->channel, $tobeopped)) {
-                $irc->op($data->channel, $tobeopped);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && !$irc->isOpped($data->channel, $tobeopped)) {
+            $irc->op($data->channel, $tobeopped);
         }
     }
     //===============================================================================================
@@ -254,12 +240,10 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
-                $irc->deop($data->channel, $tobedeopped);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
+            $irc->deop($data->channel, $tobedeopped);
         }
     }
     //===============================================================================================
@@ -273,12 +257,10 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
-                $irc->deop($data->channel, $tobedeopped);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
+            $irc->deop($data->channel, $tobedeopped);
         }
     }
     //===============================================================================================
@@ -300,13 +282,10 @@ class Net_SmartIRC_module_chancmds
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-        
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
-                $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
+            $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
         }
     }
     //===============================================================================================
@@ -322,29 +301,27 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
 
-                if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
-                    // I guess this way its more clear ;)
-                    $user = &$irc->channel[$data->channel]->users[strtolower($tobebanned)];
-                    $nick = $user->nick;
-                    $ident = $user->ident;
-                    $host = $user->host;
-                    
-                    $lam0r = $nick.'!'.$ident.'@'.$host;
+            if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
+                // I guess this way its more clear ;)
+                $user = &$irc->channel[$data->channel]->users[strtolower($tobebanned)];
+                $nick = $user->nick;
+                $ident = $user->ident;
+                $host = $user->host;
+                
+                $lam0r = $nick.'!'.$ident.'@'.$host;
 
-                    $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
+                $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
 
-                    $irc->ban($data->channel, $lam0r);
-                    return true;
-                }
+                $irc->ban($data->channel, $lam0r);
+                return true;
             }
         }
-        
-        return false;
+    
+    return false;
     }
     //===============================================================================================
     function kickban(&$irc, &$data)
@@ -372,25 +349,24 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
-                $irc->unban($data->channel, $tobebanned);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
+            $irc->unban($data->channel, $tobebanned);
         }
     }
     //===============================================================================================       
     function help(&$irc, &$data)
     {
-        $lines=file('help.txt');
-        $irc->setSenddelay(500);
+        //$lines=file('help.txt');
+        //$irc->setSenddelay(500);
 
-        foreach($lines as $linenums => $line) {
+        $line="Fuck off, i ain't helping you, lam0r!";
+       // foreach($lines as $linenums => $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
-        }
+       // }
 
-        $irc->setSenddelay(250);
+       // $irc->setSenddelay(250);
     }
         //===============================================================================================       
     function getnews(&$irc, &$data)

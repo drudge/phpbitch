@@ -31,6 +31,7 @@ class Net_SmartIRC_module_brain
         $irc->unregisterActionid($this->actionid1);
         $irc->unregisterActionid($this->actionid2);
         $irc->unregisterActionid($this->actionid3);
+        $irc->unregisterActionid($this->actionid4);
     }
     
     //===============================================================================================
@@ -97,7 +98,6 @@ class Net_SmartIRC_module_brain
     //===============================================================================================
     function forget(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $usersquery = $data->messageex[1];
 
@@ -106,25 +106,22 @@ class Net_SmartIRC_module_brain
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
-                $query = "DELETE FROM brain WHERE query='".$usersquery."'";
-                $res = $bot->dbquery($query);
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            $query = "DELETE FROM brain WHERE query='".$usersquery."'";
+            $res = $bot->dbquery($query);
 
-                if ($res) {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
-                } else {
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
-                }
+            if ($res) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
             }
         }
     }
     //===============================================================================================
     function tell(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $n00b = $data->messageex[1];

@@ -15,17 +15,20 @@ class Net_SmartIRC_module_botcmds
     
     var $actionid1;
     var $actionid2;
+    var $actionid3;
     
     function module_init(&$irc)
     {
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!nick', $this, 'setNick');
+        $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
     }
     
     function module_exit(&$irc)
     {
         $irc->unregisterActionid($this->actionid1);
         $irc->unregisterActionid($this->actionid2);
+        $irc->unregisterActionid($this->actionid3);
     }
     
     //===============================================================================================       
@@ -60,12 +63,23 @@ class Net_SmartIRC_module_botcmds
             return;
         }
 
-        if ($data->channel == $data->channel) {
-            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_MASTER)) {
-                $irc->changeNick($newnick);
-            }
+        if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_MASTER)) {
+            $irc->changeNick($newnick);
+        }
+    }
+    //===============================================================================================
+    function wave(&$irc, &$data)
+    {
+        global $bot;
+        $crap = $data->messageex[1];
+        $nick = $data->messageex[2];
+
+        if (!empty($nick)) {
+            $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'waves '.$crap.' '.$nick.'.');
+        } else {
+            $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'waves to everyone.');
         }
     }
 }
