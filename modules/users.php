@@ -88,6 +88,7 @@ class Net_SmartIRC_module_users
     function adduser(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         $nick = $data->messageex[1];
         $ident = $data->messageex[2];
         $host = $data->messageex[3];
@@ -102,12 +103,12 @@ class Net_SmartIRC_module_users
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "INSERT INTO users (nickname,ident,host,level) VALUES('".$nick."','".$ident."','".$host."','".$level."')";
-            $res = $bot->dbquery($query);
-            
-            if ($res) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' ident: '.$ident.' host: '.$host.' with a level of '.$level);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                $error = mdbError($result);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' ident: '.$ident.' host: '.$host.' with a level of '.$level);
             }
         }
     }
@@ -115,6 +116,7 @@ class Net_SmartIRC_module_users
     function deluser(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         $nick = $data->messageex[1];
         
         // don't verify ourself
@@ -126,12 +128,12 @@ class Net_SmartIRC_module_users
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM users WHERE nickname='".$nick."'";
-            $res = $bot->dbquery($query);
-            
-            if ($res) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                $error = mdbError($result);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
             }
         }
     }

@@ -58,6 +58,7 @@ class Net_SmartIRC_module_brain
     function search_db(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         if (!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -67,12 +68,22 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($data->messageex[1]);
         
         if (!empty($search)) {
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
             $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
-            $bot->dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
-            $result = $bot->dbquery($query);
-            $numrows = mysql_num_rows($result);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
+            $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
-                $row = mysql_fetch_array($result);
+                $row = $mdb->fetchRow($result);
                 $response = $row[0];
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': ['.$search.'] '.$response);
             } else {
@@ -86,6 +97,7 @@ class Net_SmartIRC_module_brain
     function learn(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         $usersquery = $data->messageex[1];
         
         // Get the response
@@ -106,12 +118,12 @@ class Net_SmartIRC_module_brain
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
-            $res = $bot->dbquery($query);
-            
-            if ($res) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$usersquery.' as '.$response);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                $error = mdbError($result);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error adding: '.mysql_error());
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$usersquery.' as '.$response);
             }
         }
     }
@@ -119,6 +131,7 @@ class Net_SmartIRC_module_brain
     function forget(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         $usersquery = $data->messageex[1];
         
         // don't verify ourself
@@ -130,12 +143,12 @@ class Net_SmartIRC_module_brain
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM brain WHERE query='".$usersquery."'";
-            $res = $bot->dbquery($query);
-            
-            if ($res) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                $error = mdbError($result);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.$error);
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I will now plead to the 5th about '.$usersquery);
             }
         }
     }
@@ -143,6 +156,7 @@ class Net_SmartIRC_module_brain
     function tell(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -153,12 +167,22 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($data->messageex[3]);
         
         if (!empty($search)) {
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
             $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
-            $bot->dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
-            $result = $bot->dbquery($query);
-            $numrows = mysql_num_rows($result);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
+            $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
-                $row = mysql_fetch_array($result);
+                $row = $mdb->fetchRow($result);
                 $response = $row[0];
                 $irc->message(SMARTIRC_TYPE_QUERY, $n00b, '['.$search.'] '.$response);
             } else {
@@ -170,6 +194,7 @@ class Net_SmartIRC_module_brain
     function answerQuestion(&$irc, &$data)
     {
         global $bot;
+        global $mdb;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
@@ -180,12 +205,22 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($search);
         
         if (!empty($search)) {
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
             $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
-            $bot->dbquery("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
-            $result = $bot->dbquery($query);
-            $numrows = mysql_num_rows($result);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
+            $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
-                $row = mysql_fetch_array($result);
+                $row = $mdb->fetchRow($result);
                 $response = $row[0];
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$response);
             } 

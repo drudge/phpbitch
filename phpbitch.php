@@ -39,52 +39,60 @@ define('USER_LEVEL_BOT',       5);
 // Include dependent files
 include_once('config.php');
 include_once('Net/SmartIRC.php');
+include_once('MDB.php');
 
 // Initialize start time
 $start=0;
 
+function mdbError(&$errorobj)
+{
+    global $irc;
+    
+    $error = $errorobj->getUserinfo();
+    $irc->log(SMARTIRC_DEBUG_NOTICE, 'DEBUG_NOTICE: DB error: '.$error);
+    return $error;
+}
+
 //===============================================================================================
 class PHPBitch
 {
-    function dbquery($query)
-    {
-        global $mysql_db;
-        global $mysql_server;
-        global $mysql_username;
-        global $mysql_password;
-        global $mysql_link;
-        global $irc;
-        
-        if (!is_resource($mysql_link)) {
-            $mysql_link = mysql_connect($mysql_server, $mysql_username, $mysql_password);
-        }
-        
-        $result = mysql_db_query($mysql_db, $query, $mysql_link);
-        return $result;
-    }
     //===============================================================================================
     function get_level($nick)
     {
+        global $mdb;
+        
         $query = "SELECT level FROM users WHERE nickname='".$nick."'";
-        $result = $this->dbquery($query);
-        $numrows = mysql_num_rows($result);
+        $result = $mdb->query($query);
+        if (MDB::isError($result)) {
+            mdbError($result);
+            return;
+        }
+        
+        $numrows = $mdb->numRows($result);
         
         if ($numrows > 0) {
-            $row = mysql_fetch_array($result);
+            $row = $mdb->fetchRow($result);
             return $row[0];
         }
+        
         return false;
     }
     //===============================================================================================
     function reverseverify(&$irc, &$data)
     {
+        global $mdb;
+        
         $query = "SELECT nickname,ident,host FROM users";
-        $result = $this->dbquery($query);
+        $result = $mdb->query($query);
+        if (MDB::isError($result)) {
+            mdbError($result);
+            return;
+        }
         
         $list = array();
         $foundnick = false;
         $userip = gethostbyname($data->host);
-        while ($row = mysql_fetch_array($result)) {
+        while ($row = $mdb->fetchInto($result)) {
             $dbip = gethostbyname($row['host']);
             $dbnickname = $row['nickname'];
             $dbident = $row['ident'];
@@ -113,6 +121,8 @@ class PHPBitch
     function verify(&$irc, &$data, $dbnickname = null)
     {
         global $config;
+        global $mdb;
+        
         $who = $data->nick;
         $loweredwho = strtolower($who);
         $channel = $data->channel;
@@ -127,15 +137,19 @@ class PHPBitch
         
         if (isset($irc->channel[$loweredchannel]->users[$loweredwho])) {
             $query = "SELECT nickname,ident,host FROM users WHERE nickname='".$dbwho."'";
-            $result = $this->dbquery($query);
-            $numrows = mysql_num_rows($result);
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            $numrows = $mdb->numRows($result);
             
             if ($numrows > 0) {
                 $host = $irc->channel[$loweredchannel]->users[$loweredwho]->host;
                 $ip = gethostbyname($host);
                 
                 $found = false;
-                while ($row = mysql_fetch_array($result)) {
+                while ($row = $mdb->fetchInto($result)) {
                     $dbident = $row['ident'];
                     $dnsaliasip = gethostbyname($row['host']);
                     
@@ -187,6 +201,13 @@ class PHPBitch
         }
     }
 }
+
+$mdb = &MDB::connect($config['db_dsn']);
+if (MDB::isError($mdb)) {
+    mdbError($mdb);
+    die('DB error: '.$mdb->getUserinfo());
+}
+$mdb->setFetchMode(MDB_FETCHMODE_ASSOC);
 
 $bot = &new PHPBitch();
 $irc = &new Net_SmartIRC();
