@@ -114,9 +114,7 @@ class Net_SmartIRC_module_brain
             return;
         }
         
-        $result = $bot->reverseverify($irc, $data);
-        
-        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
@@ -139,9 +137,7 @@ class Net_SmartIRC_module_brain
             return;
         }
         
-        $result = $bot->reverseverify($irc, $data);
-        
-        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $query = "DELETE FROM brain WHERE query='".$usersquery."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
