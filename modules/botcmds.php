@@ -180,7 +180,7 @@ class Net_SmartIRC_module_botcmds
         }
     }
     //===============================================================================================
-    function php_info(&$irc, &$data)
+    function php_version(&$irc, &$data)
     {
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, phpversion());
     }
