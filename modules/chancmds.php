@@ -285,7 +285,7 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
+        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped) && $bot->get_level($tobedeopped) < USER_LEVEL_MASTER) {
             $irc->deop($data->channel, $tobedeopped);
         }
     }
@@ -311,7 +311,7 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
+        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE && $bot->get_level($tobekicked) < USER_LEVEL_MASTER)) {
             $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
         }
     }
@@ -330,7 +330,7 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
+        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE) && $bot->get_level($tobebanned) < USER_LEVEL_MASTER) {
             
             if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
                 // I guess this way its more clear ;)
@@ -400,8 +400,7 @@ class Net_SmartIRC_module_chancmds
         //===============================================================================================       
     function getnews(&$irc, &$data)
     {
-        /*
-        $file = "http://gtk.php.net";
+       /* $file = "http://gtk.php.net";
         $open = fopen($file, "r");
         $search = fread($open, 20000);
         fclose($open);
@@ -417,7 +416,6 @@ class Net_SmartIRC_module_chancmds
         $line = strtok($search, "\n");
         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "Latest News [http://gtk.php.net]");
         while( $line ) {
-                 $line = substr(trim($line),0,30)."...";
                // if ( !(empty($line)) )
                //          $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line . "\n");
                 // $line = strtok("\n");
@@ -429,9 +427,7 @@ class Net_SmartIRC_module_chancmds
         {
             $news=trim($item);
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "$news...");
-            //sleep(2);
-        }
-        */
+        }*/
     }
     //===============================================================================================
     function saytime(&$irc,&$data)
