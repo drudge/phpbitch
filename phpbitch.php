@@ -266,7 +266,8 @@ class PHPBitch
         }
         
         $channel = &$irc->getChannel($data->channel);
-        $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'finished syncing to '.$data->channel.' in '.number_format(($channel->synctime/1000), 2).' secs');
+        var_dump($channel->synctime);
+        $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'finished syncing to '.$data->channel.' in '.number_format(($channel->synctime)/1000, 2).' secs');
     }
 }
 
