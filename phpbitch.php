@@ -150,7 +150,8 @@ class PHPBitch
         global $config;
         
         $candidates = array();
-        while ($bot = array_shift($config['friend_bots'])) {
+        $bots = $config['friend_bots'];
+        while ($bot = array_shift($bots)) {
             if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
                 $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
                 $result = $this->reverseverify($irc, $user->host, $user->nick);
