@@ -355,6 +355,7 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function kickban(&$irc, &$data)
     {
+        global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
