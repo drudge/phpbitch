@@ -201,8 +201,9 @@ $irc->loadModule('botcmds');
 $irc->loadModule('users');
 $irc->loadModule('brain');
 $irc->loadModule('temp');
-$irc->loadModule('dictionary');
+//$irc->loadModule('dictionary');
 $irc->loadModule('mastah');
+$irc->loadModule('cvscheckout');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
