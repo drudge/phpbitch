@@ -85,7 +85,7 @@ class Net_SmartIRC_module_hex_ip
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': usage: !ip2hex <ip_address>');
             return;
         }
-        $dump=explode('.',$ip);
+        $dump = explode('.',$ip);
         $hex = '';
         foreach ($dump as $part) {
             $hex .= dechex($part);
