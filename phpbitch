@@ -22,6 +22,7 @@ case "$1" in
   stop)
 	echo -n "Stopping $DESC: $NAME "
 	start-stop-daemon --stop $QUIET --pidfile $DAEMON_PATH/$NAME.pid
+	killall -q phpbitch.php
 	echo "."
 	;;
   restart|force-reload)
