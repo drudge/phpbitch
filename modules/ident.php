@@ -57,7 +57,7 @@ class Net_SmartIRC_module_ident
         
         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Entering identify mode...');
 
-        if ($pass == $config['emerency_users'][strtolower($nick)] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
+        if ($pass == $config['emergency_users'][strtolower($nick)] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
             switch ($level) {
                 case USER_LEVEL_NORMAL:
