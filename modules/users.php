@@ -143,6 +143,7 @@ class Net_SmartIRC_module_users
             $victim = &$irc->channels[strtolower($data->channel)]->users[strtolower($nick)];
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
+            return;
         }
         
         $newdata->host = $victim->host;
@@ -152,8 +153,8 @@ class Net_SmartIRC_module_users
         $newresult = $bot->reverseverify($irc, $newdata);
 
         $level=$bot->get_level($newresult);
-        if($level !== false) echo $level;
-        else echo 'he has no level!';
+        if($level !== false) $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel,$level);
+        else $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'he has no level!');
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
     }
 }
