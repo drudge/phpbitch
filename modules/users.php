@@ -42,7 +42,6 @@ class Net_SmartIRC_module_users
         if (isset($irc->channel[$data->channel]->users[$lowerlookupfor])) {
             $host = $irc->channel[$data->channel]->users[$lowerlookupfor]->host;
             $ident = $irc->channel[$data->channel]->users[$lowerlookupfor]->ident;
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'ident: '.$ident);
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
