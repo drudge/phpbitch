@@ -256,6 +256,9 @@ class Net_SmartIRC_module_chancmds
     function down(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $tobedeopped = $data->nick;
         
         // don't verify ourself
