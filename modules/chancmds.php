@@ -381,7 +381,7 @@ class Net_SmartIRC_module_chancmds
         global $config;
         global $bot;
         $requester = $data->nick;
-        $tobeunbanned = $data->messageex[1];
+        $tobeunbanned = $data->messageex[2];
         
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
