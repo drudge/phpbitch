@@ -123,7 +123,7 @@ class Net_SmartIRC_module_chancmds
             if (isset($key)) {
                 $irc->join($chan,$key);
             } else {
-                $irc->join($chan,$key);
+                $irc->join($chan);
             }
         }
     }
