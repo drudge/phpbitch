@@ -82,7 +82,7 @@ class PHPBitch
     {
         global $mdb;
         
-        if (!$irc->isJoined($ircnick, $channel)) {
+        if (!$irc->isJoined($channel, $ircnick)) {
             return false;
         }
         
