@@ -347,7 +347,7 @@ class Net_SmartIRC_module_chancmds
             
             $lam0r = $nick.'!'.$ident.'@'.$host;
             
-            $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\.\2', $lam0r);
+            $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*.\2', $lam0r);
             
             $irc->ban($data->channel, $lam0r);
         }
