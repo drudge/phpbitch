@@ -47,7 +47,11 @@ class Net_SmartIRC_module_users
             return;
         }
         
-        $result = $bot->reverseverify($irc, $host, $lookupfor, $ident);
+        $newdata->host = $host;
+        $newdata->nick = $lookupfor;
+        $newdata->ident = $ident;
+        $newdata->channel = $data->channel;
+        $result = $bot->reverseverify($irc, $newdata);
         
         if ($result !== false) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is '.$result.'['.gethostbyname($host).']');
@@ -69,7 +73,7 @@ class Net_SmartIRC_module_users
             return;
         }
         
-        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
+        $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
@@ -93,7 +97,7 @@ class Net_SmartIRC_module_users
             return;
         }
         
-        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
+        $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";

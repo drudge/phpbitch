@@ -33,7 +33,7 @@ class Net_SmartIRC_module_mastah
             return;
         }
         
-        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
+        $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             if ($bot->isMastah($irc, $data)) {
