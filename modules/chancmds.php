@@ -112,6 +112,9 @@ class Net_SmartIRC_module_chancmds
     function topic(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $topic = $data->message;
 
         // don't verify ourself
@@ -377,15 +380,15 @@ class Net_SmartIRC_module_chancmds
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
-            
+            return;
         }
         
-        $lines = file('help.txt');
+        //$lines = file('help.txt');
         
-        // $line="Fuck off, i ain't helping you, lam0r!";
-        foreach($lines as $line) {
+        $line="Fuck off, i ain't helping you, lam0r!";
+        //foreach($lines as $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
-        }
+        //}
     }
         //===============================================================================================       
     function getnews(&$irc, &$data)
