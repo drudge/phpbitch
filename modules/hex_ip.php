@@ -82,7 +82,8 @@ class Net_SmartIRC_module_hex_ip
         $shit = '';
         
         if (empty($ip)) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': usage: !hex2ip <hex_value>');
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': usage: !ip2hex <ip_address>');
+            return;
         }
         $dump=explode('.',$ip);
         $hex = '';
