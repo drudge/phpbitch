@@ -27,6 +27,7 @@
 class Net_SmartIRC_module_versions
 {
     var $name = 'versions';
+    var $version = '$Revision$';
     var $description = 'this module shows the version numbers of different things.';
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
@@ -36,6 +37,7 @@ class Net_SmartIRC_module_versions
     {
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!phpversion', $this, 'showphpversion');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!smartircversion', $this, 'showsmartircversion');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!phpbitchversion', $this, 'phpbitchversion');
     }
     
     function module_exit(&$irc)
@@ -60,6 +62,20 @@ class Net_SmartIRC_module_versions
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message($data->type, $data->channel, SMARTIRC_VERSION);
+        }
+    }
+    
+    function showphpbitchversion(&$irc, &$data)
+    {
+        global $bot;
+        
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
+            $output = 'main: PHPBITCH_VERSION | ';
+            foreach ($irc->_modules as $key => $value) {
+                $output .= $key.': '.$value->version.' | ';
+            }
+            
+            $irc->message($data->type, $data->channel, $output);
         }
     }
 }
