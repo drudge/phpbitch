@@ -80,6 +80,8 @@ class PHPBitch
     
     function getLevel($nick, $channel)
     {
+        global $mdb;
+        
         $query = "SELECT level FROM users_levels WHERE user = '".$nick."' AND (channel = '".$channel."' OR channel = '*') ORDER BY channel ASC";
         $result = $mdb->query($query);
         if (MDB::isError($result)) {
