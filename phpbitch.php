@@ -96,9 +96,9 @@ class PHPBitch
         }
 
         if ($foundnick !== false) {
-            $result = $this->verify($irc, $foundnick, $nick);
+            $result = $this->verify($irc, '#php-gtk', $foundnick, $nick);
         } else {
-            $result = $this->verify($irc, $nick);
+            $result = $this->verify($irc, '#php-gtk', $nick);
         }
 
         if ($result !== false) {
@@ -108,7 +108,7 @@ class PHPBitch
         }
     }
     //===============================================================================================
-    function verify(&$irc, $nickname, $ircnickname = null)
+    function verify(&$irc, $channel, $nickname, $ircnickname = null)
     {
         global $config;
         $who = $nickname;
@@ -122,13 +122,13 @@ class PHPBitch
             $dbwho = $who;
         }
 
-        if (isset($irc->channel[$data->channel]->users[$loweredwho])) {
+        if (isset($irc->channel[$channel]->users[$loweredwho])) {
             $query = "SELECT nickname,dnsalias FROM dnsentries WHERE nickname='".$dbwho."'";
             $result = $this->dbquery($query);
             $numrows = mysql_num_rows($result);
 
             if ($numrows > 0) {
-                $host = $irc->channel[$data->channel]->users[$loweredwho]->host;
+                $host = $irc->channel[$channel]->users[$loweredwho]->host;
                 $ip = gethostbyname($host);
 
                 $found = false;
