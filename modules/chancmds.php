@@ -270,6 +270,9 @@ class Net_SmartIRC_module_chancmds
     function kick(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $requester = $data->nick;
         $tobekicked = $data->messageex[1];
         
@@ -309,6 +312,9 @@ class Net_SmartIRC_module_chancmds
     function ban(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $requester = $data->nick;
         $tobebanned = $data->messageex[1];
         
@@ -341,7 +347,7 @@ class Net_SmartIRC_module_chancmds
             
             $lam0r = $nick.'!'.$ident.'@'.$host;
             
-            $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
+            $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\.\2', $lam0r);
             
             $irc->ban($data->channel, $lam0r);
         }
@@ -349,6 +355,9 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function kickban(&$irc, &$data)
     {
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $requester = $data->nick;
         $tobebanned = $data->messageex[1];
         
@@ -362,6 +371,9 @@ class Net_SmartIRC_module_chancmds
     function unban(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $tobeunbanned = $data->messageex[1];
         
         // don't verify ourself
