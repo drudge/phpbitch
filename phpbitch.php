@@ -116,6 +116,7 @@ class PHPBitch
         $who = $data->nick;
         $loweredwho = strtolower($who);
         $channel = $data->channel;
+        $loweredchannel = strtolower($channel);
         $ident = $data->ident;
         
         if ($dbnickname !== null) {
@@ -124,13 +125,13 @@ class PHPBitch
             $dbwho = $data->nick;
         }
         
-        if (isset($irc->channel[$channel]->users[$loweredwho])) {
+        if (isset($irc->channel[$loweredchannel]->users[$loweredwho])) {
             $query = "SELECT nickname,ident,dnsalias FROM dnsentries WHERE nickname='".$dbwho."'";
             $result = $this->dbquery($query);
             $numrows = mysql_num_rows($result);
             
             if ($numrows > 0) {
-                $host = $irc->channel[$channel]->users[$loweredwho]->host;
+                $host = $irc->channel[$loweredchannel]->users[$loweredwho]->host;
                 $ip = gethostbyname($host);
                 
                 $found = false;
