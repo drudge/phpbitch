@@ -69,13 +69,13 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($data->messageex[1]);
         
         if (!empty($search)) {
-            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$mdb->quote($lowersearch)."'");
             if (MDB::isError($result)) {
                 mdbError($result);
                 return;
             }
             
-            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            $query = "SELECT response FROM brain WHERE query='".$mdb->quote($lowersearch)."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
@@ -116,7 +116,7 @@ class Net_SmartIRC_module_brain
         }
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
+            $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$mdb->quote($usersquery)."','".$mdb->quote($response)."','0')";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
@@ -139,7 +139,7 @@ class Net_SmartIRC_module_brain
         }
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $query = "DELETE FROM brain WHERE query='".$usersquery."'";
+            $query = "DELETE FROM brain WHERE query='".$mdb->quote($usersquery)."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 $error = mdbError($result);
@@ -164,13 +164,13 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($data->messageex[3]);
         
         if (!empty($search)) {
-            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$mdb->quote($lowersearch)."'");
             if (MDB::isError($result)) {
                 mdbError($result);
                 return;
             }
             
-            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            $query = "SELECT response FROM brain WHERE query='".$mdb->quote($lowersearch)."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
@@ -202,13 +202,13 @@ class Net_SmartIRC_module_brain
         $lowersearch = strtolower($search);
         
         if (!empty($search)) {
-            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$lowersearch."'");
+            $result = $mdb->query("UPDATE brain SET count = count + 1 WHERE query='".$mdb->quote($lowersearch)."'");
             if (MDB::isError($result)) {
                 mdbError($result);
                 return;
             }
             
-            $query = "SELECT response FROM brain WHERE query='".$lowersearch."'";
+            $query = "SELECT response FROM brain WHERE query='".$mdb->quote($lowersearch)."'";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
