@@ -25,6 +25,7 @@ class Net_SmartIRC_module_google
         $irc->unregisterActionid($this->actionid);
     }
     
+    //===============================================================================================
     function google(&$irc, &$data)
     {
         // Get the search

@@ -72,7 +72,7 @@ class Net_SmartIRC_module_users
         if ($data->channel == $data->channel) {
             $result = $bot->reverseverify($irc, $data->host, $data->nick);
 
-            if ($result !== false && (%bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
                 $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
                 $res = $bot->dbquery($query);
 
