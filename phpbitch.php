@@ -83,6 +83,7 @@ class PHPBitch
         global $mdb;
         
         if (!$irc->isJoined($channel, $ircnick)) {
+            echo "!isJoined()\n";
             return false;
         }
         
@@ -108,9 +109,11 @@ class PHPBitch
             if ($dblevel >= $level) {
                 return true;
             } else {
+                echo "level is not ok!\n";
                 return false;
             }
         } else {
+            echo "reverseverify() failed!\n";
             return false;
         }
     }
