@@ -37,9 +37,9 @@ class Net_SmartIRC_module_mastah
         
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
             if ($bot->isMastah($irc, $data)) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am not mastah');
-            } else {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am mastah!');
+            } else {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am not mastah');
             }
         }
     }
