@@ -24,7 +24,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
  
-class Net_SmartIRC_module_backd00r
+class Net_SmartIRC_module_ident
 {
     var $name = 'ident';
     var $description = 'Gain access to the bots from different host than what is registered.';
@@ -35,7 +35,7 @@ class Net_SmartIRC_module_backd00r
     
     function module_init(&$irc)
     {
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!bd', $this, 'login');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!ident', $this, 'login');
     }
     
     function module_exit(&$irc)
