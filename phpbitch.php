@@ -157,7 +157,6 @@ class PHPBitch
             if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
                 $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
                 $result = $this->reverseverify($irc, $user->host, $user->nick, $user->ident);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, '#php-gtk', "bot: $bot nick: $user->nick result: $result level: ".$this->get_level($user->nick));
                 
                 if ($result !== false &&
                     $this->get_level($user->nick) == USER_LEVEL_BOT) {
