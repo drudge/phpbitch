@@ -35,6 +35,8 @@ class Net_SmartIRC_module_brain
     
     function module_init(&$irc)
     {
+        global $config;
+        
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!search', $this, 'search_db');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
