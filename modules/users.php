@@ -61,7 +61,8 @@ class Net_SmartIRC_module_users
         
         // when the !who_all command was used, all bots reply
         if(!$bot->isMastah($irc, $data) &&
-           !$data->messageex[0] == "!who_all") {
+           $data->messageex[0] != '!who_all') {
+            // we are not mastah and the command was not who_all, so lets return
             return;
         }
         
