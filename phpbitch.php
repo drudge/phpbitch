@@ -136,7 +136,6 @@ class PHPBitch
                 while ($row = mysql_fetch_array($result)) {
                     $dbident = $row['ident'];
                     $dnsaliasip = gethostbyname($row['dnsalias']);
-                    $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "dbident: $dbident ident: $ident dnsaliasip: $dnsaliasip ip: $ip");
 
                     if ($dnsaliasip == $ip && $dbident == $ident) {
                         return $row['nickname'];
@@ -153,11 +152,12 @@ class PHPBitch
         global $config;
         
         $candidates = array();
-        $bots = $config['friend_bots'];
-        while ($bot = array_shift($bots)) {
+        foreach ($config['friend_bots'] as $key => $value) {
+            $bot = $value;
             if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
                 $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
                 $result = $this->reverseverify($irc, $user->host, $user->nick, $user->ident);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, '#php-gtk', "bot: $bot result: $result level: ".$this->get_level($user->nick));
                 
                 if ($result !== false &&
                     $this->get_level($user->nick) == USER_LEVEL_BOT) {
