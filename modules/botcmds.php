@@ -95,6 +95,7 @@ class Net_SmartIRC_module_botcmds
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_MASTER)) {
             $irc->changeNick($newnick);
+            $bot->log(SMARTIRC_DEBUG_NOTICE,'attempted to change nick to: '.$newnick);
         }
     }
     //===============================================================================================
