@@ -92,7 +92,7 @@ class Net_SmartIRC_module_versions
                 
                 $irc->message($data->type, $data->channel, $output);
             } else {
-                $irc->message($data->type, $data->channel, 'Sorry, I don\'t have the module '.$modulename.' loaded');
+                $irc->message($data->type, $data->channel, $data->nick.': Sorry, I don\'t have the module "'.$modulename.'" loaded.');
             }
         }
     }
