@@ -61,7 +61,7 @@ class Net_SmartIRC_module_chancmds
         $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kick', $this, 'kick');
         $this->actionid6 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ban', $this, 'ban');
         $this->actionid7 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kb', $this, 'kickban');
-        $this->actionid8 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!unban', $bot, 'unban');
+        $this->actionid8 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!unban', $this, 'unban');
         $this->actionid9 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!op', $this, 'op');
         $this->actionid10 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deop', $this, 'deop');
         $this->actionid11 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!invite', $this, 'invite');
@@ -381,7 +381,7 @@ class Net_SmartIRC_module_chancmds
         global $config;
         global $bot;
         $requester = $data->nick;
-        $tobebanned = $data->messageex[1];
+        $tobeunbanned = $data->messageex[1];
         
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
@@ -391,7 +391,7 @@ class Net_SmartIRC_module_chancmds
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
-            $irc->unban($data->channel, $tobebanned);
+            $irc->unban($data->channel, $tounbebanned);
         }
     }
     //===============================================================================================       
