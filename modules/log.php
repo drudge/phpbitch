@@ -49,8 +49,9 @@ class Net_SmartIRC_module_log
     function log(&$irc, &$data)
     {
         global $bot;
+        global $config;
         
-        $data->channel = '#php-gtk';
+        $data->channel = $config['main_channel'];
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             if (!isset($data->messageex[1])) {
                 $irc->message($data->type, $data->nick, 'wrong parameter count:');
