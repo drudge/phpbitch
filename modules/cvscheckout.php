@@ -61,7 +61,6 @@ class Net_SmartIRC_module_cvscheckout
             
             $output = array();
             exec('cd ~; cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch', $output);
-            exec('cd ~; cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch', $output);
             foreach ($output as $line) {
                 $irc->message($data->type, $data->nick, $line, SMARTIRC_CRITICAL);
             }
