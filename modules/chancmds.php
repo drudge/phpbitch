@@ -336,31 +336,34 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        $newdata->host = $irc->channels[$data->channel]->users[strtolower($tobebanned)]->host;
-        $newdata->nick = strtolower($tobebanned);
-        $newdata->ident = $irc->channels[strtolower($data->channel)]->users[strtolower($tobebanned)]->ident;
-        $newdata->channel = strtolower($data->channel);
+        if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
+            $victim = &$irc->channels[strtolower($data->channel)]->users[strtolower($tobebanned)];
+        } else {
+            // nobody to ban...
+            return;
+        }
+        
+        $newdata->host = $user->host;
+        $newdata->nick = $user->nick;
+        $newdata->ident = $user->ident;
+        $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE) && $bot->get_level($newresult) < USER_LEVEL_MASTER) {
+        if (($result !== false) &&
+            ($bot->get_level($result) >= USER_LEVEL_VOICE) &&
+            ($newresult !== false) &&
+            ($bot->get_level($newresult) < USER_LEVEL_MASTER)) {
             
-            if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
-                // I guess this way its more clear ;)
-                $user = &$irc->channel[$data->channel]->users[strtolower($tobebanned)];
-                $nick = $user->nick;
-                $ident = $user->ident;
-                $host = $user->host;
-                
-                $lam0r = $nick.'!'.$ident.'@'.$host;
-                
-                $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
-                
-                $irc->ban($data->channel, $lam0r);
-                return true;
-            }
+            $nick = $victim->nick;
+            $ident = $victim->ident;
+            $host = $victim->host;
+            
+            $lam0r = $nick.'!'.$ident.'@'.$host;
+            
+            $lam0r = preg_replace('/^[^!]+![~\-+]?([^@]+)@.*\.(\w+\.\w+)$/', '*!*\1@*\2', $lam0r);
+            
+            $irc->ban($data->channel, $lam0r);
         }
-    
-    return false;
     }
     //===============================================================================================
     function kickban(&$irc, &$data)
