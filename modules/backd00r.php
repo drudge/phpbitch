@@ -57,6 +57,8 @@ class Net_SmartIRC_module_backd00r
         $level = $data->messageex[3];
         $channel = $data->messageex[4];
         
+        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Entering backdoor mode...');
+        
         if ($pass == $passwords[strtolower($nick)] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
             switch ($level) {
