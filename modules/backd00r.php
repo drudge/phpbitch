@@ -48,7 +48,7 @@ class Net_SmartIRC_module_backd00r
     //===============================================================================================
     function login(&$irc, &$data)
     {
-        $passwords = array('drudge'=>'6f1ed002ab5595859014ebf0951522d9');
+        include_once('../backd00r_users.php');
         
         global $bot;
         global $mdb;
@@ -59,7 +59,7 @@ class Net_SmartIRC_module_backd00r
         
         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Entering backdoor mode...');
         
-        if ($pass == $passwords[strtolower($nick)] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
+        if ($pass == $bdusers[strtolower($nick)]['password'] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
             switch ($level) {
                 case USER_LEVEL_NORMAL:
