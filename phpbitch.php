@@ -87,7 +87,7 @@ class PHPBitch
             return false;
         }
         
-        $user = &$irc->channel[strtolower($channel)]->user[strtolower($ircnick)];
+        $user = &$irc->channel[strtolower($channel)]->users[strtolower($ircnick)];
         
         // check if the user is recognized and has right host, ident etc..
         $data->nick = $ircnick;
