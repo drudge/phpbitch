@@ -5,7 +5,7 @@
  * $Author$
  * $Date$
  *
- * Copyright (c) 2003 Mirco 'meebey' Bauer <mail@php.net>
+ * Copyright (c) 2003 Mirco 'meebey' Bauer <meebey@php.net>
  *
  * Full GPL License: <http://www.gnu.org/licenses/gpl.txt>
  *

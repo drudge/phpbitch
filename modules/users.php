@@ -6,7 +6,7 @@
  * $Date$
  *
  * Copyright (c) 2003 Nicholas 'DrUDgE' Penree <drudge@x-php.net>
- *                    Mirco 'meebey' Bauer <mail@php.net>
+ *                    Mirco 'meebey' Bauer <meebey@php.net>
  *
  * Full GPL License: <http://www.gnu.org/licenses/gpl.txt>
  *
