@@ -67,9 +67,9 @@ class Net_SmartIRC_module_users
             return;
         }
         
-        if (isset($irc->channel[$data->channel]->users[$lowerlookupfor])) {
-            $host = $irc->channel[$data->channel]->users[$lowerlookupfor]->host;
-            $ident = $irc->channel[$data->channel]->users[$lowerlookupfor]->ident;
+        if ($irc->isJoined($data->channel, $lookupfor)) {
+            $host = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->host;
+            $ident = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->ident;
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
