@@ -56,6 +56,10 @@ class Net_SmartIRC_module_users
         $lookupfor = $data->messageex[1];
         $lowerlookupfor = strtolower($data->messageex[1]);
         
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        
         if (isset($irc->channel[$data->channel]->users[$lowerlookupfor])) {
             $host = $irc->channel[$data->channel]->users[$lowerlookupfor]->host;
             $ident = $irc->channel[$data->channel]->users[$lowerlookupfor]->ident;
