@@ -84,7 +84,7 @@ class Net_SmartIRC_module_brain
             $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
                 $row = $mdb->fetchRow($result);
-                $response = $row[0];
+                $response = $row['response'];
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': ['.$search.'] '.$response);
             } else {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I know nothing about '.$search);
@@ -183,7 +183,7 @@ class Net_SmartIRC_module_brain
             $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
                 $row = $mdb->fetchRow($result);
-                $response = $row[0];
+                $response = $row['response'];
                 $irc->message(SMARTIRC_TYPE_QUERY, $n00b, '['.$search.'] '.$response);
             } else {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I know nothing about '.$search.', therefore '.$n00b.' won\'t either.');
@@ -221,7 +221,7 @@ class Net_SmartIRC_module_brain
             $numrows = $mdb->numRows($result);
             if ($numrows > 0) {
                 $row = $mdb->fetchRow($result);
-                $response = $row[0];
+                $response = $row['response'];
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$response);
             } 
         } 
