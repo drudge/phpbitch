@@ -55,6 +55,9 @@ class Net_SmartIRC_module_botcmds
         $irc->unregisterActionid($this->actionid1);
         $irc->unregisterActionid($this->actionid2);
         $irc->unregisterActionid($this->actionid3);
+        $irc->unregisterActionid($this->actionid4);
+        $irc->unregisterActionid($this->actionid5);
+        $irc->unregisterActionid($this->actionid6);
     }
     
     //===============================================================================================       
