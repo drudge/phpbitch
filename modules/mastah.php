@@ -16,7 +16,7 @@ class Net_SmartIRC_module_mastah
     
     function module_init(&$irc)
     {
-        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!mastah ', $this, 'mastah');
+        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!mastah', $this, 'mastah');
     }
     
     function module_exit(&$irc)
