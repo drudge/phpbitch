@@ -76,7 +76,7 @@ class PHPBitch
         return 0;
     }
     //===============================================================================================
-    function reverseverify(&$irc, $data)
+    function reverseverify(&$irc, &$data)
     {
         $query = "SELECT nickname,ident,dnsalias FROM dnsentries";
         $result = $this->dbquery($query);
@@ -110,7 +110,7 @@ class PHPBitch
         }
     }
     //===============================================================================================
-    function verify(&$irc, $data, $ircnickname = null)
+    function verify(&$irc, &$data, $ircnickname = null)
     {
         global $config;
         $who = $data->nick;
