@@ -45,7 +45,7 @@ class Net_SmartIRC_module_cvscheckout
             $irc->unregisterActionid($value);
         }
     }
-
+    
     function cvscheckout(&$irc, &$data)
     {
         global $bot;
@@ -73,11 +73,18 @@ class Net_SmartIRC_module_cvscheckout
             $irc->message($data->type, $data->nick, 'CVS checkout done.', SMARTIRC_CRITICAL);
             $irc->message($data->type, $data->nick, 'restarting...', SMARTIRC_CRITICAL);
             $irc->quit('CVS rebuilt, restarting...', SMARTIRC_CRITICAL);
-            sleep(5);
-            exit; // phpbitch_wrapper will respawn us
+            
+            // suicide in 5 seconds (time enough to send all CVS output)
+            $irc->registerTimehandler(5000, $this, 'kill');
         } else {
             $irc->message($data->type, $data->nick, 'you are not authorized to do this!');
         }
+    }
+    
+    function kill(&$irc, &$data)
+    {
+        // good bye
+        exit;
     }
 }
 ?>
