@@ -164,6 +164,8 @@ $irc->loadModule('chancmds');
 $irc->loadModule('botcmds');
 $irc->loadModule('users');
 $irc->loadModule('brain');
+$irc->loadModule('temp');
+$irc->loadModule('dictionary');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
