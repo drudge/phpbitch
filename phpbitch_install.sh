@@ -60,8 +60,8 @@ if [ "$GET_CVS" = "y" -o "$GET_CVS" = "Y" ]
 then
      FILENAME=`mktemp -d /tmp/$0.XXXXXX` || exit 1
      cd $FILENAME
-     FOUND=`grep anonymous@cvs.meebey.net ~/.cvspass|wc -l|cut --bytes=7-´
-     if [ $FOUND != "1" ] then
+     FOUND=`grep anonymous@cvs.meebey.net ~/.cvspass|wc -l|cut --bytes=7-`
+     if [ "$FOUND" != "1" ]; then
         echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" >> ~/.cvspass
      fi
      cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch
