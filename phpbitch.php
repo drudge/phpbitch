@@ -149,7 +149,7 @@ $bot = &new PHPBitch();
 $irc = &new Net_SmartIRC();
 $irc->setLogdestination(SMARTIRC_FILE);
 $irc->setLogfile('./phpbitch.log');
-$irc->setModulepath('/home/drudge/phpbitch/repository/phpbitch/modules');
+$irc->setModulepath($config['modules_path']);
 $irc->setChannelSynching(true);
 $irc->setDebug(SMARTIRC_DEBUG_ALL);
 $irc->setUseSockets(true);
