@@ -85,7 +85,7 @@ class PHPBitch
         $foundnick = false;
         $userip = gethostbyname($data->host);
         while ($row = mysql_fetch_array($result)) {
-            $dbip = gethostbyname($row['dnsalias']);
+            $dbip = gethostbyname($row['host']);
             $dbnickname = $row['nickname'];
             $dbident = $row['ident'];
             
