@@ -24,12 +24,31 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 ###########################################################################
 # Changes to MySQL for my latest CVS commit.
-# This file when ran like: 
-# mysql -u user -p database < update_mysql.sql
-# will make older phpbitch databases current, make sure
-# to 
-# Change the tables name, it was ugly before and annoyed me.
-ALTER TABLE `dnsentries` RENAME `users`;
 
-# Same ugly field, lets keep it real brothers.
-ALTER TABLE `users` CHANGE `dnsalias` `host` VARCHAR( 64 ) NOT NULL;
+#
+# Table structure for table `users_levels`
+#
+
+CREATE TABLE users_levels (
+  user varchar(16) NOT NULL default '',
+  channel varchar(32) NOT NULL default '',
+  level int(11) NOT NULL default '0',
+  PRIMARY KEY  (user,channel)
+) TYPE=MyISAM;
+
+#
+# Dumping data for table `users_levels`
+#
+
+INSERT INTO users_levels (user, channel, level) VALUES ('meebey', '*', 4);
+INSERT INTO users_levels (user, channel, level) VALUES ('phpbitch', '*', 5);
+INSERT INTO users_levels (user, channel, level) VALUES ('gtkbitch', '*', 5);
+INSERT INTO users_levels (user, channel, level) VALUES ('sqlbitch', '*', 5);
+INSERT INTO users_levels (user, channel, level) VALUES ('codebitch', '*', 5);
+INSERT INTO users_levels (user, channel, level) VALUES ('bthbitch', '*', 5);
+INSERT INTO users_levels (user, channel, level) VALUES ('DrUDgE', '*', 4);
+
+
+# now some shit we gotta take care of..
+ALTER TABLE `brain` DROP INDEX `query` , ADD PRIMARY KEY ( `query` );
+ALTER TABLE `users` DROP `level`;
