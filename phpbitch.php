@@ -676,5 +676,5 @@ $irc->login($config['nick'], $config['real_name'], 8, $config['ident']);
 $start=time();
 $irc->join($config['channels']);
 $irc->listen();
-$irc->disconnect(); /disconnect
+$irc->disconnect(); //disconnect
 ?>
