@@ -72,7 +72,7 @@ class PHPBitch
         
         if ($numrows > 0) {
             $row = $mdb->fetchRow($result);
-            return $row[0];
+            return $row['level'];
         }
         
         return false;
