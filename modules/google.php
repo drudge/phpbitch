@@ -78,7 +78,6 @@ class Net_SmartIRC_module_google
                     $ex2[] = explode(' - ', $ex1[$i]);
                 }
                 
-                $irc->setSenddelay(500);
                 $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Google Search Results for: \''.$question.'\'');
                 
                 if (count($ex2) >=5) {
@@ -95,7 +94,6 @@ class Net_SmartIRC_module_google
                     $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'No results for \''.$question.'\'.');
                 }
                 
-                $irc->setSenddelay(250);
                 fclose($fp);
             }
         }
