@@ -195,7 +195,7 @@ class Net_SmartIRC_module_chancmds
         if ($bot->isAuthorized($irc, $requester, $data->channel, USER_LEVEL_OPERATOR)) {
             $candidate_count = count($data->messageex);
             if ($candidate_count > 1) {
-                for ($i = 1; $i < $messageex_count; $i++) {
+                for ($i = 1; $i < $candidate_count; $i++) {
                     $toop = $data->messageex[$i];
                     if (($irc->isJoined($data->channel, $toop)) &&
                         (!$irc->isOpped($data->channel, $toop))) {

@@ -56,7 +56,7 @@ class Net_SmartIRC_module_botcmds
     //===============================================================================================       
     function uptime(&$irc, &$data)
     {
-        $time = time() - $this->start_time;
+        $duration = time() - $this->start_time;
 
         // Convert the interger to an array of segments
         $seconds = (int)$time;
