@@ -1,0 +1,40 @@
+#!/bin/sh
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON_PATH=/home/meebey/phpbitch
+DAEMON=$DAEMON_PATH/phpbitch_wrapper
+NAME=phpbitch
+DESC="IRC service bot daemon"
+QUIET=--quiet
+test -x $DAEMON || exit 0
+
+set -e
+
+cd $DAEMON_PATH
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: $NAME"
+	start-stop-daemon --start $QUIET -m --pidfile $DAEMON_PATH/$NAME.pid \
+		--exec $DAEMON &
+	echo "."
+	;;
+  stop)
+	echo -n "Stopping $DESC: $NAME "
+	start-stop-daemon --stop $QUIET --pidfile $DAEMON_PATH/$NAME.pid
+	echo "."
+	;;
+  restart|force-reload)
+	$0 stop
+	echo ""
+	sleep 1
+	$0 start
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
