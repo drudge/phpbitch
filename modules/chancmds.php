@@ -380,8 +380,7 @@ class Net_SmartIRC_module_chancmds
     {
         global $config;
         global $bot;
-        $requester = $data->nick;
-        $tobeunbanned = $data->messageex[2];
+        $tobeunbanned = $data->messageex[1];
         
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
@@ -391,7 +390,7 @@ class Net_SmartIRC_module_chancmds
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
-            $irc->unban($data->channel, $tounbebanned);
+            $irc->unban($data->channel, $tobeunbanned);
         }
     }
     //===============================================================================================       
@@ -399,7 +398,6 @@ class Net_SmartIRC_module_chancmds
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
-            return;
         }
         
         $lines=file('help.txt');
