@@ -98,7 +98,7 @@ class Net_SmartIRC_module_users
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-            $query = "INSERT INTO dnsentries (nickname,ident,dnsalias,level) VALUES('".$nick."','".$ident."','".$host."','".$level."')";
+            $query = "INSERT INTO users (nickname,ident,host,level) VALUES('".$nick."','".$ident."','".$host."','".$level."')";
             $res = $bot->dbquery($query);
             
             if ($res) {
@@ -122,7 +122,7 @@ class Net_SmartIRC_module_users
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-            $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";
+            $query = "DELETE FROM users WHERE nickname='".$nick."'";
             $res = $bot->dbquery($query);
             
             if ($res) {
