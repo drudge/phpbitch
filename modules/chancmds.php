@@ -80,7 +80,7 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR)) {
+        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
             
             if (isset($key)) {
@@ -104,7 +104,7 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR)) {
+        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_MASTER)) {
             $irc->part($chan,'Requested by '.$requester);
         }
     }
