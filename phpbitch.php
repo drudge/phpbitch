@@ -70,7 +70,6 @@ function get_level($nick)
     }
     return 0;
 }
-
 //===============================================================================================
 class PHPBitch
 {
@@ -256,6 +255,54 @@ class PHPBitch
 
             if ($result !== false && (get_level($data->nick) >= USER_LEVEL_VOICE)) {
                 $irc->unban($data->channel, $tobebanned);
+            }
+        }
+    }
+    //===============================================================================================
+    function google(&$irc, &$data)
+    {
+        // Get the search
+        $temp=explode(" ",$data->message);
+        $search="";
+        for ($i=1;$i<count($temp);$i++)
+            $search.="+".$temp[$i];
+        $question=trim($search,'+');
+        if (!$question) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "No search string given.");
+        } else {
+        
+            $fp = fsockopen("www.google.com", 80, $errno, $errstr, 30);
+            if (!$fp) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "Socket connection failed: $errstr");
+            } else {
+                fputs($fp, "GET /search?as_q=$question&num=100 HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
+                $page = "";
+                while (!feof($fp)) {
+                    $raw = fgets($fp);
+                    $page .= $raw;
+                }
+        
+                $ex1 = explode("<font color=#008000>", $page);
+                for($i=0;$i<count($ex1);$i++) {
+                    $ex2[] = explode(" - ", $ex1[$i]);
+                }
+                $irc->setSenddelay(500);
+                $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "Google Search Results for: '$question'");
+                
+                if (count($ex2) >=5) {
+                    $count=5;
+                } else {
+                    $count=count($ex2);
+                }
+                if ($count > 0) {
+                    for($i=1;$i<$count;$i++) {
+                        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'http://'.$ex2[$i][0]);
+                    }
+                } else {
+                    $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "No results for '$question'.");
+                }
+                $irc->setSenddelay(250);
+                fclose($fp);
             }
         }
     }
@@ -669,6 +716,7 @@ $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!topi
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!join', $bot, 'join_channel');
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!part', $bot, 'part_channel');
 $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!help', $bot, 'help');
+$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!google', $bot, 'google');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
