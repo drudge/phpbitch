@@ -132,7 +132,7 @@ class Net_SmartIRC_module_botcmds
         
         // need a valid channel for verify()
         $data->channel = $channel;
-        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_VOICE)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, trim($message));
         }
     }
@@ -153,7 +153,7 @@ class Net_SmartIRC_module_botcmds
         
         // need a valid channel for verify()
         $data->channel = $channel;
-        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_VOICE)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_ACTION,$channel,trim($message));
         }
     }
@@ -174,7 +174,7 @@ class Net_SmartIRC_module_botcmds
         
         // need a valid channel for verify()
         $data->channel = $channel;
-        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_VOICE)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
         }
     }
