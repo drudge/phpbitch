@@ -65,7 +65,7 @@ class PHPBitch
     //===============================================================================================
     function get_level($nick)
     {
-        $query = "SELECT level FROM dnsentries WHERE nickname='".$nick."'";
+        $query = "SELECT level FROM users WHERE nickname='".$nick."'";
         $result = $this->dbquery($query);
         $numrows = mysql_num_rows($result);
         
@@ -78,7 +78,7 @@ class PHPBitch
     //===============================================================================================
     function reverseverify(&$irc, &$data)
     {
-        $query = "SELECT nickname,ident,dnsalias FROM dnsentries";
+        $query = "SELECT nickname,ident,host FROM users";
         $result = $this->dbquery($query);
         
         $list = array();
@@ -126,7 +126,7 @@ class PHPBitch
         }
         
         if (isset($irc->channel[$loweredchannel]->users[$loweredwho])) {
-            $query = "SELECT nickname,ident,dnsalias FROM dnsentries WHERE nickname='".$dbwho."'";
+            $query = "SELECT nickname,ident,host FROM users WHERE nickname='".$dbwho."'";
             $result = $this->dbquery($query);
             $numrows = mysql_num_rows($result);
             
@@ -137,7 +137,7 @@ class PHPBitch
                 $found = false;
                 while ($row = mysql_fetch_array($result)) {
                     $dbident = $row['ident'];
-                    $dnsaliasip = gethostbyname($row['dnsalias']);
+                    $dnsaliasip = gethostbyname($row['host']);
                     
                     if ($dnsaliasip == $ip && $dbident == $ident) {
                         return $row['nickname'];
