@@ -6,6 +6,7 @@
  * $Date$
  *
  * Copyright (c) 2003 Nicholas 'DrUDgE' Penree <drudge@x-php.net>
+ *                    Mirco 'meebey' Bauer <mail@meebey.net>
  *
  * Full GPL License: <http://www.gnu.org/licenses/gpl.txt>
  *
@@ -28,7 +29,7 @@ class Net_SmartIRC_module_chancmds
 {
     var $name = 'chancmds';
     var $description = 'this module adds basically all darkbot channel commands.';
-    var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
+    var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>, Mirco \'meebey\' Bauer <mail@meebey.net>';
     var $license = 'GPL';
     
     var $actionids = array();
