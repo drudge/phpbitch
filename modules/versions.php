@@ -63,7 +63,7 @@ class Net_SmartIRC_module_versions
         global $bot;
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $irc->message($data->type, $data->channel, 'main: '.SMARTIRC_VERSION);
+            $irc->message($data->type, $data->channel, SMARTIRC_VERSION);
         }
     }
     
@@ -72,7 +72,7 @@ class Net_SmartIRC_module_versions
         global $bot;
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $irc->message($data->type, $data->channel, PHPBITCH_VERSION);
+            $irc->message($data->type, $data->channel, 'main: '.PHPBITCH_VERSION);
         }
     }
     
