@@ -62,13 +62,15 @@ then
      
      FILENAME=`mktemp -d /tmp/$0.XXXXXX` || exit 1
      cd $FILENAME
-     if [ -f ~/.cvspass ]; then
-        grep -q anonymous@cvs.meebey.net ~/.cvspass
-	if [ $? -eq 0 ]; then
-           echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" >> ~/.cvspass
-        fi
+     if [ -f ~/.cvspass ]
+     then
+          grep -q anonymous@cvs.meebey.net ~/.cvspass
+          if [ $? -eq 0 ]
+	  then
+               echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" >> ~/.cvspass
+          fi
      else
-        echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" > ~/.cvspass
+          echo "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A" > ~/.cvspass
      fi
      cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch
      rm -Rf $INSTALL_DIR
