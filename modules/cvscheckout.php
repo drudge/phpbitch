@@ -74,8 +74,8 @@ class Net_SmartIRC_module_cvscheckout
             $irc->message($data->type, $data->nick, 'restarting...', SMARTIRC_CRITICAL);
             $irc->quit('CVS rebuilt, restarting...', SMARTIRC_CRITICAL);
             
-            // suicide in 5 seconds (time enough to send all CVS output)
-            $irc->registerTimehandler(5000, $this, 'kill');
+            // suicide in 10 seconds (time enough to send all CVS output)
+            $irc->registerTimehandler(10000, $this, 'kill');
         } else {
             $irc->message($data->type, $data->nick, 'you are not authorized to do this!');
         }
