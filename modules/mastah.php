@@ -34,9 +34,12 @@ class Net_SmartIRC_module_mastah
         }
         
         $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'ident: '.$data->ident);
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'result: '.$result);
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'level: '.$bot->get_level($data->nick));
         
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
-            if ($irc->isMastah($irc, $data)) {
+            if ($bot->isMastah($irc, $data)) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am not mastah');
             } else {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am mastah!');
