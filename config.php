@@ -38,6 +38,6 @@ $config['send_delay'] = 500;
 $config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch', 'helpbitch');
 
 $config['emergency_users']= array('drudge'=>'6e8fe3e9e2816e6a93c449b591582540',
-                                  'meebey'=>'fb8d28952bcaa4a5b0d09a9320cdb0cb',
+                                  'meebey'=>'',
                                   'pluesch0r'=>'edc8540bed09f428ab2d556d562c422c');
 ?>
