@@ -31,39 +31,28 @@ class Net_SmartIRC_module_botcmds
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionid1;
-    var $actionid2;
-    var $actionid3;
-    var $actionid4;
-    var $actionid5;
-    var $actionid6;
-
+    var $actionids;
     
     function module_init(&$irc)
     {
-        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
-        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!nick', $this, 'setNick');
-        $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
-        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!say', $this, 'say');
-        $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!act', $this, 'act');
-        $this->actionid6 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!notice', $this, 'notice');
-
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!nick', $this, 'setNick');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!say', $this, 'say');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!act', $this, 'act');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!notice', $this, 'notice');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid1);
-        $irc->unregisterActionid($this->actionid2);
-        $irc->unregisterActionid($this->actionid3);
-        $irc->unregisterActionid($this->actionid4);
-        $irc->unregisterActionid($this->actionid5);
-        $irc->unregisterActionid($this->actionid6);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     
     //===============================================================================================       
-    function uptime(&$irc,&$data)
+    function uptime(&$irc, &$data)
     {
-        global $config;
         global $start;
         $time=time()-$start;
         
@@ -73,17 +62,27 @@ class Net_SmartIRC_module_botcmds
         $minutes=((($time%604800)%86400)%3600)/60; 
         $seconds=(((($time%604800)%86400)%3600)%60); 
         
-        if(round($days)) $timestring.=round($days).' day(s) '; 
-        if(round($hours)) $timestring.=round($hours).' hour(s) '; 
-        if(round($minutes)) $timestring.=round($minutes).' minute(s)'; 
-        if(!round($minutes)&&!round($hours)&&!round($days)) $timestring.=round($seconds).' second(s)'; 
+        $timestring = '';
+        if (round($days)) {
+            $timestring .= round($days).' day(s) ';
+        }
+        if (round($hours)) {
+            $timestring .= round($hours).' hour(s) ';
+        }
+        if (round($minutes)) {
+            $timestring .= round($minutes).' minute(s)';
+        }
+        if (!round($minutes) &&
+            !round($hours) &&
+            !round($days)) {
+            $timestring .= round($seconds).' second(s)';
+        }
         
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
     }
     //===============================================================================================
     function setNick(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $newnick = $data->messageex[1];
         
@@ -118,76 +117,65 @@ class Net_SmartIRC_module_botcmds
     //===============================================================================================
     function say(&$irc, &$data)
     {
-        global $config;
         global $bot;
-        $crap = explode(' ',$data->message);
-        // don't verify ourself
-        $channel = strtolower($crap[1]);
+        $channel = strtolower($data->messageex[1]);
         $message = '';
-        for ($i=2; $i<count($crap); $i++) {
-            $message.=' '.$crap[$i];
+        for ($i = 2; $i < count($data->messageex); $i++) {
+            $message .= ' '.$data->messageex[$i];
         }
-
+        
+        // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
-
+        
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-
             $irc->message(SMARTIRC_TYPE_CHANNEL,$channel,trim($message));
         }
     }
     //===============================================================================================
     function act(&$irc, &$data)
     {
-        global $config;
         global $bot;
-        $crap = explode(' ',$data->message);
-        // don't verify ourself
-        $channel = strtolower($crap[1]);
+        $channel = strtolower($data->messageex[1]);
         $message = '';
-        for ($i=2; $i<count($crap); $i++) {
-            $message.=' '.$crap[$i];
+        for ($i = 2; $i < count($data->messageex); $i++) {
+            $message .= ' '.$data->messageex[$i];
         }
-
+        
+        // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
-
+        
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-
             $irc->message(SMARTIRC_TYPE_ACTION,$channel,trim($message));
         }
     }
     //===============================================================================================
     function notice(&$irc, &$data)
     {
-        global $config;
         global $bot;
-        $crap = explode(' ',$data->message);
-        // don't verify ourself
-        $channel = strtolower($crap[1]);
+        $channel = strtolower($data->messageex[1]);
         $message = '';
-        for ($i=2; $i<count($crap); $i++) {
-            $message.=' '.$crap[$i];
+        for ($i = 2; $i < count($data->messageex); $i++) {
+            $message .= ' '.$data->messageex[$i];
         }
-
+        
+        // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick);
-
+        
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-
             $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
         }
     }
-
-
 }
 ?>
