@@ -28,6 +28,10 @@ class Net_SmartIRC_module_google
     //===============================================================================================
     function google(&$irc, &$data)
     {
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        
         // Get the search
         $temp=explode(' ',$data->message);
         $search='';

@@ -54,10 +54,11 @@ class PHPBitch
         global $mysql_password;
         global $mysql_link;
         global $irc;
-    
-        if (!is_resource($mysql_link))
+        
+        if (!is_resource($mysql_link)) {
             $mysql_link = mysql_connect($mysql_server, $mysql_username, $mysql_password);
-    
+        }
+        
         $result = mysql_db_query($mysql_db, $query, $mysql_link);
         return $result;
     }
@@ -67,7 +68,7 @@ class PHPBitch
         $query = "SELECT level FROM dnsentries WHERE nickname='".$nick."'";
         $result = $this->dbquery($query);
         $numrows = mysql_num_rows($result);
-    
+        
         if ($numrows > 0) {
             $row = mysql_fetch_array($result);
             return $row[0];
@@ -79,7 +80,7 @@ class PHPBitch
     {
         $query = "SELECT nickname,ident,dnsalias FROM dnsentries";
         $result = $this->dbquery($query);
-
+        
         $list = array();
         $foundnick = false;
         $userip = gethostbyname($host);
@@ -95,13 +96,13 @@ class PHPBitch
                 break;
             }
         }
-
+        
         if ($foundnick !== false) {
             $result = $this->verify($irc, '#php-gtk', $foundnick, $ident, $nick);
         } else {
             $result = $this->verify($irc, '#php-gtk', $nick, $ident);
         }
-
+        
         if ($result !== false) {
             return $result;
         } else {
@@ -127,7 +128,7 @@ class PHPBitch
             $query = "SELECT nickname,ident,dnsalias FROM dnsentries WHERE nickname='".$dbwho."'";
             $result = $this->dbquery($query);
             $numrows = mysql_num_rows($result);
-
+            
             if ($numrows > 0) {
                 $host = $irc->channel[$channel]->users[$loweredwho]->host;
                 $ip = gethostbyname($host);
@@ -136,7 +137,7 @@ class PHPBitch
                 while ($row = mysql_fetch_array($result)) {
                     $dbident = $row['ident'];
                     $dnsaliasip = gethostbyname($row['dnsalias']);
-
+                    
                     if ($dnsaliasip == $ip && $dbident == $ident) {
                         return $row['nickname'];
                     }

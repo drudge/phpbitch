@@ -20,7 +20,7 @@ class Net_SmartIRC_module_botcmds
     function module_init(&$irc)
     {
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
-        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!nick', $this, 'setNick');
+        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!nick', $this, 'setNick');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
     }
     
@@ -48,7 +48,7 @@ class Net_SmartIRC_module_botcmds
         if(round($hours)) $timestring.=round($hours).' hour(s) '; 
         if(round($minutes)) $timestring.=round($minutes).' minute(s)'; 
         if(!round($minutes)&&!round($hours)&&!round($days)) $timestring.=round($seconds).' second(s)'; 
-
+        
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
     }
     //===============================================================================================
@@ -57,14 +57,14 @@ class Net_SmartIRC_module_botcmds
         global $config;
         global $bot;
         $newnick = $data->messageex[1];
-
+        
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
-
+        
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_MASTER)) {
             $irc->changeNick($newnick);
         }
@@ -72,10 +72,14 @@ class Net_SmartIRC_module_botcmds
     //===============================================================================================
     function wave(&$irc, &$data)
     {
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        
         global $bot;
         $crap = $data->messageex[1];
         $nick = $data->messageex[2];
-
+        
         if (!empty($nick)) {
             $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'waves '.$crap.' '.$nick.'.');
         } else {

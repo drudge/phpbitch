@@ -38,7 +38,7 @@ class Net_SmartIRC_module_users
         $requester = $data->nick;
         $lookupfor = $data->messageex[1];
         $lowerlookupfor = strtolower($data->messageex[1]);
-
+        
         if (isset($irc->channel[$data->channel]->users[$lowerlookupfor])) {
             $host = $irc->channel[$data->channel]->users[$lowerlookupfor]->host;
             $ident = $irc->channel[$data->channel]->users[$lowerlookupfor]->ident;
@@ -46,9 +46,9 @@ class Net_SmartIRC_module_users
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $host, $lookupfor, $ident);
-
+        
         if ($result !== false) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$lookupfor.' is '.$result.'['.gethostbyname($host).']');
         } else {
@@ -63,18 +63,18 @@ class Net_SmartIRC_module_users
         $nick = $data->messageex[1];
         $host = $data->messageex[2];
         $level = $data->messageex[3];
-
+        
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
-
+        
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
             $query = "INSERT INTO dnsentries( `nickname`,`dnsalias`,`level`) VALUES('".$nick."','".$host."','".$level."')";
             $res = $bot->dbquery($query);
-
+            
             if ($res) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Added '.$nick.' as '.$host.' with a level of '.$level);
             } else {
@@ -87,18 +87,18 @@ class Net_SmartIRC_module_users
     {
         global $bot;
         $nick = $data->messageex[1];
-
+        
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-
+        
         $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
-
+        
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM dnsentries WHERE nickname='".$nick."'";
             $res = $bot->dbquery($query);
-
+            
             if ($res) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Deleted '.$nick.' from registered users database.');
             } else {

@@ -28,12 +28,16 @@ class Net_SmartIRC_module_temp
     //===============================================================================================
     function temp(&$irc, &$data)
     {
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        
         global $config;
         global $bot;
         $requester = $data->nick;
         $type = $data->messageex[1];
         $convert = $data->messageex[2];
-
+        
         if(is_numeric($convert)) {
             if ( $type == 'c' ) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$convert.'°C is '.round(((9/5)*$convert)+32,2).'°F.');
