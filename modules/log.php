@@ -47,17 +47,23 @@ class Net_SmartIRC_module_log
     
     function log(&$irc, &$data)
     {
-        if (!isset($data->messageex[1])) {
-            $irc->message($data->type, $data->nick, 'wrong parameter count:');
-            $irc->message($data->type, $data->nick, 'usage: !log $lines');
-        }
+        global $bot;
         
-        $howmuchlines = $data->messageex[1];
-        $file = file('phpbitch.log');
-        $numlines = count($file);
-        
-        for($i = $numlines - $howmuchlines; $i < $numlines; $i++) {
-            $irc->message($data->type, $data->nick, '['.$i.'] '.$file[$i]);
+        $result = $bot->reverseverify($irc, $data);
+        if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
+            if (!isset($data->messageex[1])) {
+                $irc->message($data->type, $data->nick, 'wrong parameter count:');
+                $irc->message($data->type, $data->nick, 'usage: !log $lines');
+            }
+            
+            $howmuchlines = $data->messageex[1];
+            $file = file('phpbitch.log');
+            $numlines = count($file);
+            
+            // -4 because we don't want to see the log messages of the log function :)
+            for($i = $numlines - $howmuchlines - 4; $i < $numlines - 4; $i++) {
+                $irc->message($data->type, $data->nick, '['.$i.'] '.$file[$i]);
+            }
         }
     }
 }
