@@ -213,6 +213,7 @@ $irc->loadModule('temp');
 $irc->loadModule('mastah');
 $irc->loadModule('cvscheckout');
 $irc->loadModule('hex_ip');
+$irc->loadModule('log');
 
 // connection
 $irc->connect($config['irc_server'], $config['irc_port']);
