@@ -513,7 +513,7 @@ class Net_SmartIRC_module_chancmds
                     $irc->mode($_candidate['channel'], '+ov '.$_candidate['nick'].' '.$_candidate['nick']);
                     break;
             }
-            $irc->unregisterTimeid($_op_candidate['handler_id']);
+            $irc->unregisterTimeid($_candidate['handler_id']);
             unset($this->_candidates[$key]);
         }
     }
