@@ -384,14 +384,11 @@ class Net_SmartIRC_module_chancmds
         }
         
         $lines=file('help.txt');
-        $irc->setSenddelay(750);
         
         // $line="Fuck off, i ain't helping you, lam0r!";
         foreach($lines as $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
         }
-        
-       $irc->setSenddelay(250);
     }
         //===============================================================================================       
     function getnews(&$irc, &$data)
