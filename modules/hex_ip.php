@@ -36,7 +36,7 @@ class Net_SmartIRC_module_hex_ip
     function module_init(&$irc)
     {
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!hex2ip', $this, 'hex2ip');
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ip2hex', $this, 'hex2ip');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ip2hex', $this, 'ip2hex');
     }
     
     function module_exit(&$irc)
