@@ -181,7 +181,6 @@ class Net_SmartIRC_module_chancmds
             $this->_candidates[$this->_op_count]['channel'] = $data->channel;
             $this->_candidates[$this->_op_count]['handler_id'] = $id;
             $this->_candidates[$this->_op_count]['result'] = $result;
-            }
         }
         
         print_r($this->_candidates);
@@ -499,6 +498,9 @@ class Net_SmartIRC_module_chancmds
     {
          global $bot;
          
+         echo 'in _do_op:'."\n";
+         
+        print_r($this->_candidates);
          foreach($this->_candidates as $key => $_candidate) {
          $level = $bot->getLevel($_candidate['result'], $_candidate['channel']);
             switch ($level) {
