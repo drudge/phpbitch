@@ -34,12 +34,20 @@ class Net_SmartIRC_module_botcmds
     var $actionid1;
     var $actionid2;
     var $actionid3;
+    var $actionid4;
+    var $actionid5;
+    var $actionid6;
+
     
     function module_init(&$irc)
     {
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!uptime$', $this, 'uptime');
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!nick', $this, 'setNick');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!wave', $this, 'wave');
+        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!say', $this, 'say');
+        $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!act', $this, 'act');
+        $this->actionid6 = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!notice', $this, 'notice');
+
     }
     
     function module_exit(&$irc)
@@ -104,5 +112,79 @@ class Net_SmartIRC_module_botcmds
             $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'waves to everyone.');
         }
     }
+    //===============================================================================================
+    function say(&$irc, &$data)
+    {
+        global $config;
+        global $bot;
+        $crap = explode(' ',$data->message);
+        // don't verify ourself
+        $channel = $crap[1];
+        $message = '';
+        for ($i=2; $i<count($crap); $i++) {
+            $message.=' '.$crap[$i];
+        }
+
+        if (strpos($data->nick, $irc->_nick) !== false) {
+            return;
+        }
+
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+
+            $irc->message(SMARTIRC_TYPE_CHANNEL,$channel,trim($message));
+        }
+    }
+    //===============================================================================================
+    function act(&$irc, &$data)
+    {
+        global $config;
+        global $bot;
+        $crap = explode(' ',$data->message);
+        // don't verify ourself
+        $channel = $crap[1];
+        $message = '';
+        for ($i=2; $i<count($crap); $i++) {
+            $message.=' '.$crap[$i];
+        }
+
+        if (strpos($data->nick, $irc->_nick) !== false) {
+            return;
+        }
+
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+
+            $irc->message(SMARTIRC_TYPE_ACTION,$channel,trim($message));
+        }
+    }
+    //===============================================================================================
+    function notice(&$irc, &$data)
+    {
+        global $config;
+        global $bot;
+        $crap = explode(' ',$data->message);
+        // don't verify ourself
+        $channel = $crap[1];
+        $message = '';
+        for ($i=2; $i<count($crap); $i++) {
+            $message.=' '.$crap[$i];
+        }
+
+        if (strpos($data->nick, $irc->_nick) !== false) {
+            return;
+        }
+
+        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+
+        if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+
+            $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
+        }
+    }
+
+
 }
 ?>
