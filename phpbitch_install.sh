@@ -97,3 +97,21 @@ then
 else
      echo "Skipping MySQL Setup!"
 fi
+
+read -p "Setup Bot Master Entry? [Y/n]: " SETUP_MASTER
+eval SETUP_MASTER=${SETUP_MASTER:="Y"}
+
+if [ "$SETUP_MYSQL" = "y" -o "$SETUP_MYSQL" = "Y" -a "$SETUP_MASTER" != "n" -o "$SETUP_MASTER" != "N" ]
+then
+    read -p "Nickname? [DaMastah]: " M_NICK
+    eval M_NICK=${M_NICK:="DaMastah"}
+    
+    read -p "Ident? [~damastah]: " M_IDENT
+    eval M_IDENT=${M_IDENT:="~damasta"}
+
+    read -p "Host? [damastah.org]: " M_HOST
+    eval M_HOST=${M_HOST:="damasta.org"}
+    mysql -u $MYSQL_USER -p $MYSQL_DB -e "INSERT INTO users (nickname , ident , host , level ) VALUES ('$M_NICK', '$M_IDENT', '$M_HOST', '4');"
+else
+     echo "Skipping Bot Master Setup!"
+fi
