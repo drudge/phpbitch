@@ -26,7 +26,6 @@ $config['alt_nick'] = 'phpb1tch';
 /* bot specific */
 $config['version'] = 'phpbitch 1.0';
 $config['modules_path'] = dirname(__FILE__).'/modules';
-$config['answer_questions'] = true;
 
 /* irc server info */
 $config['irc_server']="irc.stealth.net";
