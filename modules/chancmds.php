@@ -351,7 +351,6 @@ class Net_SmartIRC_module_chancmds
         
         if (($result !== false) &&
             ($bot->get_level($result) >= USER_LEVEL_VOICE) &&
-            ($newresult !== false) &&
             ($bot->get_level($newresult) < USER_LEVEL_MASTER)) {
             
             $nick = $victim->nick;
