@@ -153,6 +153,11 @@ class PHPBitch
     
     function isMastah(&$irc, &$data)
     {
+        if ($data->type & (SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_NOTICE)) {
+            // on private messages we always reply
+            return true;
+        }
+        
         global $config;
         
         $candidates = array();
