@@ -48,6 +48,11 @@ class Net_SmartIRC_module_cvscheckout
     function cvscheckout(&$irc, &$data)
     {
         global $bot;
+        
+        if ($data->channel === null) {
+            $data->channel = '#linux-help';
+        }
+        
         $result = $bot->reverseverify($irc, $data);
         if ($result !== false && $bot->get_level($result) == USER_LEVEL_MASTER) {
             $irc->message($data->type, $data->nick, 'CVS checkout starting...', SMARTIRC_CRITICAL);
