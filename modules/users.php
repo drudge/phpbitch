@@ -35,12 +35,14 @@ class Net_SmartIRC_module_users
     var $actionid1;
     var $actionid2;
     var $actionid3;
+    var $actionid4;
     
     function module_init(&$irc)
     {
         $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who ', $this, 'who');
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!adduser', $this, 'adduser');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deluser', $this, 'deluser');
+        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!level', $this, 'level');
     }
     
     function module_exit(&$irc)
@@ -48,6 +50,7 @@ class Net_SmartIRC_module_users
         $irc->unregisterActionid($this->actionid1);
         $irc->unregisterActionid($this->actionid2);
         $irc->unregisterActionid($this->actionid3);
+        $irc->unregisterActionid($this->actionid4);
     }
     //===============================================================================================    
     function who(&$irc, &$data)
@@ -129,6 +132,19 @@ class Net_SmartIRC_module_users
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Error removing: '.mysql_error());
             }
         }
+    }
+        //===============================================================================================
+    function level(&$irc, &$data)
+    {
+        global $bot;
+        $nick = $data->messageex[1];
+        
+        $newdata->host = $irc->channels[$data->channel]->users[strtolower($nick)]->host;
+        $newdata->nick = strtolower($nick);
+        $newdata->ident = $irc->channels[strtolower($data->channel)]->users[strtolower($nick)]->ident;
+        $newdata->channel = strtolower($data->channel);
+        $newresult = $bot->reverseverify($irc, $newdata);
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$bot->get_level($newresult).'].');
     }
 }
 ?>
