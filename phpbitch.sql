@@ -1,15 +1,27 @@
-# phpMyAdmin MySQL-Dump
-# version 2.5.0-rc1
-# http://www.phpmyadmin.net/ (download page)
-#
-# Host: localhost
-# Generation Time: Jul 15, 2003 at 07:16 PM
-# Server version: 4.0.13
-# PHP Version: 4.3.2
-# Database : `phpbitch`
-# --------------------------------------------------------
 
+d: phpbitch_install.sh,v 1.4 2003/07/16 00:01:55 meebey Exp $
+# $Revision$
+# $Author$
+# $Date$
 #
+# Copyright (c) 2003 Nicholas 'DrUDgE' Penree <drudge@x-php.net>
+#
+# Full GPL License: <http://www.gnu.org/licenses/gpl.txt>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+###########################################################################
 # Table structure for table `answering_machine`
 #
 # Creation: May 25, 2003 at 06:26 PM
