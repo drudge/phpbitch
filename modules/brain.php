@@ -36,6 +36,8 @@ class Net_SmartIRC_module_brain
     var $actionid3;
     var $actionid4;
     var $actionid5;
+
+
     
     function module_init(&$irc)
     {
@@ -45,7 +47,11 @@ class Net_SmartIRC_module_brain
         $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!learn', $this, 'learn');
         $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!forget', $this, 'forget');
         $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!tell', $this, 'tell');
-        $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*\?$', $this, 'answerQuestion');
+    
+        if ($config['answer_questions']) {
+                $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '.*\?$', $this, 'answerQuestion');
+            }
+
     }
     
     function module_exit(&$irc)
@@ -56,7 +62,10 @@ class Net_SmartIRC_module_brain
         $irc->unregisterActionid($this->actionid2);
         $irc->unregisterActionid($this->actionid3);
         $irc->unregisterActionid($this->actionid4);
-        $irc->unregisterActionid($this->actionid5);
+    
+        if ($config['answer_questions']) {
+            $irc->unregisterActionid($this->actionid5);
+        }
     }
     
     //===============================================================================================
