@@ -56,7 +56,8 @@ class Net_SmartIRC_module_cvscheckout
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message($data->type, $data->nick, 'CVS checkout starting...', SMARTIRC_CRITICAL);
             
-            $file = file('~/.cvspass');
+            $homedir = exec('echo ~');
+            $file = file($homedir.'/.cvspass');
             if (!in_array('anonymous@cvs.meebey.net', $file)) {
                 $fp = fopen('~/.cvspass', 'a');
                 fwrite($fp, "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A\n");
