@@ -35,7 +35,8 @@ class Net_SmartIRC_module_hex_ip
     
     function module_init(&$irc)
     {
-        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!temp', $this, 'temp');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!hex2ip', $this, 'hex2ip');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ip2hex', $this, 'hex2ip');
     }
     
     function module_exit(&$irc)
@@ -44,8 +45,52 @@ class Net_SmartIRC_module_hex_ip
             $irc->unregisterActionid($value);
         }
     }
-    
     //===============================================================================================
-
+    function hex2ip(&$irc, &$data)
+    {
+        global $bot;
+        
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        $requester = $data->nick;
+        $hex = $data->messageex[1];
+        $shit = '';
+    
+        if (empty($hex)) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': usage: !hex2ip <hex_value>');
+            return;
+        }
+        
+        for ($i = 0; $i < strlen($hex); $i+=2) {
+            $ip .= hexdec(substr($hex,$i,2)).'.';
+        }
+        $ip = rtrim($ip, '.');
+        
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$hex.' as an IP address is '.$ip);
+    }
+    //===============================================================================================
+    function ip2hex(&$irc, &$data)
+    {
+        global $bot;
+        
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
+        $requester = $data->nick;
+        $ip = $data->messageex[1];
+        $shit = '';
+        
+        if (empty($ip)) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': usage: !hex2ip <hex_value>');
+        }
+        $dump=explode('.',$ip);
+        $hex = '';
+        foreach ($dump as $part) {
+            $hex .= dechex($part);
+        }
+ 
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$ip.' in hexidecimal form is '.$hex);
+    }
 }
 ?>
