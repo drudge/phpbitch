@@ -148,12 +148,12 @@ class Net_SmartIRC_module_users
         $newdata->host = $victim->host;
         $newdata->nick = $victim->nick;
         $newdata->ident = $victim->ident;
-        $newdata->channel = $victim->channel;
+        $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
+
         $level=$bot->get_level($newresult);
-        if (!isset($level)) {
-            $level="NONE";
-        }
+        if($level !== false) echo $level;
+        else echo 'he has no level!';
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
     }
 }
