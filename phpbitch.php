@@ -97,7 +97,7 @@ class PHPBitch
         
         if ($result !== false) {
             $dbnick = $result;
-            $query = "SELECT level FROM users_levels WHERE user = '".$dbnick."' AND channel = '".$channel."'";
+            $query = "SELECT level FROM users_levels WHERE user = '".$dbnick."' AND (channel = '".$channel."' OR channel = '*')";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
