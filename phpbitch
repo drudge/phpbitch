@@ -40,6 +40,8 @@ case "$1" in
 	echo > $DAEMON_PATH/phpbitch_php.log
 	start-stop-daemon --start $QUIET -m --pidfile $DAEMON_PATH/$NAME.pid \
 		--exec $DAEMON &
+	# overwriting the PID with - in front so $0 stop will kill all subprocesses too
+    echo "-$(cat $DAEMON_PATH/$NAME.pid)" > $DAEMON_PATH/$NAME.pid
 	echo "."
 	;;
   stop)
