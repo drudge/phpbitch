@@ -235,6 +235,9 @@ class PHPBitch
     }
 }
 
+$bot = &new PHPBitch();
+$irc = &new Net_SmartIRC();
+
 $mdb = &MDB::connect($config['db_dsn']);
 if (MDB::isError($mdb)) {
     mdbError($mdb);
@@ -242,8 +245,6 @@ if (MDB::isError($mdb)) {
 }
 $mdb->setFetchMode(MDB_FETCHMODE_ASSOC);
 
-$bot = &new PHPBitch();
-$irc = &new Net_SmartIRC();
 $irc->setLogdestination(SMARTIRC_FILE);
 $irc->setLogfile('./phpbitch.log');
 $irc->setModulepath($config['modules_path']);
