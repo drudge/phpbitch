@@ -81,7 +81,7 @@ class Net_SmartIRC_module_cvscheckout
         }
     }
     
-    function kill(&$irc, &$data)
+    function kill(&$irc)
     {
         // good bye
         exit;
