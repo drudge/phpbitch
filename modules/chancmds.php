@@ -337,7 +337,7 @@ class Net_SmartIRC_module_chancmds
         $result = $bot->reverseverify($irc, $data);
         
         if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
-            $victim = &$irc->channels[strtolower($data->channel)]->users[strtolower($tobebanned)];
+            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobebanned)];
         } else {
             // nobody to ban...
             return;
