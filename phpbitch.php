@@ -255,16 +255,6 @@ class PHPBitch
     
     function show_synctime(&$irc, &$data)
     {
-        switch (strtolower($data->channel)) {
-            case '#phpbitch':
-            case '#php++':
-            case '#linux-help':
-            case '#smartirc':
-            break;
-            default:
-                return;
-        }
-        
         $channel = &$irc->getChannel($data->channel);
         $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'finished syncing to '.$data->channel.' in '.round($channel->synctime, 2).' secs');
     }
