@@ -37,7 +37,7 @@ $config['send_delay'] = 500;
 // friends go here, the order is the priority for mastermode
 $config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch', 'helpbitch');
 
-$config['emergency_users']= array('drudge'=>'7c3536dc30a4c61e2c1c2ceea531205c',
-                                  'meebey'=>'07fa5942c846eb9a0b5c0cdd0d4acd6d',
-                                  'pluesch0r'=>'112f1ee2ccb7ab98dedcf583ef3e41b6');
+$config['emergency_users']= array('drudge'=>'6e8fe3e9e2816e6a93c449b591582540',
+                                  'meebey'=>'fb8d28952bcaa4a5b0d09a9320cdb0cb',
+                                  'pluesch0r'=>'edc8540bed09f428ab2d556d562c422c');
 ?>
