@@ -34,6 +34,8 @@ class Net_SmartIRC_module_chancmds
     var $license = 'GPL';
     
     var $actionids = array();
+    var $_candidates = array();
+    var $_op_count = 0;
     
     function module_init(&$irc)
     {
@@ -172,21 +174,12 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         if ($result !== false && !$irc->isOpped($data->channel, $data->nick)) {
-            $level = $bot->getLevel($result, $data->channel);
-            switch ($level) {
-                case USER_LEVEL_NORMAL:
-                case USER_LEVEL_FRIEND:
-                    break;
-                case USER_LEVEL_VOICE:
-                    $irc->voice($data->channel, $data->nick);
-                    break;
-                case USER_LEVEL_OPERATOR:
-                    $irc->op($data->channel, $data->nick);
-                    break;
-                case USER_LEVEL_MASTER:
-                case USER_LEVEL_BOT:
-                    $irc->mode($data->channel, '+ov '.$data->nick.' '.$data->nick);
-                    break;
+            $id = $irc->registerTimehandler(3000, $this, "_do_op");
+            $this->_op_count++;
+            $this->_candidates[$this->_op_count]['nick'] = $data->nick;
+            $this->_candidates[$this->_op_count]['channel'] = $data->channel;
+            $this->_candidates[$this->_op_count]['handler_id'] = $id;
+            $this->_candidates[$this->_op_count]['result'] = $result;
             }
         }
     }
@@ -496,6 +489,32 @@ class Net_SmartIRC_module_chancmds
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$tolookup.'\'s IP is '.$ip.'.');
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno '.$tolookup.'\'s IP.');
+        }
+    }
+    
+    function _do_op(&$irc)
+    {
+         global $bot;
+         
+         foreach($this->_candidates as $key => $_candidate) {
+         $level = $bot->getLevel($_candidate['result'], $_candidate['channel']);
+            switch ($level) {
+                case USER_LEVEL_NORMAL:
+                case USER_LEVEL_FRIEND:
+                    break;
+                case USER_LEVEL_VOICE:
+                    $irc->voice($_candidate['channel'], $_candidate['nick']);
+                    break;
+                case USER_LEVEL_OPERATOR:
+                case USER_LEVEL_MASTER:
+                    $irc->op($_candidate['channel'], $_candidate['nick']);
+                    break;
+                case USER_LEVEL_BOT:
+                    $irc->mode($_candidate['channel'], '+ov '.$_candidate['nick'].' '.$_candidate['nick']);
+                    break;
+            }
+            $irc->unregisterTimeid($_op_candidate['handler_id']);
+            unset($this->_candidates[$key]);
         }
     }
 }
