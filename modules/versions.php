@@ -70,7 +70,7 @@ class Net_SmartIRC_module_versions
         global $bot;
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $output = 'main: PHPBITCH_VERSION | ';
+            $output = 'main: '.PHPBITCH_VERSION.' | ';
             foreach ($irc->_modules as $key => $value) {
                 $output .= $key.': '.$value->version.' | ';
             }
