@@ -145,7 +145,7 @@ class Net_SmartIRC_module_users
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;
         }
-        
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel,'$nick ==  '.$nick);
         $newdata->host = $victim->host;
         $newdata->nick = $victim->nick;
         $newdata->ident = $victim->ident;
