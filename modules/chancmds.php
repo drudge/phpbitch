@@ -46,6 +46,8 @@ class Net_SmartIRC_module_chancmds
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!unban', $this, 'unban');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!op', $this, 'op');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deop', $this, 'deop');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!voice', $this, 'voice');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!devoice', $this, 'devoice');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!invite', $this, 'invite');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!topic', $this, 'topic');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!cycle', $this, 'cycle_channel');
@@ -227,6 +229,48 @@ class Net_SmartIRC_module_chancmds
             ($irc->isOpped($data->channel, $tobedeopped))) {
             
             $irc->deop($data->channel, $tobedeopped);
+        }
+    }
+        //===============================================================================================
+    function voice(&$irc, &$data)
+    {
+        global $bot;
+        $requester = $data->nick;
+        $tobevoiced = $data->messageex[1];
+        
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_OPERATOR) &&
+            !$irc->isVoiced($data->channel, $tobevoiced)) {
+            
+            $irc->voice($data->channel, $tobevoiced);
+        }
+    }
+    //===============================================================================================
+    function devoice(&$irc, &$data)
+    {
+        global $bot;
+        $requester = $data->nick;
+        $tobedevoiced = $data->messageex[1];
+        
+        
+        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobedevoiced)])) {
+            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)];
+        } else {
+            return;
+        }
+        
+        $newdata->host = $victim->host;
+        $newdata->nick = $victim->nick;
+        $newdata->ident = $victim->ident;
+        $newdata->channel = $data->channel;
+        $newresult = $bot->reverseverify($irc, $newdata);
+        
+        $result = $bot->reverseverify($irc, $data);
+        if (($result !== false) &&
+            ($bot->getLevel($result, $data->channel) >= USER_LEVEL_OPERATOR) &&
+            ($bot->getLevel($newresult, $data->channel) < USER_LEVEL_MASTER) &&
+            ($irc->isVoiced($data->channel, $tobedevoiced))) {
+            
+            $irc->devoice($data->channel, $tobedevoiced);
         }
     }
     //===============================================================================================
