@@ -77,12 +77,50 @@ class PHPBitch
         
         return false;
     }
+    
+    function isAuthorized(&$irc, $ircnick, $channel, $level)
+    {
+        global $mdb;
+        
+        if (!$irc->isJoined($ircnick, $channel)) {
+            return false;
+        }
+        
+        $user = &$irc->channel[strtolower($channel)]->user[strtolower($ircnick)];
+        
+        // check if the user is recognized and has right host, ident etc..
+        $data->nick = $ircnick;
+        $data->host = $user->host;
+        $data->ident = $user->ident;
+        $result = reverseverify($irc, $data);
+        
+        if ($result !== false) {
+            $dbnick = $result;
+            $query = "SELECT level FROM users_levels WHERE user = '".$dbnick."' AND channel = '".$channel."'";
+            $result = $mdb->query($query);
+            if (MDB::isError($result)) {
+                mdbError($result);
+                return;
+            }
+            
+            $row = $mdb->fetchRow($result);
+            $dblevel = $row['level'];
+            if ($dblevel >= $level) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+    
     //===============================================================================================
     function reverseverify(&$irc, &$data)
     {
         global $mdb;
         
-        $query = "SELECT nickname,ident,host FROM users";
+        $query = "SELECT nickname, host FROM users WHERE ident = '".$data->ident."'";
         $result = $mdb->query($query);
         if (MDB::isError($result)) {
             mdbError($result);
@@ -95,24 +133,19 @@ class PHPBitch
         while ($row = $mdb->fetchInto($result)) {
             $dbip = gethostbyname($row['host']);
             $dbnickname = $row['nickname'];
-            $dbident = $row['ident'];
             
-            if ($userip == $dbip && $data->ident == $dbident) {
+            if ($userip == $dbip) {
                 if ($dbnickname != $data->nick) {
                     $foundnick = $dbnickname;
+                } else {
+                    $foundnick = $data->nick;
                 }
                 break;
             }
         }
         
         if ($foundnick !== false) {
-            $result = $this->verify($irc, $data, $foundnick);
-        } else {
-            $result = $this->verify($irc, $data);
-        }
-        
-        if ($result !== false) {
-            return $result;
+            return $foundnick;
         } else {
             return false;
         }
