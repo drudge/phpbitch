@@ -6,8 +6,9 @@
  * $Date$
  */
 
-/* database settings */
+$config = array();
 
+/* database settings */
 $db_type = 'mysql';
 $db_server = 'localhost';
 $db_username = 'phpbitch';
@@ -16,9 +17,6 @@ $db_db = 'phpbitch';
 $config['db_dsn'] = "$db_type://$db_username:$db_password@$db_server/$db_db";
 
 /* general settings */
-
-$config = array();
-
 $config['real_name'] = 'IRC service bot for #php-gtk';
 $config['channels'] = array('#php-gtk');
 $config['nick'] = 'phpbitch';
