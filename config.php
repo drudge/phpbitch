@@ -8,11 +8,11 @@
 
 /* database settings */
 
-$database_type = 'mysql';
-$database_server = 'localhost';
-$database_username = 'phpbitch';
-$database_password = 'php';
-$database_db = 'phpbitch';
+$db_type = 'mysql';
+$db_server = 'localhost';
+$db_username = 'phpbitch';
+$db_password = 'php';
+$db_db = 'phpbitch';
 $config['db_dsn'] = "$db_type://$db_username:$db_password@$db_server/$db_db";
 
 /* general settings */
