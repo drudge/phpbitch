@@ -31,7 +31,7 @@ class Net_SmartIRC_module_botcmds
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionids;
+    var $actionids = array();
     
     function module_init(&$irc)
     {

@@ -32,30 +32,25 @@ class Net_SmartIRC_module_users
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>, Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
     
-    var $actionid1;
-    var $actionid2;
-    var $actionid3;
-    var $actionid4;
+    var $actionids = array();
     
     function module_init(&$irc)
     {
-        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who ', $this, 'who');
-        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!adduser', $this, 'adduser');
-        $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deluser', $this, 'deluser');
-        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!level', $this, 'level');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!who ', $this, 'who');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!adduser', $this, 'adduser');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deluser', $this, 'deluser');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!level', $this, 'level');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid1);
-        $irc->unregisterActionid($this->actionid2);
-        $irc->unregisterActionid($this->actionid3);
-        $irc->unregisterActionid($this->actionid4);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     //===============================================================================================    
     function who(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $lookupfor = $data->messageex[1];
@@ -155,8 +150,8 @@ class Net_SmartIRC_module_users
         $newdata->ident = $victim->ident;
         $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
-
-        $level=$bot->get_level($newresult);
+        
+        $level = $bot->get_level($newresult);
         if ($newresult !== false) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' has a level of ['.$level.'].');
         } else {

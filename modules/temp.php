@@ -31,16 +31,18 @@ class Net_SmartIRC_module_temp
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionid;
+    var $actionids = array();
     
     function module_init(&$irc)
     {
-        $this->actionid = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!temp', $this, 'temp');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!temp', $this, 'temp');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     
     //===============================================================================================
@@ -51,7 +53,6 @@ class Net_SmartIRC_module_temp
             return;
         }
         
-        global $config;
         $requester = $data->nick;
         $type = $data->messageex[1];
         $convert = $data->messageex[2];

@@ -31,11 +31,11 @@ class Net_SmartIRC_module_google
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionids;
+    var $actionids = array();
     
     function module_init(&$irc)
     {
-        $this->actionids = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!google', $this, 'google');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!google', $this, 'google');
     }
     
     function module_exit(&$irc)

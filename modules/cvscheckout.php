@@ -32,7 +32,7 @@ class Net_SmartIRC_module_cvscheckout
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
     
-    var $actionids;
+    var $actionids = array();
     
     function module_init(&$irc)
     {
