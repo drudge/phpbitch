@@ -230,17 +230,10 @@ class PHPBitch
         $candidates = array();
         foreach ($config['friend_bots'] as $key => $value) {
             $bot = $value;
-            if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
-                $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
+            if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($bot)])) {
+                $user = &$irc->channel[strtolower($data->channel)]->users[strtolower($bot)];
                 
-                $newdata->host = $user->host;
-                $newdata->nick = $user->nick;
-                $newdata->ident = $user->ident;
-                $newdata->channel = $data->channel;
-                $result = $this->reverseverify($irc, $newdata);
-                
-                if ($result !== false &&
-                    $this->get_level($user->nick) == USER_LEVEL_BOT) {
+                if ($bot->isAuthorized($irc, $user->nick, $data->channel, USER_LEVEL_BOT)) {
                     $candidates[] = $user->nick;
                 }
             }
