@@ -142,7 +142,7 @@ class Net_SmartIRC_module_users
         if (isset($irc->channel[$data->channel]->users[strtolower($nick)])) {
             $victim = &$irc->channels[strtolower($data->channel)]->users[strtolower($nick)];
         } else {
-            return;
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $nick.' is not in '.$data->channel.'!');
         }
         
         $newdata->host = $victim->host;
