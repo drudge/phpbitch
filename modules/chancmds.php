@@ -116,7 +116,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
         $topic = $data->message;
-
+        
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
@@ -133,6 +133,9 @@ class Net_SmartIRC_module_chancmds
     function invite(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         $requester = $data->nick;
         $toinvite = $data->messageex[1];
         
@@ -168,6 +171,9 @@ class Net_SmartIRC_module_chancmds
     function onjoin(&$irc, &$data)
     {
         global $bot;
+        if(!$bot->isMastah($irc, $data)) {
+            return;
+        }
         
         // don't verify ourself
         if (strpos($data->nick, $irc->_nick) !== false) {
