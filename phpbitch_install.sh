@@ -55,7 +55,7 @@ eval SETUP_MYSQL=${SETUP_MYSQL:="N"}
 if [ "$SETUP_MYSQL" = "y" -o "$SETUP_MYSQL" = "Y" ]
 then
     MYSQL_FILE="$INSTALL_DIR/phpbitch.sql"
-    if [ ! -e $MYSQL_FILE ]; then echo "Exiting: Cannot find $MYSQL_FILE!"; exit 1; 
+    if [ ! -e $MYSQL_FILE ]; then echo "Exiting: Cannot find $MYSQL_FILE!"; exit 1;fi 
     
     read -p "MySQL Username? [phpbitch]: " MYSQL_USER
     eval MYSQL_USER=${MYSQL_USER:="phpbitch"}
