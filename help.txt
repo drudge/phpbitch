@@ -4,7 +4,8 @@
  * $Author$
  * $Date$
  */
- 
+<help>
+
 phpbitch's Command Help
 -----------------------
 Levels:
@@ -34,8 +35,12 @@ Commands:
 !forget $keyword - Erases $keyword from brain. (lvl 3 required).
 !join $channel $key - Joins $channel with $key (lvl 3 required).
 !part $channel - Leaves $channel (lvl 3 required).
-!adduser $nick $ident $host $level - Adds user to bot's userlist (lvl 4 required).
-!deluser $nick - Removes user from bot's userlist (lvl 4 required).
+!adduser $nick $ident $host - Adds user to bot's userlist (lvl 4 required).
+!addlevel $nick $channe $level - Adds the level for user (lvl 4 required).
+!deluser $nick - Removes user from bot's userlist and all his levels (lvl 4 required).
+!dellevel $nick $channel - Removes the level of the user (lvl 4 required).
 !cvs-checkout - rebuilds the bot from CVS and restarts it (lvl 4 required).
 !mastah - all bots will reply if they are the current bot-master or not (lvl 4 required).
-!who - looks up a user in all bots databases.
+!who - looks up a user in the master bots databases.
+!who_all - looks up a user in all bots databases.
+</help>
