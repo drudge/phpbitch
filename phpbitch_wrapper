@@ -1,4 +1,4 @@
 #!/bin/bash
 while true;
-do ./phpbitch.php > atbs_php.log 2>&1;
+do ./phpbitch.php > phpbitch_php.log 2>&1;
 done
