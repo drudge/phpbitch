@@ -201,6 +201,7 @@ $irc->setAutoRetry(true);
 $irc->setAutoReconnect(true);
 $irc->setReceiveTimeout(600);
 $irc->setTransmitTimeout(600);
+$irc->setSenddelay(500);
 
 // Functionality
 $irc->loadModule('google');
