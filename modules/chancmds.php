@@ -175,15 +175,13 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         if ($result !== false && !$irc->isOpped($data->channel, $data->nick)) {
-            $id = $irc->registerTimehandler(3000, $bot, "_do_op");
+            $id = $irc->registerTimehandler(3000, $this, "_do_op");
             $this->_op_count++;
             $this->_candidates[$this->_op_count]['nick'] = $data->nick;
             $this->_candidates[$this->_op_count]['channel'] = $data->channel;
             $this->_candidates[$this->_op_count]['handler_id'] = $id;
             $this->_candidates[$this->_op_count]['result'] = $result;
         }
-        
-        print_r($this->_candidates);
     }
     //===============================================================================================
     function op(&$irc, &$data)
@@ -493,14 +491,11 @@ class Net_SmartIRC_module_chancmds
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno '.$tolookup.'\'s IP.');
         }
     }
-    
+    //===============================================================================================
     function _do_op(&$irc)
     {
          global $bot;
          
-         echo 'in _do_op:'."\n";
-         
-        print_r($this->_candidates);
          foreach($this->_candidates as $key => $_candidate) {
          $level = $bot->getLevel($_candidate['result'], $_candidate['channel']);
             switch ($level) {
