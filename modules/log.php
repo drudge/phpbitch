@@ -49,6 +49,7 @@ class Net_SmartIRC_module_log
     {
         global $bot;
         
+        $data->channel = '#php-gtk';
         $result = $bot->reverseverify($irc, $data);
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             if (!isset($data->messageex[1])) {
