@@ -118,7 +118,7 @@ class Net_SmartIRC_module_botcmds
     function say(&$irc, &$data)
     {
         global $bot;
-        $channel = strtolower($data->messageex[1]);
+        $channel = $data->messageex[1];
         $message = '';
         for ($i = 2; $i < count($data->messageex); $i++) {
             $message .= ' '.$data->messageex[$i];
@@ -132,14 +132,14 @@ class Net_SmartIRC_module_botcmds
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL,$channel,trim($message));
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, trim($message));
         }
     }
     //===============================================================================================
     function act(&$irc, &$data)
     {
         global $bot;
-        $channel = strtolower($data->messageex[1]);
+        $channel = $data->messageex[1];
         $message = '';
         for ($i = 2; $i < count($data->messageex); $i++) {
             $message .= ' '.$data->messageex[$i];
@@ -160,7 +160,7 @@ class Net_SmartIRC_module_botcmds
     function notice(&$irc, &$data)
     {
         global $bot;
-        $channel = strtolower($data->messageex[1]);
+        $channel = $data->messageex[1];
         $message = '';
         for ($i = 2; $i < count($data->messageex); $i++) {
             $message .= ' '.$data->messageex[$i];
