@@ -343,9 +343,9 @@ class Net_SmartIRC_module_chancmds
             return;
         }
         
-        $newdata->host = $user->host;
-        $newdata->nick = $user->nick;
-        $newdata->ident = $user->ident;
+        $newdata->host = $victim->host;
+        $newdata->nick = $victim->nick;
+        $newdata->ident = $victim->ident;
         $newdata->channel = $data->channel;
         $newresult = $bot->reverseverify($irc, $newdata);
         
