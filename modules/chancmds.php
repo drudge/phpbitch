@@ -31,6 +31,8 @@ class Net_SmartIRC_module_chancmds
     var $actionid16;
     var $actionid17;
     var $actionid18;
+    var $actionid19;
+    var $actionid20;
     
     function module_init(&$irc)
     {
@@ -50,8 +52,10 @@ class Net_SmartIRC_module_chancmds
         $this->actionid14 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!part', $this, 'part_channel');
         $this->actionid15 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!help', $this, 'help');
         $this->actionid16 = $irc->registerActionhandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin');
-        $this->actionid17 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!uptime$', $this, 'uptime');
+        $this->actionid17 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!dns', $this, 'dns');
         $this->actionid18 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!news$', $this, 'getnews');
+        $this->actionid19 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!down$', $this, 'down');
+        $this->actionid20 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ping$', $this, 'ping');
     }
     
     function module_exit(&$irc)
@@ -74,6 +78,8 @@ class Net_SmartIRC_module_chancmds
         $irc->unregisterActionid($this->actionid16);
         $irc->unregisterActionid($this->actionid17);
         $irc->unregisterActionid($this->actionid18);
+        $irc->unregisterActionid($this->actionid19);
+        $irc->unregisterActionid($this->actionid20);
     }
     
     //===============================================================================================
@@ -257,6 +263,25 @@ class Net_SmartIRC_module_chancmds
         }
     }
     //===============================================================================================
+    function down(&$irc, &$data)
+    {
+        global $bot;
+        $tobedeopped = $data->nick;
+
+        // don't verify ourself
+        if (strpos($data->nick, $irc->_nick) !== false) {
+            return;
+        }
+
+        if ($data->channel == $data->channel) {
+            $result = $bot->reverseverify($irc, $data->host, $data->nick);
+
+            if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
+                $irc->deop($data->channel, $tobedeopped);
+            }
+        }
+    }
+    //===============================================================================================
     function kick(&$irc, &$data)
     {
         global $config;
@@ -367,27 +392,7 @@ class Net_SmartIRC_module_chancmds
 
         $irc->setSenddelay(250);
     }
-    //===============================================================================================       
-    function uptime(&$irc,&$data)
-    {
-        global $config;
-        global $start;
-        $time=time()-$start;
-        
-        $weeks=$time/604800; 
-        $days=($time%604800)/86400; 
-        $hours=(($time%604800)%86400)/3600; 
-        $minutes=((($time%604800)%86400)%3600)/60; 
-        $seconds=(((($time%604800)%86400)%3600)%60); 
-        
-        if(round($days)) $timestring.=round($days).' day(s) '; 
-        if(round($hours)) $timestring.=round($hours).' hour(s) '; 
-        if(round($minutes)) $timestring.=round($minutes).' minute(s)'; 
-        if(!round($minutes)&&!round($hours)&&!round($days)) $timestring.=round($seconds).' second(s)'; 
-
-        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I have been running for '.$timestring);
-    }
-    //===============================================================================================       
+        //===============================================================================================       
     function getnews(&$irc, &$data)
     {
         /*
@@ -428,6 +433,25 @@ class Net_SmartIRC_module_chancmds
     {
         global $config;
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'At the tone, the time will be: '.date('H:iT').'. *ding*');
+    }
+    //===============================================================================================
+    function ping(&$irc,&$data)
+    {
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, '*PONG*');
+    }
+    //===============================================================================================
+    function dns(&$irc,&$data)
+    {
+        $requester = $data->nick;
+        $tolookup = $data->messageex[1];
+        $user = &$irc->channel[$data->channel]->users[strtolower($tolookup)];
+        $ip = gethostbyname($user->host);
+        
+        if (!empty($ip)) {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$tolookup.'\'s IP is '.$ip.'.');
+        } else {
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno '.$tolookup.'\'s IP.');
+        }
     }
 }
 ?>
