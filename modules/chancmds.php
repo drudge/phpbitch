@@ -95,7 +95,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
@@ -115,7 +115,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR)) {
             $irc->part($chan,'Requested by '.$requester);
@@ -133,7 +133,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
             
@@ -153,7 +153,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
             $irc->invite($toinvite,$data->channel);
@@ -172,7 +172,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
             $irc->quit('Killed by '.$data->nick);
@@ -189,7 +189,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
         if ($result !== false && !$irc->isOpped($data->channel, $data->nick)) {
             $level = $bot->get_level($data->nick);
             switch ($level) {
@@ -221,7 +221,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && !$irc->isOpped($data->channel, $tobeopped)) {
             $irc->op($data->channel, $tobeopped);
@@ -240,7 +240,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
             $irc->deop($data->channel, $tobedeopped);
@@ -257,7 +257,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped)) {
             $irc->deop($data->channel, $tobedeopped);
@@ -282,7 +282,7 @@ class Net_SmartIRC_module_chancmds
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
             $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
@@ -301,7 +301,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
 
@@ -349,7 +349,7 @@ class Net_SmartIRC_module_chancmds
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) >= USER_LEVEL_VOICE)) {
             $irc->unban($data->channel, $tobebanned);

@@ -119,7 +119,7 @@ class Net_SmartIRC_module_brain
             return;
         }
 
-        $result = $bot->reverseverify($irc, $data->host, $data->nick);
+        $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
 
         if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM brain WHERE query='".$usersquery."'";

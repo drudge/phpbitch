@@ -75,9 +75,9 @@ class PHPBitch
         return 0;
     }
     //===============================================================================================
-    function reverseverify(&$irc, $host, $nick)
+    function reverseverify(&$irc, $host, $nick, $ident)
     {
-        $query = "SELECT nickname,dnsalias FROM dnsentries";
+        $query = "SELECT nickname,ident,dnsalias FROM dnsentries";
         $result = $this->dbquery($query);
 
         $list = array();
@@ -96,9 +96,9 @@ class PHPBitch
         }
 
         if ($foundnick !== false) {
-            $result = $this->verify($irc, '#php-gtk', $foundnick, $nick);
+            $result = $this->verify($irc, '#php-gtk', $foundnick, $ident, $nick);
         } else {
-            $result = $this->verify($irc, '#php-gtk', $nick);
+            $result = $this->verify($irc, '#php-gtk', $nick, $ident);
         }
 
         if ($result !== false) {
@@ -108,7 +108,7 @@ class PHPBitch
         }
     }
     //===============================================================================================
-    function verify(&$irc, $channel, $nickname, $ircnickname = null)
+    function verify(&$irc, $channel, $nickname, $ident, $ircnickname = null)
     {
         global $config;
         $who = $nickname;
@@ -154,7 +154,7 @@ class PHPBitch
         while ($bot = array_shift($bots)) {
             if (isset($irc->channel[$data->channel]->users[strtolower($bot)])) {
                 $user = &$irc->channel[$data->channel]->users[strtolower($bot)];
-                $result = $this->reverseverify($irc, $user->host, $user->nick);
+                $result = $this->reverseverify($irc, $user->host, $user->nick, $user->ident);
                 
                 if ($result !== false &&
                     $this->get_level($user->nick) == USER_LEVEL_BOT) {
