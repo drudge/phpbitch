@@ -33,5 +33,5 @@ $config['irc_server']="irc.stealth.net";
 $config['irc_port']="5555";
 
 // friends go here, the order is the priority for mastermode
-$config['friend_bots'] = array('phpbitch','gtkbitch', 'php-gtk');
+$config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch');
 ?>
