@@ -482,7 +482,7 @@ class PHPBitch
         // Get the response
         $temp=explode(" ",$data->message);
         $response="";
-        for($i=2;$i<count($temp);$i++)
+        for ($i=2;$i<count($temp);$i++)
             $response.=" ".$temp[$i];
             
          $response=trim($response);
@@ -603,10 +603,11 @@ class PHPBitch
     function help(&$irc, &$data)
     {
         $lines=file('help.txt');
+        $irc->setSenddelay(500);
         foreach($lines as $linenums => $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
-            sleep(2);
         }
+        $irc->setSenddelay(250);
     }
     //===============================================================================================       
     function uptime(&$irc,&$data)
