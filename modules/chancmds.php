@@ -369,9 +369,9 @@ class Net_SmartIRC_module_chancmds
         }
         // banhandling and rights we all do in ban(), so lets use it!
         $result = $this->ban($irc, $data);
-        if ($result) {
-            $irc->kick($data->channel, $tobebanned, 'Banned: '.$reason);
-        }
+        //if ($result) {
+            $irc->kick($data->channel, $tobebanned, 'Banned: ['.$requester.']'.$reason);
+       // }
     }
     //===============================================================================================
     function unban(&$irc, &$data)
