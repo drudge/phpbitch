@@ -1,0 +1,29 @@
+phpbitch's Command Help
+-----------------------
+Levels:
+0=Normal user
+1=Friend
+2=Auto Voice
+3=Auto Op
+4=Bot Master
+
+Commands:
+!help-Displays this help.
+!time-Displats current time on my server.
+!uptime-Displays how long bot has been running.
+!search $keyword - Querys bot's brain for $keyword.
+!up/!opme-Ops/voices you depending on level.
+!op $nick - Grants operator status to $nick (lvl3 required).
+!deop $nick - Revokes operator status to $nick (lvl3 required).
+!topic $topic - Sets topic to $topic (lvl2 required).
+!invite $nick - Invites $nick to current channel (lvl2 required).
+!kick $nick - Kicks $nick from current channel (lvl2 required).
+!ban $nick - Bans $nick from current channel (lvl2 required).
+!kb $nick - Kick-bans $nick from current channel (lvl2 required).
+!die - Disconnects bot from the network (lvl4 required).
+!learn $keyword $response - Learns $keyword as $response. (lvl 3 required).
+!forget $keyword - Erases $keyword from brain. (lvl 3 required).
+!join $channel $key - Joins $channel with $key (lvl 3 required).
+!part $channel - Leaves $channel (lvl 3 required).
+!adduser $nick $host $level - Adds user to bot's userlist (lvl 4 required).
+!deluser $nick - Removes user from bot's userlist (lvl 4 required).
