@@ -59,7 +59,7 @@ class Net_SmartIRC_module_mastah
             if ($bot->isMastah($irc, $data)) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am mastah!');
             } else {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am not mastah');
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'I am not mastah. :-(');
             }
         }
     }
