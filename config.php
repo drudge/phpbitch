@@ -32,6 +32,8 @@ $config['answer_questions'] = true;
 $config['irc_server']="irc.stealth.net";
 $config['irc_port']="5555";
 
+$config['send_delay'] = 500;
+
 // friends go here, the order is the priority for mastermode
 $config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch');
 ?>
