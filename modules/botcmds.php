@@ -41,6 +41,7 @@ class Net_SmartIRC_module_botcmds
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!say', $this, 'say');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!act', $this, 'act');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_QUERY, '^!notice', $this, 'notice');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!phpversion', $this, 'php_version');
     }
     
     function module_exit(&$irc)
@@ -177,6 +178,11 @@ class Net_SmartIRC_module_botcmds
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_NOTICE,$channel,trim($message));
         }
+    }
+    //===============================================================================================
+    function php_info(&$irc, &$data)
+    {
+        $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, phpversion());
     }
 }
 ?>
