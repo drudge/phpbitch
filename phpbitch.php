@@ -73,7 +73,7 @@ class PHPBitch
             $row = mysql_fetch_array($result);
             return $row[0];
         }
-        return 0;
+        return false;
     }
     //===============================================================================================
     function reverseverify(&$irc, &$data)
