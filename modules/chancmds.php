@@ -48,6 +48,7 @@ class Net_SmartIRC_module_chancmds
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deop', $this, 'deop');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!invite', $this, 'invite');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!topic', $this, 'topic');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!cycle', $this, 'cycle_channel');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!join', $this, 'join_channel');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!part', $this, 'part_channel');
         $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!help', $this, 'help');
@@ -77,6 +78,24 @@ class Net_SmartIRC_module_chancmds
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Attempting to join '.$chan.'...');
             
+            if (isset($key)) {
+                $irc->join($chan, $key);
+            } else {
+                $irc->join($chan);
+            }
+        }
+    }
+        //===============================================================================================
+    function cycle_channel(&$irc, &$data)
+    {
+        global $bot;
+        $chan = $data->messageex[1];
+        if (isset($data->messageex[2])) {
+            $key = $data->messageex[2];
+        }
+        
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {            
+            $irc->part($chan, 'Cycling, be right back ;)');
             if (isset($key)) {
                 $irc->join($chan, $key);
             } else {
