@@ -161,6 +161,7 @@ $irc->setTransmitTimeout(600);
 // Functionality
 $irc->loadModule('google');
 $irc->loadModule('chancmds');
+$irc->loadModule('botcmds');
 $irc->loadModule('users');
 $irc->loadModule('brain');
 
