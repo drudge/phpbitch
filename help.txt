@@ -13,6 +13,7 @@ Levels:
 2=Auto Voice
 3=Auto Op
 4=Bot Master
+5=Bot in Botnet
 
 Commands:
 !help - Displays this help.
