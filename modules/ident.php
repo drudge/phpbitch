@@ -50,34 +50,40 @@ class Net_SmartIRC_module_ident
     {
         global $config;
         global $bot;
-        $nick = $data->messageex[1];
-        $pass = md5($data->messageex[2]);
-        $level = $data->messageex[3];
-        $channel = $data->messageex[4];
         
-        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Entering identify mode...');
-
-        if ($pass == $config['emergency_users'][strtolower($nick)] && ($level <= $bot->getLevel($nick, $channel))) {
-            $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
-            switch ($level) {
-                case USER_LEVEL_NORMAL:
-                case USER_LEVEL_FRIEND:
-                    break;
-                case USER_LEVEL_VOICE:
-                    $irc->voice($channel, $data->nick);
-                    break;
-                case USER_LEVEL_OPERATOR:
-                    $irc->op($channel, $data->nick);
-                    break;
-                case USER_LEVEL_MASTER:
-                case USER_LEVEL_BOT:
-                    $irc->mode($channel, '+ov '.$data->nick.' '.$data->nick);
-                    break;
-            }
+        if (count($data->messageex) < 5) {
+            $irc->message($data->type, $data->nick, 'usage: !ident <user> <skey> <level> <#channel>');
+            return;
         } else {
-            $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Alert: Wrong infomation passed, logging.');
+            $nick = $data->messageex[1];
+            $pass = md5($data->messageex[2]);
+            $level = $data->messageex[3];
+            $channel = $data->messageex[4];
             
-        }
+            $irc->message($data->type, $data->nick, 'Entering identify mode...');
+    
+            if ($pass == $config['emergency_users'][strtolower($nick)] && ($level <= $bot->getLevel($nick, $channel))) {
+                $irc->message($data->type, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
+                switch ($level) {
+                    case USER_LEVEL_NORMAL:
+                    case USER_LEVEL_FRIEND:
+                        break;
+                    case USER_LEVEL_VOICE:
+                        $irc->voice($channel, $data->nick);
+                        break;
+                    case USER_LEVEL_OPERATOR:
+                        $irc->op($channel, $data->nick);
+                        break;
+                    case USER_LEVEL_MASTER:
+                    case USER_LEVEL_BOT:
+                        $irc->mode($channel, '+ov '.$data->nick.' '.$data->nick);
+                        break;
+                }
+            } else {
+                $irc->message($data->type, $data->nick, 'Alert: Wrong infomation passed, logging.');
+                
+            }
+    }
     }
 }
 ?>
