@@ -95,7 +95,7 @@ class Net_SmartIRC_module_brain
         if ($data->channel == $data->channel) {
             $result = $bot->reverseverify($irc, $data->host, $data->nick);
             
-            if ($result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+            if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
                 $query = "INSERT INTO brain( `query`,`response`,`count`) VALUES('".$usersquery."','".$response."','0')";
                 $res = $bot->dbquery($query);
                 
@@ -120,7 +120,7 @@ class Net_SmartIRC_module_brain
         
         $result = $bot->reverseverify($irc, $data->host, $data->nick, $data->ident);
         
-        if ( $result !== false && ($bot->get_level($data->nick) == USER_LEVEL_MASTER)) {
+        if ( $result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $query = "DELETE FROM brain WHERE query='".$usersquery."'";
             $res = $bot->dbquery($query);
             
