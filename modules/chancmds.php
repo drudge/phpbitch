@@ -122,10 +122,17 @@ class Net_SmartIRC_module_chancmds
             return;
         }
         
+        /* old style
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
             
+            $irc->setTopic($data->channel,substr($topic,7,strlen($topic)-7));
+        }
+        */
+        
+        /* new style */
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_VOICE)) {
             $irc->setTopic($data->channel,substr($topic,7,strlen($topic)-7));
         }
     }
