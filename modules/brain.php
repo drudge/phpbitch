@@ -200,7 +200,7 @@ class Net_SmartIRC_module_brain
             if ($numrows > 0) {
                 $row = mysql_fetch_array($result);
                 $response = $row[0];
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': ['.$search.'] '.$response);
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': '.$response);
             } 
         } 
     }
