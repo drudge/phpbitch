@@ -91,6 +91,8 @@ class Net_SmartIRC_module_botcmds
             return;
         }
         
+        // need a valid channel for verify()
+        $data->channel = $channel;
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_MASTER)) {
@@ -130,13 +132,9 @@ class Net_SmartIRC_module_botcmds
             return;
         }
         
+        // need a valid channel for verify()
         $data->channel = $channel;
         $result = $bot->reverseverify($irc, $data);
-        if($result !== false) {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "result: ".$result." level: ".$bot->get_level($result));
-        } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, "result _is_ false!");
-        }
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $channel, trim($message));
@@ -157,6 +155,8 @@ class Net_SmartIRC_module_botcmds
             return;
         }
         
+        // need a valid channel for verify()
+        $data->channel = $channel;
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
@@ -178,6 +178,8 @@ class Net_SmartIRC_module_botcmds
             return;
         }
         
+        // need a valid channel for verify()
+        $data->channel = $channel;
         $result = $bot->reverseverify($irc, $data);
         
         if ($result !== false && ($bot->get_level($result) == USER_LEVEL_MASTER)) {
