@@ -235,14 +235,16 @@ class PHPBitch
             if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($bot)])) {
                 $user = &$irc->channel[strtolower($data->channel)]->users[strtolower($bot)];
                 
-                if ($this->isAuthorized($irc, $user->nick, $data->channel, USER_LEVEL_BOT)) {
+                if ($this->isAuthorized($irc, $user->nick, $data->channel, USER_LEVEL_BOT) &&
+                    $this->isOpped($user->nick, $data->channel)) {
                     $candidates[] = $user->nick;
                 }
             }
         }
         
-        if (isset($candidates[0]) && $candidates[0] == $irc->_nick) {
-            // ok, it's showtime! we are the mastah!!!
+        if (isset($candidates[0]) &&
+            $candidates[0] == $irc->_nick) {
+            // ok, it's showtime! we are the mastah _and_ we are op!!!
             return true;
         } else {
             return false;
