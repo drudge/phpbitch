@@ -110,7 +110,7 @@ class PHPBitch
         }
     }
     //===============================================================================================
-    function verify(&$irc, &$data, $ircnickname = null)
+    function verify(&$irc, &$data, $dbnickname = null)
     {
         global $config;
         $who = $data->nick;
@@ -118,14 +118,12 @@ class PHPBitch
         $channel = $data->channel;
         $ident = $data->ident;
         
-        if ($ircnickname !== null) {
-            $dbwho = $data->nick;
-            $who = $ircnickname;
-            $loweredwho = strtolower($who);
+        if ($dbnickname !== null) {
+            $dbwho = $dbnickname;
         } else {
-            $dbwho = $who;
+            $dbwho = $data->nick;
         }
-
+        
         if (isset($irc->channel[$channel]->users[$loweredwho])) {
             $query = "SELECT nickname,ident,dnsalias FROM dnsentries WHERE nickname='".$dbwho."'";
             $result = $this->dbquery($query);
