@@ -78,12 +78,11 @@ class PHPBitch
         return false;
     }
     
-    function isAuthorized(&$irc, $ircnick, $channel, $level)
+    function getLevel(&$irc, $ircnick, $channel, $level = null)
     {
         global $mdb;
         
         if (!$irc->isJoined($channel, $ircnick)) {
-            echo "!isJoined()\n";
             return false;
         }
         
@@ -97,7 +96,7 @@ class PHPBitch
         
         if ($result !== false) {
             $dbnick = $result;
-            $query = "SELECT level FROM users_levels WHERE user = '".$dbnick."' AND (channel = '".$channel."' OR channel = '*')";
+            $query = "SELECT level FROM users_levels WHERE user = '".$dbnick."' AND (channel = '".$channel."' OR channel = '*') ORDER BY channel ASC";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
@@ -106,14 +105,26 @@ class PHPBitch
             
             $row = $mdb->fetchRow($result);
             $dblevel = $row['level'];
-            if ($dblevel >= $level) {
-                return true;
+            
+            if ($level === null) {
+                // we want to know which level this user has
+                return $dblevel;
             } else {
-                return false;
+                // we know which level, but is this user authorized?
+                if ($dblevel >= $level) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } else {
             return false;
         }
+    }
+    
+    function isAuthorized(&$irc, $ircnick, $channel, $level)
+    {
+        return $this->getLevel($irc, $ircnick, $channel, $level);
     }
     
     //===============================================================================================
