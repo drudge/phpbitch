@@ -51,7 +51,20 @@ class Net_SmartIRC_module_cvscheckout
         $result = $bot->reverseverify($irc, $data);
         if ($result !== false && $bot->get_level($result) == USER_LEVEL_MASTER) {
             $irc->message($data->type, $data->nick, 'CVS checkout starting...', SMARTIRC_CRITICAL);
-            exec('cd ~; cvs -d :pserver:meebey@cvs.meebey.net:/cvs checkout phpbitch');
+            
+            $file = file('~/.cvspass');
+            if (!in_array('anonymous@cvs.meebey.net', $file)) {
+                $fp = fopen('~/.cvspass', 'a');
+                fwrite($fp, "/1 :pserver:anonymous@cvs.meebey.net:2401/cvs A\n");
+                fclose($fp);
+            }
+            
+            $output = array();
+            exec('cd ~; cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch', $output);
+            exec('cd ~; cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch', $output);
+            foreach ($output as $line) {
+                $irc->message($data->type, $data->nick, $line, SMARTIRC_CRITICAL);
+            }
             $irc->message($data->type, $data->nick, 'CVS checkout done.', SMARTIRC_CRITICAL);
             $irc->message($data->type, $data->nick, 'restarting...', SMARTIRC_CRITICAL);
             $irc->quit('CVS rebuilt, restarting...', SMARTIRC_CRITICAL);
