@@ -31,79 +31,42 @@ class Net_SmartIRC_module_chancmds
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionid1;
-    var $actionid2;
-    var $actionid3;
-    var $actionid4;
-    var $actionid5;
-    var $actionid6;
-    var $actionid7;
-    var $actionid8;
-    var $actionid9;
-    var $actionid9;
-    var $actionid10;
-    var $actionid12;
-    var $actionid13;
-    var $actionid14;
-    var $actionid15;
-    var $actionid16;
-    var $actionid17;
-    var $actionid18;
-    var $actionid19;
-    var $actionid20;
+    var $actionids;
     
     function module_init(&$irc)
     {
-        $this->actionid1 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!die', $this, 'quit');
-        $this->actionid2 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!time', $this, 'saytime');
-        $this->actionid3 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!opme$', $this, 'onjoin');
-        $this->actionid4 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!up$', $this, 'onjoin');
-        $this->actionid5 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kick', $this, 'kick');
-        $this->actionid6 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ban', $this, 'ban');
-        $this->actionid7 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kb', $this, 'kickban');
-        $this->actionid8 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!unban', $this, 'unban');
-        $this->actionid9 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!op', $this, 'op');
-        $this->actionid10 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deop', $this, 'deop');
-        $this->actionid11 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!invite', $this, 'invite');
-        $this->actionid12 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!topic', $this, 'topic');
-        $this->actionid13 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!join', $this, 'join_channel');
-        $this->actionid14 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!part', $this, 'part_channel');
-        $this->actionid15 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!help', $this, 'help');
-        $this->actionid16 = $irc->registerActionhandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin');
-        $this->actionid17 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!dns', $this, 'dns');
-        $this->actionid18 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!news$', $this, 'getnews');
-        $this->actionid19 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!down$', $this, 'down');
-        $this->actionid20 = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ping$', $this, 'ping');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!die', $this, 'quit');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!time', $this, 'saytime');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!opme$', $this, 'onjoin');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!up$', $this, 'onjoin');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kick', $this, 'kick');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ban', $this, 'ban');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!kb', $this, 'kickban');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!unban', $this, 'unban');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!op', $this, 'op');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!deop', $this, 'deop');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!invite', $this, 'invite');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!topic', $this, 'topic');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!join', $this, 'join_channel');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!part', $this, 'part_channel');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!help', $this, 'help');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_JOIN, '.*', $this, 'onjoin');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!dns', $this, 'dns');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!news$', $this, 'getnews');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!down$', $this, 'down');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!ping$', $this, 'ping');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid1);
-        $irc->unregisterActionid($this->actionid2);
-        $irc->unregisterActionid($this->actionid3);
-        $irc->unregisterActionid($this->actionid4);
-        $irc->unregisterActionid($this->actionid5);
-        $irc->unregisterActionid($this->actionid6);
-        $irc->unregisterActionid($this->actionid7);
-        $irc->unregisterActionid($this->actionid8);
-        $irc->unregisterActionid($this->actionid9);
-        $irc->unregisterActionid($this->actionid10);
-        $irc->unregisterActionid($this->actionid11);
-        $irc->unregisterActionid($this->actionid12);
-        $irc->unregisterActionid($this->actionid13);
-        $irc->unregisterActionid($this->actionid14);
-        $irc->unregisterActionid($this->actionid15);
-        $irc->unregisterActionid($this->actionid16);
-        $irc->unregisterActionid($this->actionid17);
-        $irc->unregisterActionid($this->actionid18);
-        $irc->unregisterActionid($this->actionid19);
-        $irc->unregisterActionid($this->actionid20);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     
     //===============================================================================================
     function join_channel(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $chan = $data->messageex[1];
         if (isset($data->messageex[2])) {
@@ -130,7 +93,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function part_channel(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $chan=$data->messageex[1];
@@ -149,11 +111,10 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function topic(&$irc, &$data)
     {
-        global $config;
         global $bot;
-        $topic=$data->message;
+        $topic = $data->message;
+
         // don't verify ourself
-        
         if (strpos($data->nick, $irc->_nick) !== false) {
             return;
         }
@@ -168,7 +129,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function invite(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $toinvite = $data->messageex[1];
@@ -183,13 +143,11 @@ class Net_SmartIRC_module_chancmds
         if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_VOICE)) {
             $irc->invite($toinvite,$data->channel);
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Inviting '.$toinvite.' (Requested by '.$requester.')...');
-        
         }
     }
     //===============================================================================================
     function quit(&$irc, &$data)
     {
-        global $config;
         global $bot;
         
          // don't verify ourself
@@ -206,7 +164,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function onjoin(&$irc, &$data)
     {
-        global $config;
         global $bot;
         
         // don't verify ourself
@@ -237,7 +194,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function op(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $tobeopped = $data->messageex[1];
@@ -256,7 +212,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function deop(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $tobedeopped = $data->messageex[1];
@@ -301,23 +256,24 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if ($result !== false && ($bot->get_level($result) >= USER_LEVEL_OPERATOR) && $irc->isOpped($data->channel, $tobedeopped) && $bot->get_level($tobedeopped) < USER_LEVEL_MASTER) {
+        if (($result !== false) &&
+            ($bot->get_level($result) >= USER_LEVEL_OPERATOR) &&
+            ($irc->isOpped($data->channel, $tobedeopped)) &&
+            ($bot->get_level($tobedeopped) < USER_LEVEL_MASTER)) {
             $irc->deop($data->channel, $tobedeopped);
         }
     }
     //===============================================================================================
     function kick(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $tobekicked = $data->messageex[1];
         
         // Get the reason
-        $temp=explode(' ',$data->message);
         $reason='';
-        for($i=2;$i<count($temp);$i++) {
-            $reason.=' '.$temp[$i];
+        for($i=2;$i<count($data->messageex);$i++) {
+            $reason.=' '.$data->messageex[$i];
         }
         
         // don't verify ourself
@@ -349,7 +305,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function ban(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $requester = $data->nick;
         $tobebanned = $data->messageex[1];
@@ -391,7 +346,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function kickban(&$irc, &$data)
     {
-        global $config;
         $requester = $data->nick;
         $tobebanned = $data->messageex[1];
         
@@ -404,7 +358,6 @@ class Net_SmartIRC_module_chancmds
     //===============================================================================================
     function unban(&$irc, &$data)
     {
-        global $config;
         global $bot;
         $tobeunbanned = $data->messageex[1];
         
@@ -424,9 +377,10 @@ class Net_SmartIRC_module_chancmds
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
+            
         }
         
-        $lines=file('help.txt');
+        $lines = file('help.txt');
         
         // $line="Fuck off, i ain't helping you, lam0r!";
         foreach($lines as $line) {
@@ -473,7 +427,6 @@ class Net_SmartIRC_module_chancmds
             return;
         }
         
-        global $config;
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'At the tone, the time will be: '.date('H:iT').'. *ding*');
     }
     //===============================================================================================

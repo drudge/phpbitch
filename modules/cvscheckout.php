@@ -32,16 +32,18 @@ class Net_SmartIRC_module_cvscheckout
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
     
-    var $actionid;
+    var $actionids;
     
     function module_init(&$irc)
     {
-        $this->actionid = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!cvs-checkout', $this, 'cvscheckout');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!cvs-checkout', $this, 'cvscheckout');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
 
     function cvscheckout(&$irc, &$data)

@@ -31,16 +31,18 @@ class Net_SmartIRC_module_google
     var $author = 'Nicholas \'DrUDgE\' Penree <drudge@php-coders.net>';
     var $license = 'GPL';
     
-    var $actionid;
+    var $actionids;
     
     function module_init(&$irc)
     {
-        $this->actionid = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!google', $this, 'google');
+        $this->actionids = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!google', $this, 'google');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     
     //===============================================================================================
@@ -52,10 +54,9 @@ class Net_SmartIRC_module_google
         }
         
         // Get the search
-        $temp=explode(' ',$data->message);
         $search='';
-        for ($i=1;$i<count($temp);$i++) {
-            $search.='+'.$temp[$i];
+        for ($i = 1;$i < count($data->messageex); $i++) {
+            $search .='+'.$data->messageex[$i];
         }
         
         $question=trim($search,'+');
@@ -81,13 +82,13 @@ class Net_SmartIRC_module_google
                 $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Google Search Results for: \''.$question.'\'');
                 
                 if (count($ex2) >=5) {
-                    $count=5;
+                    $count = 5;
                 } else {
-                    $count=count($ex2);
+                    $count = count($ex2);
                 }
                 
                 if ($count > 0) {
-                    for($i=1;$i<$count;$i++) {
+                    for($i = 1; $i < $count; $i++) {
                         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'http://'.$ex2[$i][0]);
                     }
                 } else {

@@ -30,16 +30,18 @@ class Net_SmartIRC_module_mastah
     var $description = 'this module will return if the bot is the current mastah or not.';
     var $author = 'Mirco \'meebey\' Bauer <meebey@php.net>';
     var $license = 'GPL';
-    var $actionid;
+    var $actionids;
     
     function module_init(&$irc)
     {
-        $this->actionid = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!mastah', $this, 'mastah');
+        $this->actionids[] = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL | SMARTIRC_TYPE_QUERY, '^!mastah', $this, 'mastah');
     }
     
     function module_exit(&$irc)
     {
-        $irc->unregisterActionid($this->actionid);
+        foreach ($this->actionids as $value) {
+            $irc->unregisterActionid($value);
+        }
     }
     
     function mastah(&$irc, &$data)
