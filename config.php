@@ -18,7 +18,7 @@ $mysql_db = 'gtkbitch';
 $config = array();
 
 $config['real_name'] = 'IRC service bot for #php-gtk';
-$config['channels'] = array('#php-gtk');
+$config['channels'] = array('#php-cafe','#php-gtk');
 $config['nick'] = 'phpbitch';
 $config['ident'] = 'phpbitch';
 $config['alt_nick'] = 'phpb1tch';
