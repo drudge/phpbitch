@@ -47,12 +47,20 @@ class Net_SmartIRC_module_versions
     
     function showphpversion(&$irc, &$data)
     {
-        $irc->message($data->type, $data->channel, phpversion());
+        global $bot;
+        
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
+            $irc->message($data->type, $data->channel, phpversion());
+        }
     }
     
     function showsmartircversion(&$irc, &$data)
     {
-        $irc->message($data->type, $data->channel, SMARTIRC_VERSION);
+        global $bot;
+        
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
+            $irc->message($data->type, $data->channel, SMARTIRC_VERSION);
+        }
     }
 }
 ?>
