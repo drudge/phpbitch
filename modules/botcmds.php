@@ -93,7 +93,7 @@ class Net_SmartIRC_module_botcmds
         
         // need a valid channel for verify()
         $data->channel = $channel;
-        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_VOICE)) {
+        if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
             $irc->changeNick($newnick);
             $bot->log(SMARTIRC_DEBUG_NOTICE,'attempted to change nick to: '.$newnick);
         }
