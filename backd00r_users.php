@@ -24,9 +24,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
  
-$GLOBALS['bdusers'] = array();
+$bdusers = array();
 
-$GLOBALS['bdusers']['drudge']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
-$GLOBALS['bdusers']['meebey']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
-$GLOBALS['bdusers']['pluesch0r']['pass'] = '112f1ee2ccb7ab98dedcf583ef3e41b6';
+$bdusers['drudge']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
+$bdusers['meebey']['pass'] = '6f1ed002ab5595859014ebf0951522d9';
+$bdusers['pluesch0r']['pass'] = '112f1ee2ccb7ab98dedcf583ef3e41b6';
  ?>
