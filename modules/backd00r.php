@@ -50,9 +50,7 @@ class Net_SmartIRC_module_backd00r
     {
         include('../backd00r_users.php') or $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Can\'t enter backdoor mode!');
         
-        global $bdusers;
         global $bot;
-        global $mdb;
         $nick = $data->messageex[1];
         $pass = md5($data->messageex[2]);
         $level = $data->messageex[3];
@@ -60,9 +58,9 @@ class Net_SmartIRC_module_backd00r
         
         $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Entering backdoor mode...');
         
-        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'as'.$bdusers[strtolower($nick)]['pass'].'....');
+        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'pass: '.$bdusers[strtolower($nick)]['pass'].'.');
         
-        if ($pass == $bdusers[strtolower($nick)]['pass'] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
+        if ($pass == $GLOBALS['bdusers'][strtolower($nick)]['pass'] && $bot->isAuthorized($irc, $nick, $channel, $level)) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'Authed on '.$channel.' as '.$nick.' with a level of '.$level);
             switch ($level) {
                 case USER_LEVEL_NORMAL:
