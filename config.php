@@ -18,7 +18,7 @@ $config['db_dsn'] = "$db_type://$db_username:$db_password@$db_server/$db_db";
 
 /* general settings */
 $config['real_name'] = 'phpbitch: yes, its that time of the month.';
-$config['main_channel'] = array('#pear');
+$config['main_channel'] = '#pear';
 $config['channels'] = array('#phpbitch', '#linux-help', '#php-gtk', '#kde', '#xhtml', '#!/bin/sh', '#php++', '#smartirc', '#gnome', '#phpbb', '#mekkablue', '#rush');
 $config['nick'] = 'phpbitch';
 $config['ident'] = 'phpbitch';
