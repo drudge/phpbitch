@@ -47,6 +47,14 @@ CREATE TABLE `users` (
   `nickname` varchar(32) NOT NULL default '',
   `ident` varchar(32) NOT NULL default '',
   `host` varchar(64) NOT NULL default '',
-  `level` int(11) NOT NULL default '0',
   PRIMARY KEY  (`nickname`,`host`)
+) TYPE=MyISAM;
+
+# Table structure for table `users_levels`
+DROP TABLE IF EXISTS `users_levels`;
+CREATE TABLE users_levels (
+  user varchar(16) NOT NULL default '',
+  channel varchar(32) NOT NULL default '',
+  level int(11) NOT NULL default '0',
+  PRIMARY KEY  (user,channel)
 ) TYPE=MyISAM;
