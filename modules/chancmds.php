@@ -362,10 +362,15 @@ class Net_SmartIRC_module_chancmds
         $requester = $data->nick;
         $tobebanned = $data->messageex[1];
         
+        // Get the reason
+        $reason='';
+        for($i=2;$i<count($data->messageex);$i++) {
+            $reason.=' '.$data->messageex[$i];
+        }
         // banhandling and rights we all do in ban(), so lets use it!
         $result = $this->ban($irc, $data);
         if ($result) {
-            $irc->kick($data->channel, $tobebanned, 'Banned: Requested by '.$requester);
+            $irc->kick($data->channel, $tobebanned, 'Banned: '.$reason);
         }
     }
     //===============================================================================================
