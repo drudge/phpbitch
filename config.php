@@ -29,13 +29,13 @@ $config['modules_path'] = dirname(__FILE__).'/modules';
 $config['answer_questions'] = false;
 
 /* irc server info */
-$config['irc_server']="irc.stealth.net";
-$config['irc_port']="5555";
+$config['irc_server'] = "irc.stealth.net";
+$config['irc_port'] = 5555;
 
 $config['send_delay'] = 500;
 
 // friends go here, the order is the priority for mastermode
-$config['friend_bots'] = array('gtkbitch', 'phpbitch', 'codebitch', 'sqlbitch', 'helpbitch');
+$config['friend_bots'] = array('gtkbitch', 'meebitch', 'phpbitch', 'codebitch', 'sqlbitch', 'helpbitch');
 
 $config['emergency_users']= array('drudge'=>'6e8fe3e9e2816e6a93c449b591582540',
                                   'meebey'=>'2937a4503f726bcf018b91d2e8a669dc',
