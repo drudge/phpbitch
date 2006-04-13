@@ -23,7 +23,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
- 
+
 require_once 'HTTP/Request.php';
 class Net_SmartIRC_module_trac
 {
@@ -32,32 +32,32 @@ class Net_SmartIRC_module_trac
     var $description = 'This module will return information about tickets, changesets and roadmaps of an installed trac';
     var $author = 'Amir Mohammad Saied <amir@php.net>';
     var $license = 'GPL';
-    
+
     var $actionids = array();
     // Base URL of an installed trac with trailing /
     var $baseurl = 'http://dev.jaws-project.com/cgi-bin/trac.cgi/';
-    
+
     function module_init(&$irc)
-    { 
+    {
         $this->actionids = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!roadmap', $this, 'roadmap');
         $this->actionids = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!ticket', $this, 'ticket');
         $this->actionids = $irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!changeset', $this, 'changeset');
     }
-    
+
     function module_exit(&$irc)
     {
         foreach ($this->actionids as $value) {
             $irc->unregisterActionid($value);
         }
     }
-    
+
     function roadmap(&$irc, &$data)
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
-        
+
         if(isset($data->messageex[1])) {
             $roadmap_url = $this->baseurl.'milestone/'.$data->messageex[1];
             $req =& new HTTP_Request($roadmap_url);
@@ -68,29 +68,29 @@ class Net_SmartIRC_module_trac
             if (stristr($reg[1], "Invalid")) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Milestone Name');
             } else {
-            ereg("<p class=\"percent\">(.*)%<\/p>", $total_roadmap, $reg);
-            $completion = $reg[1];
-            $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=closed&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";         
-            ereg($string, $total_roadmap, $reg);
-            $closed = $reg[1];
-            $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=new&amp;status=assigned&amp;status=reopened&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
-            ereg($string, $total_roadmap, $reg);
-            $active = $reg[1];
-            $final_output = 'Complete: '.$completion.'% | Active: '.$active.' | Closed: '.$closed;
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                ereg("<p class=\"percent\">(.*)%<\/p>", $total_roadmap, $reg);
+                $completion = $reg[1];
+                $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=closed&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
+                ereg($string, $total_roadmap, $reg);
+                $closed = $reg[1];
+                $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=new&amp;status=assigned&amp;status=reopened&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
+                ereg($string, $total_roadmap, $reg);
+                $active = $reg[1];
+                $final_output = 'Complete: '.$completion.'% | Active: '.$active.' | Closed: '.$closed;
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
             }
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !roadmap <number>');
         }
     }
-    
+
     function changeset(&$irc, &$data)
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
-        
+
         if (isset($data->messageex[1])) {
             $changeset_url = $this->baseurl.'changeset/'.$data->messageex[1];
             $req =& new HTTP_Request($changeset_url);
@@ -119,14 +119,14 @@ class Net_SmartIRC_module_trac
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !changeset <number>');
         }
     }
-    
+
     function ticket(&$irc, &$data)
     {
         global $bot;
         if(!$bot->isMastah($irc, $data)) {
             return;
         }
-        
+
         if(isset($data->messageex[1])) {
             $ticket_url = $this->baseurl.'ticket/'.$data->messageex[1];
             $req =& new HTTP_Request($ticket_url);
