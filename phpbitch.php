@@ -223,9 +223,10 @@ class PHPBitch
     
     function isMastah(&$irc, &$data)
     {
-        if ($data->type == SMARTIRC_TYPE_QUERY ||
-            $data->type == SMARTIRC_TYPE_NOTICE) {
-            // on private messages we always reply
+        if ($data->type == SMARTIRC_TYPE_QUERY  ||
+            $data->type == SMARTIRC_TYPE_NOTICE ||
+            $config['require_op_for_mastah'] == false) {
+            // on private messages and only one bot presence we always reply
             return true;
         }
         
