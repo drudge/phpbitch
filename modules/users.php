@@ -59,7 +59,6 @@ class Net_SmartIRC_module_users
         global $bot;
         $requester = $data->nick;
         $lookupfor = $data->messageex[1];
-        $lowerlookupfor = strtolower($data->messageex[1]);
         
         // when the !who_all command was used, all bots reply
         if(!$bot->isMastah($irc, $data) &&
@@ -69,8 +68,9 @@ class Net_SmartIRC_module_users
         }
         
         if ($irc->isJoined($data->channel, $lookupfor)) {
-            $host = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->host;
-            $ident = $irc->channel[strtolower($data->channel)]->users[$lowerlookupfor]->ident;
+            $user =& $irc->getUser($data->channel, $lookupfor);
+            $host = $user->host;
+            $ident = $user->ident;
         } else {
             $irc->message($data->type, $data->channel, $requester.': '.$lookupfor.' is not in this channel');
             return;
@@ -89,7 +89,6 @@ class Net_SmartIRC_module_users
         }
     }
         
-    //===============================================================================================
     function adduser(&$irc, &$data)
     {
         global $bot;
@@ -131,7 +130,6 @@ class Net_SmartIRC_module_users
         }
     }
     
-    //===============================================================================================
     function deluser(&$irc, &$data)
     {
         global $bot;
@@ -178,7 +176,6 @@ class Net_SmartIRC_module_users
         }
     }
     
-    //===============================================================================================
     function level(&$irc, &$data)
     {
         global $bot;
@@ -189,8 +186,8 @@ class Net_SmartIRC_module_users
             return;
         }
         
-        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($nick)])) {
-            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($nick)];
+        if ($irc->isJoined($data->channel, $nick)) {
+            $victim = &$irc->getUser($data->channel, $nick);
         } else {
             $irc->message($data->type, $data->channel, $nick.' is not in '.$data->channel.'!');
             return;

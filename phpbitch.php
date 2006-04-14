@@ -58,28 +58,6 @@ function mdbError(&$errorobj)
 //===============================================================================================
 class PHPBitch
 {
-    //===============================================================================================
-    function get_level($nick)
-    {
-        global $mdb;
-        
-        $query = "SELECT level FROM users WHERE nickname = ".$mdb->getTextValue($nick);
-        $result = $mdb->query($query);
-        if (MDB::isError($result)) {
-            mdbError($result);
-            return;
-        }
-        
-        $numrows = $mdb->numRows($result);
-        
-        if ($numrows > 0) {
-            $row = $mdb->fetchRow($result);
-            return $row['level'];
-        }
-        
-        return false;
-    }
-    
     function getLevel($nick, $channel)
     {
         global $mdb;
@@ -100,15 +78,15 @@ class PHPBitch
         }
     }
     
-    function isAuthorized(&$irc, $ircnick, $channel, $level)
+    function isAuthorized(&$irc, $ircnick, $channelname, $level)
     {
         global $mdb;
         
-        if (!$irc->isJoined($channel, $ircnick)) {
+        if (!$irc->isJoined($channelname, $ircnick)) {
             return false;
         }
         
-        $user = &$irc->channel[strtolower($channel)]->users[strtolower($ircnick)];
+        $user =& $irc->getUser($channelname, $ircnick);
         
         // check if the user is recognized and has right host, ident etc..
         $data->nick = $ircnick;
@@ -118,7 +96,7 @@ class PHPBitch
         
         if ($result !== false) {
             $dbnick = $result;
-            $query = "SELECT level FROM users_levels WHERE user = ".$mdb->getTextValue($dbnick)." AND (channel = ".$mdb->getTextValue($channel)." OR channel = '*') ORDER BY channel ASC";
+            $query = "SELECT level FROM users_levels WHERE user = ".$mdb->getTextValue($dbnick)." AND (channel = ".$mdb->getTextValue($channelname)." OR channel = '*') ORDER BY channel ASC";
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
                 mdbError($result);
@@ -139,7 +117,6 @@ class PHPBitch
         }
     }
     
-    //===============================================================================================
     function reverseverify(&$irc, &$data)
     {
         global $mdb;
@@ -174,16 +151,14 @@ class PHPBitch
             return false;
         }
     }
-    //===============================================================================================
+
     function verify(&$irc, &$data, $dbnickname = null)
     {
         global $config;
         global $mdb;
         
         $who = $data->nick;
-        $loweredwho = strtolower($who);
-        $channel = $data->channel;
-        $loweredchannel = strtolower($channel);
+        $channelname = $data->channel;
         $ident = $data->ident;
         
         if ($dbnickname !== null) {
@@ -192,7 +167,7 @@ class PHPBitch
             $dbwho = $data->nick;
         }
         
-        if (isset($irc->channel[$loweredchannel]->users[$loweredwho])) {
+        if ($irc->isJoined($channelname, $who)) {
             $query = "SELECT nickname,ident,host FROM users WHERE nickname = ".$mdb->getTextValue($dbwho);
             $result = $mdb->query($query);
             if (MDB::isError($result)) {
@@ -202,7 +177,8 @@ class PHPBitch
             $numrows = $mdb->numRows($result);
             
             if ($numrows > 0) {
-                $host = $irc->channel[$loweredchannel]->users[$loweredwho]->host;
+                $user =& $irc->getUser($channelname, $who);
+                $host = $user->host;
                 $ip = gethostbyname($host);
                 
                 $found = false;
@@ -219,7 +195,6 @@ class PHPBitch
         
         return false;
     }
-    //===============================================================================================
     
     function isMastah(&$irc, &$data)
     {
@@ -235,8 +210,8 @@ class PHPBitch
         $candidates = array();
         foreach ($config['friend_bots'] as $key => $value) {
             $bot = $value;
-            if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($bot)])) {
-                $user = &$irc->channel[strtolower($data->channel)]->users[strtolower($bot)];
+            if ($irc->isJoined($data->channel, $bot)) {
+                $user =& $irc->getUser($data->channel, $bot);
                 
                 if ($this->isAuthorized($irc, $user->nick, $data->channel, USER_LEVEL_BOT) &&
                     $irc->isOpped($data->channel, $user->nick)) {
@@ -256,7 +231,7 @@ class PHPBitch
     
     function show_synctime(&$irc, &$data)
     {
-        $channel = &$irc->getChannel($data->channel);
+        $channel =& $irc->getChannel($data->channel);
         $irc->message(SMARTIRC_TYPE_ACTION, $data->channel, 'finished syncing to '.$data->channel.' in '.round($channel->synctime, 2).' secs');
     }
 }
@@ -305,7 +280,7 @@ $irc->registerActionhandler(SMARTIRC_TYPE_BANLIST, 'End of Channel Ban List', $b
 $irc->connect($config['irc_server'], $config['irc_port']);
 $irc->setCtcpVersion($config['version']);
 $irc->login($config['nick'], $config['real_name'], 8, $config['ident']);
-$start=time();
+$start = time();
 $irc->join($config['channels']);
 $irc->listen();
 $irc->disconnect();

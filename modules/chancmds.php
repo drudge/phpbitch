@@ -71,7 +71,6 @@ class Net_SmartIRC_module_chancmds
         }
     }
     
-    //===============================================================================================
     function join_channel(&$irc, &$data)
     {
         global $bot;
@@ -90,7 +89,7 @@ class Net_SmartIRC_module_chancmds
             }
         }
     }
-        //===============================================================================================
+
     function cycle_channel(&$irc, &$data)
     {
         global $bot;
@@ -108,7 +107,7 @@ class Net_SmartIRC_module_chancmds
             }
         }
     }
-    //===============================================================================================
+
     function part_channel(&$irc, &$data)
     {
         global $bot;
@@ -116,10 +115,10 @@ class Net_SmartIRC_module_chancmds
         $chan=$data->messageex[1];
         
         if ($bot->isAuthorized($irc, $data->nick, $data->channel, USER_LEVEL_MASTER)) {
-            $irc->part($chan,'Requested by '.$requester);
+            $irc->part($chan, 'Requested by '.$requester);
         }
     }
-    //===============================================================================================
+
     function topic(&$irc, &$data)
     {
         global $bot;
@@ -133,7 +132,7 @@ class Net_SmartIRC_module_chancmds
             $irc->setTopic($data->channel, substr($topic, 7, strlen($topic)-7));
         }
     }
-    //===============================================================================================
+
     function invite(&$irc, &$data)
     {
         global $bot;
@@ -148,7 +147,7 @@ class Net_SmartIRC_module_chancmds
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Inviting '.$toinvite.' (Requested by '.$requester.')...');
         }
     }
-    //===============================================================================================
+
     function quit(&$irc, &$data)
     {
         global $bot;
@@ -157,7 +156,7 @@ class Net_SmartIRC_module_chancmds
             $irc->quit('Killed by '.$data->nick);
         }
     }
-    //===============================================================================================
+
     function onjoin(&$irc, &$data)
     {
         global $bot;
@@ -183,7 +182,7 @@ class Net_SmartIRC_module_chancmds
             $this->_candidates[$this->_op_count]['result'] = $result;
         }
     }
-    //===============================================================================================
+
     function op(&$irc, &$data)
     {
         global $bot;
@@ -207,7 +206,7 @@ class Net_SmartIRC_module_chancmds
             }
         }
     }
-    //===============================================================================================
+
     function deop(&$irc, &$data)
     {
         global $bot;
@@ -215,8 +214,8 @@ class Net_SmartIRC_module_chancmds
         $tobedeopped = $data->messageex[1];
         
         
-        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)])) {
-            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)];
+        if ($irc->isJoined($data->channel, $tobedeopped)) {
+            $victim =& $irc->getUser($data->channel, $tobedeopped);
         } else {
             return;
         }
@@ -236,7 +235,7 @@ class Net_SmartIRC_module_chancmds
             $irc->deop($data->channel, $tobedeopped);
         }
     }
-        //===============================================================================================
+
     function voice(&$irc, &$data)
     {
         global $bot;
@@ -249,16 +248,15 @@ class Net_SmartIRC_module_chancmds
             $irc->voice($data->channel, $tobevoiced);
         }
     }
-    //===============================================================================================
+
     function devoice(&$irc, &$data)
     {
         global $bot;
         $requester = $data->nick;
         $tobedevoiced = $data->messageex[1];
         
-        
-        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobedevoiced)])) {
-            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobedeopped)];
+        if ($irc->isJoined($data->channel, $tobedevoiced)) {
+            $victim =& $irc->getUser($data->channel, $tobedevoiced);
         } else {
             return;
         }
@@ -278,7 +276,7 @@ class Net_SmartIRC_module_chancmds
             $irc->devoice($data->channel, $tobedevoiced);
         }
     }
-    //===============================================================================================
+
     function down(&$irc, &$data)
     {
         global $bot;
@@ -292,7 +290,7 @@ class Net_SmartIRC_module_chancmds
             $irc->deop($data->channel, $tobedeopped);
         }
     }
-    //===============================================================================================
+
     function kick(&$irc, &$data)
     {
         global $bot;
@@ -315,8 +313,8 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if (isset($irc->channel[strtolower($data->channel)]->users[strtolower($tobekicked)])) {
-            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobekicked)];
+        if ($irc->isJoined($data->channel, $tobekicked)) {
+            $victim =& $irc->getUser($data->channel, $tobekicked);
         } else {
             return;
         }
@@ -334,7 +332,7 @@ class Net_SmartIRC_module_chancmds
             $irc->kick($data->channel, $tobekicked, '['.$requester.']'.$reason);
         }
     }
-    //===============================================================================================
+
     function ban(&$irc, &$data)
     {
         global $bot;
@@ -351,8 +349,8 @@ class Net_SmartIRC_module_chancmds
         
         $result = $bot->reverseverify($irc, $data);
         
-        if (isset($irc->channel[$data->channel]->users[strtolower($tobebanned)])) {
-            $victim = &$irc->channel[strtolower($data->channel)]->users[strtolower($tobebanned)];
+        if ($irc->isJoined($data->channel, $tobebanned)) {
+            $victim =& $irc->getUser($data->channel, $tobebanned);
         } else {
             return;
         }
@@ -381,7 +379,7 @@ class Net_SmartIRC_module_chancmds
             return true;
         }
     }
-    //===============================================================================================
+
     function kickban(&$irc, &$data)
     {
         global $bot;
@@ -403,7 +401,7 @@ class Net_SmartIRC_module_chancmds
             $irc->kick($data->channel, $tobebanned, 'Banned: ['.$requester.']'.$reason);
         }
     }
-    //===============================================================================================
+
     function unban(&$irc, &$data)
     {
         global $bot;
@@ -416,7 +414,7 @@ class Net_SmartIRC_module_chancmds
             $irc->unban($data->channel, $tobeunbanned);
         }
     }
-    //===============================================================================================       
+
     function help(&$irc, &$data)
     {
         global $bot;
@@ -426,15 +424,15 @@ class Net_SmartIRC_module_chancmds
         
         $lines = file('help.txt');
         
-        //$line="Fuck off, i ain't helping you, lam0r!";
         foreach($lines as $line) {
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, $line);
         }
     }
-        //===============================================================================================       
+
     function getnews(&$irc, &$data)
     {
-       /* $file = "http://gtk.php.net";
+       /*
+        $file = "http://gtk.php.net";
         $open = fopen($file, "r");
         $search = fread($open, 20000);
         fclose($open);
@@ -461,9 +459,10 @@ class Net_SmartIRC_module_chancmds
         {
             $news=trim($item);
             $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, "$news...");
-        }*/
+        }
+        */
     }
-    //===============================================================================================
+
     function saytime(&$irc,&$data)
     {
         global $bot;
@@ -473,7 +472,7 @@ class Net_SmartIRC_module_chancmds
         
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'At the tone, the time will be: '.date('H:iT').'. *ding*');
     }
-    //===============================================================================================
+
     function ping(&$irc,&$data)
     {
         global $bot;
@@ -483,7 +482,7 @@ class Net_SmartIRC_module_chancmds
         
         $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, '*PONG*');
     }
-    //===============================================================================================
+
     function dns(&$irc,&$data)
     {
         global $bot;
@@ -493,7 +492,7 @@ class Net_SmartIRC_module_chancmds
         
         $requester = $data->nick;
         $tolookup = $data->messageex[1];
-        $user = &$irc->channel[$data->channel]->users[strtolower($tolookup)];
+        $user =& $irc->getUser($data->channel, $tolookup);
         $ip = gethostbyname($user->host);
         
         if (!empty($ip)) {
@@ -502,7 +501,7 @@ class Net_SmartIRC_module_chancmds
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $requester.': I dunno '.$tolookup.'\'s IP.');
         }
     }
-    //===============================================================================================
+
     function _do_op(&$irc)
     {
          global $bot;
