@@ -258,21 +258,9 @@ $irc->setReceiveTimeout(600);
 $irc->setTransmitTimeout(600);
 $irc->setSenddelay($config['send_delay']);
 
-// Functionality
-$irc->loadModule('google');
-$irc->loadModule('chancmds');
-$irc->loadModule('botcmds');
-$irc->loadModule('users');
-$irc->loadModule('brain');
-$irc->loadModule('temp');
-//$irc->loadModule('dictionary');
-$irc->loadModule('mastah');
-$irc->loadModule('cvscheckout');
-$irc->loadModule('hex_ip');
-$irc->loadModule('log');
-$irc->loadModule('ident');
-$irc->loadModule('debug');
-$irc->loadModule('versions');
+foreach ($config['modules'] as $module) {
+    $irc->loadModule($module);
+}
 
 $irc->registerActionhandler(SMARTIRC_TYPE_BANLIST, 'End of Channel Ban List', $bot, 'show_synctime');
 

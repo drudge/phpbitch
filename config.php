@@ -23,6 +23,7 @@ $config['channels'] = array('#phpbitch', '#linux-help', '#php-gtk', '#kde', '#xh
 $config['nick'] = 'phpbitch';
 $config['ident'] = 'phpbitch';
 $config['alt_nick'] = 'phpb1tch';
+$config['trigger'] = '!';
 
 /* bot specific */
 $config['version'] = 'phpbitch 1.0';
@@ -43,4 +44,20 @@ $config['require_op_for_mastah'] = false;
 $config['emergency_users']= array('drudge'=>'6e8fe3e9e2816e6a93c449b591582540',
                                   'meebey'=>'2937a4503f726bcf018b91d2e8a669dc',
                                   'pluesch0r'=>'edc8540bed09f428ab2d556d562c422c');
+
+$config['modules'] = array('google',
+                           'chancmds',
+                           'botcmds',
+                           'users',
+                           'brain',
+                           'temp',
+                           'mastah',
+                           'cvscheckout',
+                           'hex_ip',
+                           'log',
+                           'ident',
+                           'debug',
+                           'versions'
+                          );
+
 ?>
