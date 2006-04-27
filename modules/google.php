@@ -23,7 +23,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
- 
+
+require_once 'HTTP/Request.php';
 class Net_SmartIRC_module_google
 {
     var $name = 'google';
@@ -64,17 +65,14 @@ class Net_SmartIRC_module_google
         if (!$question) {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'No search string given.');
         } else {
-            $fp = fsockopen('www.google.com', 80, $errno, $errstr, 30);
-            if (!$fp) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Socket connection failed: '.$errstr);
+            $req =& new HTTP_Request( );
+            $req->setMethod(HTTP_REQUEST_METHOD_GET);
+            $req->setURL('http://www.google.com/search?as_q='.$search.'&num=5');
+            $req->sendRequest();
+            if (!$req->getResponseBody()) {
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to google failed!');
             } else {
-                fputs($fp, "GET /search?as_q=$question&num=100 HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
-                $page = '';
-                while (!feof($fp)) {
-                    $raw = fgets($fp);
-                    $page .= $raw;
-                }
-                
+                $page = $req->getResponseBody();
                 $ex1 = explode('<font color=#008000>', $page);
                 for($i=0;$i<count($ex1);$i++) {
                     $ex2[] = explode(' - ', $ex1[$i]);
@@ -89,14 +87,12 @@ class Net_SmartIRC_module_google
                 }
                 
                 if ($count > 0) {
-                    for($i = 1; $i < $count; $i++) {
-                        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'http://'.$ex2[$i][0]);
+                    for($i = 1; $i <= $count; $i++) {
+                        $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'http://'.strip_tags($ex2[$i][0]));
                     }
                 } else {
                     $irc->message(SMARTIRC_TYPE_QUERY, $data->nick, 'No results for \''.$question.'\'.');
                 }
-                
-                fclose($fp);
             }
         }
     }
