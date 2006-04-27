@@ -63,21 +63,25 @@ class Net_SmartIRC_module_trac
             $req =& new HTTP_Request($roadmap_url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
-            $total_roadmap = $req->getResponseBody();
-            ereg("<title>(.*)</title>", $total_roadmap, $reg);
-            if (stristr($reg[1], "Invalid")) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Milestone Name');
+            if (!$req->getResponseBody()) {
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
             } else {
-                ereg("<p class=\"percent\">(.*)%<\/p>", $total_roadmap, $reg);
-                $completion = $reg[1];
-                $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=closed&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
-                ereg($string, $total_roadmap, $reg);
-                $closed = $reg[1];
-                $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=new&amp;status=assigned&amp;status=reopened&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
-                ereg($string, $total_roadmap, $reg);
-                $active = $reg[1];
-                $final_output = 'Complete: '.$completion.'% | Active: '.$active.' | Closed: '.$closed;
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                $total_roadmap = $req->getResponseBody();
+                ereg("<title>(.*)</title>", $total_roadmap, $reg);
+                if (stristr($reg[1], "Invalid")) {
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Milestone Name');
+                } else {
+                    ereg("<p class=\"percent\">(.*)%<\/p>", $total_roadmap, $reg);
+                    $completion = $reg[1];
+                    $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=closed&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
+                    ereg($string, $total_roadmap, $reg);
+                    $closed = $reg[1];
+                    $string = "<dd><a href=\"\/cgi-bin\/trac.cgi\/query\?status=new&amp;status=assigned&amp;status=reopened&amp;milestone=".$data->messageex[1]."\">([0-9]+)<\/a><\/dd>";
+                    ereg($string, $total_roadmap, $reg);
+                    $active = $reg[1];
+                    $final_output = 'Complete: '.$completion.'% | Active: '.$active.' | Closed: '.$closed;
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                }
             }
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !roadmap <number>');
@@ -96,24 +100,28 @@ class Net_SmartIRC_module_trac
             $req =& new HTTP_Request($changeset_url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
-            $total_changeset = $req->getResponseBody();
-            ereg("<title>(.*)<\/title>", $total_changeset, $reg);
-            if (stristr($reg[1], "Error")) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Changeset');
+            if (!$req->getResponseBody()) {
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
             } else {
-                $final_output = array();
-                $string = "<dd class=\"time\">([0-9]{2}/[0-9]{2}/[0-9]{2}.?[0-9]{2}:[0-9]{2}:[0-9]{2})</dd>";
-                ereg($string, $total_changeset, $chng_reg);
-                $timestamp = $chng_reg[1];
-                $string = "<dd class=\"author\">([A-Za-z0-9_]+)</dd>";
-                ereg($string, $total_changeset, $chng_reg);
-                $author = $chng_reg[1];
-                $string = "<dd class=\"message\" id=\"searchable\">(.*)<dt class=\"files\">";
-                ereg($string, $total_changeset, $chng_reg);
-                $changeset_desc = trim(strip_tags(implode(explode("\n", $chng_reg[1]))));
-                $final_output[] = 'Timestamp: '.$timestamp.' | Author:'.$author;       
-                $final_output[] = 'Message: '.($changeset_desc);
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                $total_changeset = $req->getResponseBody();
+                ereg("<title>(.*)<\/title>", $total_changeset, $reg);
+                if (stristr($reg[1], "Error")) {
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Changeset');
+                } else {
+                    $final_output = array();
+                    $string = "<dd class=\"time\">([0-9]{2}/[0-9]{2}/[0-9]{2}.?[0-9]{2}:[0-9]{2}:[0-9]{2})</dd>";
+                    ereg($string, $total_changeset, $chng_reg);
+                    $timestamp = $chng_reg[1];
+                    $string = "<dd class=\"author\">([A-Za-z0-9_]+)</dd>";
+                    ereg($string, $total_changeset, $chng_reg);
+                    $author = $chng_reg[1];
+                    $string = "<dd class=\"message\" id=\"searchable\">(.*)<dt class=\"files\">";
+                    ereg($string, $total_changeset, $chng_reg);
+                    $changeset_desc = trim(strip_tags(implode(explode("\n", $chng_reg[1]))));
+                    $final_output[] = 'Timestamp: '.$timestamp.' | Author:'.$author;       
+                    $final_output[] = 'Message: '.($changeset_desc);
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                }
             }
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !changeset <number>');
@@ -132,19 +140,23 @@ class Net_SmartIRC_module_trac
             $req =& new HTTP_Request($ticket_url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
-            $total_ticket = $req->getResponseBody();
-            ereg("<title>(.*)<\/title>", $total_ticket, $reg);
-            if (stristr($reg[1], "Invalid")) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Ticket Number');
+            if (!$req->getResponseBody()) {
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
             } else {
-                ereg("<div class=\"description\">(.*)<h2>Attachments</h2>", $total_ticket, $reg);
-                $ticket_desc = trim(strip_tags(implode(explode("\n", $reg[1]))));
-                ereg("<h3 class=\"status\">Status: <strong>(.*)</strong></h3>", $total_ticket, $reg);
-                $ticket_status = 'Status: '.$reg[1];
-                $final_output = array();
-                $final_output[] = $ticket_status;
-                $final_output[] = $ticket_desc;
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                $total_ticket = $req->getResponseBody();
+                ereg("<title>(.*)<\/title>", $total_ticket, $reg);
+                if (stristr($reg[1], "Invalid")) {
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Ticket Number');
+                } else {
+                    ereg("<div class=\"description\">(.*)<h2>Attachments</h2>", $total_ticket, $reg);
+                    $ticket_desc = trim(strip_tags(implode(explode("\n", $reg[1]))));
+                    ereg("<h3 class=\"status\">Status: <strong>(.*)</strong></h3>", $total_ticket, $reg);
+                    $ticket_status = 'Status: '.$reg[1];
+                    $final_output = array();
+                    $final_output[] = $ticket_status;
+                    $final_output[] = $ticket_desc;
+                    $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
+                }
             }
         } else {
             $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !ticket <number>');
