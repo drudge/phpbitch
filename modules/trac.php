@@ -1,9 +1,9 @@
 <?php
 /**
- * $Id: trac.php 345 2006-04-14 01:55:40Z amir $
- * $Revision: 345 $
- * $Author: amir $
- * $Date: 2006-04-14 01:55:40 +0330 (Fri, 14 Apr 2006) $
+ * $Id$
+ * $Revision$
+ * $Author$
+ * $Date$
  *
  * Copyright (c) 2006 Amir Mohammad Saied <amir@php.net>
  *
@@ -28,7 +28,7 @@ require_once 'HTTP/Request.php';
 class Net_SmartIRC_module_trac
 {
     var $name = 'trac';
-    var $version = '$Revision: 345 $';
+    var $version = '$Revision$';
     var $description = 'This module will return information about tickets, changesets and roadmaps of an installed trac';
     var $author = 'Amir Mohammad Saied <amir@php.net>';
     var $license = 'GPL';
