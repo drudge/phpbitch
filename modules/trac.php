@@ -64,7 +64,7 @@ class Net_SmartIRC_module_trac
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
             if (!$req->getResponseBody()) {
-                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to the trac server failed!');
             } else {
                 $total_roadmap = $req->getResponseBody();
                 ereg("<title>(.*)</title>", $total_roadmap, $reg);
@@ -101,7 +101,7 @@ class Net_SmartIRC_module_trac
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
             if (!$req->getResponseBody()) {
-                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to the trac server failed!');
             } else {
                 $total_changeset = $req->getResponseBody();
                 ereg("<title>(.*)</title>", $total_changeset, $reg);
@@ -141,7 +141,7 @@ class Net_SmartIRC_module_trac
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
             if (!$req->getResponseBody()) {
-                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to trac server failed!');
+                $irc->message( SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to the trac server failed!');
             } else {
                 $total_ticket = $req->getResponseBody();
                 ereg("<title>(.*)</title>", $total_ticket, $reg);
