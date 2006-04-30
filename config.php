@@ -57,7 +57,8 @@ $config['modules'] = array('google',
                            'log',
                            'ident',
                            'debug',
-                           'versions'
+                           'versions',
+                           'trac'
                           );
 
 ?>
