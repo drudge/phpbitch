@@ -50,7 +50,7 @@ class Net_SmartIRC_module_phpman
     function php(&$irc, &$data)
     {
         if (isset($data->messageex[1])) {
-            $url = 'http://ir.php.net/'.$data->messageex[1];
+            $url = 'http://us3.php.net/'.$data->messageex[1];
             $req =& new HTTP_Request($url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
@@ -69,7 +69,7 @@ class Net_SmartIRC_module_phpman
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
             }
         } else {
-            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !php <number>');
+            $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'usage: !php <function_name>');
         }
     }
 }
