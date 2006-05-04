@@ -60,7 +60,7 @@ class Net_SmartIRC_module_phpman
                 $funcman = $req->getResponseBody();
                 ereg("CLASS=\"refnamediv\"(.*)CLASS=\"refsect1\"", $funcman, $desc);
                 ereg(">(.*)</P", $desc[1], $reg);
-                $versions = trim(strip_tags($reg[1]));
+                $versions = trim(html_entity_decode(strip_tags($reg[1])));
                 ereg(">".strtolower($data->messageex[1])."&nbsp;--&nbsp;(.*)</DIV", $desc[1], $reg);
                 $brief_desc = trim(html_entity_decode(strip_tags($reg[1])));
                 $final_output = array();
