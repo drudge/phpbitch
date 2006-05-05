@@ -50,18 +50,20 @@ class Net_SmartIRC_module_phpman
     function php(&$irc, &$data)
     {
         if (isset($data->messageex[1])) {
-            $url = 'http://us3.php.net/'.$data->messageex[1];
+            $url = 'http://ir.php.net/'.$data->messageex[1];
             $req =& new HTTP_Request($url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
             if (!$req->getResponseBody()) {
-                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to the php.net failed!');
+                $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid function name or a failed connection');
             } else {
                 $funcman = $req->getResponseBody();
-                ereg("CLASS=\"refnamediv\"(.*)CLASS=\"refsect1\"", $funcman, $desc);
-                ereg(">(.*)</P", $desc[1], $reg);
+                ereg("CLASS=\"refnamediv\"(.*)>Description</H2", $funcman, $desc);
+                $desc[1] = str_replace("\n", "", $desc[1]);
+                $desc[1] = preg_replace('/\s\s+/', ' ', $desc[1]);
+                ereg("<P>(.*)</P>".strtolower($data->messageex[1])."&nbsp;--&nbsp;", $desc[1], $reg);
                 $versions = trim(html_entity_decode(strip_tags($reg[1])));
-                ereg(">".strtolower($data->messageex[1])."&nbsp;--&nbsp;(.*)</DIV", $desc[1], $reg);
+                ereg("</P>".strtolower($data->messageex[1])."&nbsp;--&nbsp;(.*)</DIV>", $desc[1], $reg);
                 $brief_desc = trim(html_entity_decode(strip_tags($reg[1])));
                 $final_output = array();
                 $final_output[] = $versions;
