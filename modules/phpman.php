@@ -50,6 +50,7 @@ class Net_SmartIRC_module_phpman
     function php(&$irc, &$data)
     {
         if (isset($data->messageex[1])) {
+            $data->messageex[1] = str_replace("()", "", $data->messageex[1]);
             $url = 'http://us3.php.net/'.$data->messageex[1];
             $req =& new HTTP_Request($url);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
