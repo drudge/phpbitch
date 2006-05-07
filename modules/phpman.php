@@ -25,12 +25,13 @@
  */
 
 require_once 'HTTP/Request.php';
+
 class Net_SmartIRC_module_phpman
 {
     var $name = 'phpman';
-    var $revision = '$Revision$';
     var $description = 'This module will return informations about php functions';
     var $author = 'Amir Mohammad Saied';
+    var $version = '$Revision$';
     var $license = 'GPL';
     
     var $actionids = array();
