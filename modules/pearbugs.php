@@ -9,13 +9,14 @@
  */
 
 require_once 'HTTP/Request.php';
+
 class Net_SmartIRC_module_pearbugs
 {
     var $name = 'pearbugs';
     var $description = 'Will return PEAR bugs info';
     var $author = 'Amir Mohammad Saied <amir@php.net>';
     var $version = '$Revision$';
-    var $license = 'LGPL';
+    var $license = 'GPL';
     
     var $actionids = array();
     
@@ -33,6 +34,11 @@ class Net_SmartIRC_module_pearbugs
     
     function bug(&$irc, &$data)
     {
+        global $bot;
+        if (!$bot->isMastah($irc, $data)) {
+            return;
+        }
+                                            
         if (isset($data->messageex[1])) {
             $bugurl = 'http://pear.php.net/bugs/bug.php?id='.(int)$data->messageex[1];
             $req =& new HTTP_Request($bugurl);
