@@ -117,9 +117,9 @@ class Net_SmartIRC_module_trac
                     $author = $chng_reg[1];
                     $string = "<dd class=\"message\" id=\"searchable\">(.*)<dt class=\"files\">";
                     ereg($string, $total_changeset, $chng_reg);
-                    $changeset_desc = trim(strip_tags(implode(explode("\n", $chng_reg[1]))));
+                    $changeset_desc = trim(str_replace("\n", "", strip_tags($chng_reg[1])));
                     $final_output[] = 'Timestamp: '.$timestamp.' | Author:'.$author;       
-                    $final_output[] = 'Message: '.($changeset_desc);
+                    $final_output[] = 'Message: '.(html_entity_decode($changeset_desc));
                     $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
                 }
             }
@@ -149,12 +149,12 @@ class Net_SmartIRC_module_trac
                     $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Invalid Ticket Number');
                 } else {
                     ereg("<div class=\"description\">(.*)<h2>Attachments</h2>", $total_ticket, $reg);
-                    $ticket_desc = trim(strip_tags(implode(explode("\n", $reg[1]))));
+                    $ticket_desc = trim(str_replace("\n", "", strip_tags($reg[1])));
                     ereg("<h3 class=\"status\">Status: <strong>(.*)</strong></h3>", $total_ticket, $reg);
                     $ticket_status = 'Status: '.$reg[1];
                     $final_output = array();
-                    $final_output[] = $ticket_status;
-                    $final_output[] = $ticket_desc;
+                    $final_output[] = html_entity_decode($ticket_status);
+                    $final_output[] = html_entity_decode($ticket_desc);
                     $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $final_output);
                 }
             }
