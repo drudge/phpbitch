@@ -69,7 +69,7 @@ class Net_SmartIRC_module_google
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->setURL('http://www.google.com/search?as_q='.$search.'&num=5');
             $req->sendRequest();
-            if (!$req->getResponseBody()) {
+            if (PEAR::isError($req->sendRequest())) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to google failed!');
             } else {
                 $page = $req->getResponseBody();

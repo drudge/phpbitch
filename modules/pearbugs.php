@@ -44,7 +44,7 @@ class Net_SmartIRC_module_pearbugs
             $req =& new HTTP_Request($bugurl);
             $req->setMethod(HTTP_REQUEST_METHOD_GET);
             $req->sendRequest();
-            if (!$req->getResponseBody()) {
+            if (PEAR::isError($req->sendRequest())) {
                 $irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, 'Connection to PEAR server failed!');
             } else {
                 $totalbug = $req->getResponseBody();
