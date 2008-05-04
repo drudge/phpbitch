@@ -58,6 +58,7 @@ class Net_SmartIRC_module_cvscheckout
             $irc->message($data->type, $data->nick, 'CVS checkout starting...', SMARTIRC_CRITICAL);
             
             $homedir = exec('echo ~');
+            /*
             $file = file($homedir.'/.cvspass');
             if (!in_array('anonymous@cvs.meebey.net', $file)) {
                 $fp = fopen('~/.cvspass', 'a');
@@ -67,6 +68,9 @@ class Net_SmartIRC_module_cvscheckout
             
             $output = array();
             exec('cd ~; cvs -d :pserver:anonymous@cvs.meebey.net:/cvs checkout phpbitch', $output);
+            */
+            $output = array();
+            exec('cd ~; svn checkout svn://svn.qnetp.net/phpbitch/trunk phpbitch', $output);
             foreach ($output as $line) {
                 $irc->message($data->type, $data->nick, $line, SMARTIRC_CRITICAL);
             }
